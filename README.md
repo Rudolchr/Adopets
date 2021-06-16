@@ -88,6 +88,7 @@ This list includes all pets put up for adoption. To help user find a perfect pet
 There should be possible some form of contact between user and shelter, if user is interested in one of pets or has a question.
 
     a) user should be able to access contact form (name, e-mail address, phone number, text message). Preferably there should exist one contact button for every pet, so the shelter instantly knows about what pet the message is  
+    
     b) shelter should be able to retrieve the list of message. As we don’t want users to have to create an account, there is no answer possible ‒ shelter can contact them on the given e-mail or phone number.
 
 6. List of “found home”  
