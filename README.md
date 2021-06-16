@@ -100,3 +100,9 @@ Beside a list of pets looking for home, there should exist also a list of animal
  
 7. Adoption counter
 Somewhere on the page there should be visible a counter that shows how many animals found home thanks to the app.
+
+<h2>Name of App</h2>
+Adopets
+
+<h2>Domain Name</h2>
+adopets.de
