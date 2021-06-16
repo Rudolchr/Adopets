@@ -5,7 +5,7 @@
   <img src="Logo.JPG" width="200" alt="accessibility text">
 </p>
 
-Our foundation was formed in 2016 by a group of animal lovers. It all started with a spontaneous decision to “do a good deed” and donate some pet food to the shelter. However as we saw how much was needed, we couldn’t just tell ourselves “good job” and forget about the hundreds of hopeful eyes gazing at us. At first we were donating only from our own money, but as our good intentions were greater than our financial abilities, we started with fundraisers and so we are.
+Our foundation is called "Give me home" and was formed in 2016 by a group of animal lovers. It all started with a spontaneous decision to “do a good deed” and donate some pet food to the shelter. However as we saw how much was needed, we couldn’t just tell ourselves “good job” and forget about the hundreds of hopeful eyes gazing at us. At first we were donating only from our own money, but as our good intentions were greater than our financial abilities, we started with fundraisers and so we are.
 
 However even an endless river of money won’t save all of problems, as long as there are still homeless animals stuck in shelter and waiting for a loving family. We do our best to help them find new homes. All of us have adopted and we are trying to inspire people doing the same by organizing educational events and placing ads on our site on facebook. We are constantly looking for new ideas to help more animals ‒ there is still so much we can do!
 
