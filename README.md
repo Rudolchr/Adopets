@@ -131,3 +131,11 @@ adopets.de
 | Contact (5.a) | form to contact a shelter: <ul><li>directly</li><li>in combination with specific pet (button for contact at detail page of every pet)</li></ul> |
 | Contact (5.b) | Contact receiving for shelter: <ul><li>retrieve list of messages</li><li>no reply option due to missing account of users</li></ul> |
 | Adoption Counter (7.) | a counter that represents the number of conveyed pets (present on any page)
+
+## Domain Model
+
+![Domain Model](./Domain_Information_Model.png)
+
+## Design Model
+
+![Design Model](./design_model.png)
