@@ -3,7 +3,7 @@
 ## Who we are
 
 <p align="left">
-  <img src="Logo.JPG" width="200" alt="accessibility text">
+  <img src="assets/Logo.JPG" width="200" alt="accessibility text">
 </p>
 
 Our foundation is called "Give me home" and was formed in 2016 by a group of animal lovers. It all started with a spontaneous decision to “do a good deed” and donate some pet food to the shelter. However as we saw how much was needed, we couldn’t just tell ourselves “good job” and forget about the hundreds of hopeful eyes gazing at us. At first we were donating only from our own money, but as our good intentions were greater than our financial abilities, we started with fundraisers and so we are.
@@ -134,8 +134,29 @@ adopets.de
 
 ## Domain Model
 
-![Domain Model](./Domain_Information_Model.png)
+![Domain Model](./documentation/Domain_Information_Model.png)
 
 ## Design Model
 
-![Design Model](./design_model.png)
+![Design Model](./documentation/design_model.png)
+
+# Run the project
+## setup and edit
+This project is entirely written in TypeScript and HTML. 
+Further this is a NodeJS project meaning that the following steps have to be fulfilled before:
+
+1. install `NodeJS` and `npm` ([Install instructions](www.fosstechnix.com/how-to-install-node-js-on-windows/))
+2. run `$ npm i` in a terminal within the root directory to install the node dependencies
+
+After that the project can be edited as following:
+
+- Typescript files will be edited in `./src/`
+- HTML / CSS is edited in `./app/`
+- The folder `./app/src/` should not be edited though there are the compiled JavaScript files, that will be overwritten after the building process.
+
+## run
+To run the project just open a terminal in the root folder and run `$ npm run watch` to start the watcher which compiles the edited Typescript code on save, or run `$ npm build` to compile the code once. After that just open the `./app/index.html` in the firefox development browser.
+
+## debug
+To debug the code either use the dev tools from the firefox browser.
+Alternatively (and easier) use VSCode for the development and simply go to the [Run and Debug Tab](F5) and run the Configuration `Launch index.html`. Therefore the installed Firefox Browser will be opened in debug mode and the breakpoints that have been set in the files will be awaited.

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Adopets: Delete</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <link rel="icon" href="assets/favicon.svg" />
+    <link rel="mask-icon" href="assets/mask-icon.svg" color="#000000" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/manifest.json" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/main.css" />
+
+    <script src="js/v/deletePet.js" type="module"></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrapper clearfix">
+        <div class="title">
+          <h1>Delete a pet</h1>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="createPet.html">C</a></li>
+            <li><a href="retrieveAndListAllPets.html">R</a></li>
+            <li><a href="updatePet.html">U</a></li>
+            <li><a href="deletePet.html">D</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper clearfix">
+        <form id="Pet">
+          <div>
+            <label
+              >Select a pet:
+              <select name="petSelection">
+                <option value="">---</option>
+              </select>
+            </label>
+          </div>
+          <div><button type="button" name="deleteButton">Delete</button></div>
+        </form>
+      </div>
+    </main>
+    <footer>
+      <div class="foot-content wrapper">
+        <a href="index.html">Back to main menu</a>
+      </div>
+    </footer>
+  </body>
+</html>
