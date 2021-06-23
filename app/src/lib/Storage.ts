@@ -1,15 +1,28 @@
 import {Entity} from "./Entity.js";
 
+/**
+ * An abstract Storage for Entities. The **Generic** has to be Provided with the stored `Entity` as well 
+ * as the `Slots` used for the **constructor** of the Entity.
+ */
 export abstract class AbstractStorage<E extends Entity, EntitySlots> {
   protected _instances: {[id: string]: E;} = {};
   protected _nextId: number = -1;
   abstract STORAGE_KEY: string;
 
-  get instances(): {[id: string]: E;} {
+  /** @returns a map of the Entities from this Storage */
+  get instances(): {readonly [id: string]: E;} {
     return this._instances;
   }
 
-  protected addWithConstructor(EntityConstructor: new (slots: EntitySlots) => E,slots: EntitySlots) {
+  /**
+   * uses the constructor and the slots for an Entity to create and store the Entity.
+   * The constructor has to be the actual class of the Entity. In case you would construct the 
+   * Entity manually by writing `new MyEntity(slots)`, then this function has to get `MyEntity` as 
+   * the first parameter
+   * @param EntityConstructor the actual `class` of the Entity stored in this Storage
+   * @param slots that are usually used for the Entity's constructor
+   */
+  protected addWithConstructor(EntityConstructor: new (slots: EntitySlots) => E, slots: EntitySlots) {
     let entity = null;
     try {
       entity = new EntityConstructor(slots);
@@ -24,7 +37,15 @@ export abstract class AbstractStorage<E extends Entity, EntitySlots> {
     }
   }
 
-  protected retrieveAllWithConstructor(EntityConstructor: new (slots: EntitySlots) => E | null){
+  /**
+   * uses the constructor of an Entity to create new Entities from the local stored (stringified) 
+   * Entities.
+   * The constructor has to be the actual class of the Entity. In case you would construct the 
+   * Entity manually by writing `new MyEntity(slots)`, then this function has to get `MyEntity` as 
+   * the first parameter
+   * @param EntityConstructor the actual `class` of the Entity stored in this Storage
+   */
+  protected retrieveAllWithConstructor(EntityConstructor: new (slots: EntitySlots) => E | null) {
     let serialized = "";
     try {
       if (localStorage[this.STORAGE_KEY]) {
@@ -50,6 +71,10 @@ export abstract class AbstractStorage<E extends Entity, EntitySlots> {
 
   abstract update(slots: EntitySlots): void;
 
+  /**
+   * deletes the Entity with the given id (`Entity.id`) from the Storage.
+   * @param id of the Entity
+   */
   destroy(id: string) {
     if (this._instances[id]) {
       console.info(`${this._instances[id].toString()} deleted`);
@@ -63,7 +88,11 @@ export abstract class AbstractStorage<E extends Entity, EntitySlots> {
     }
   }
 
-  persist(){
+  /**
+   * persists the current list of Entities (instances) to the local Storage. the old local storage
+   * will be fully overwritten (deleted Entities will disappear)
+   */
+  persist() {
     var serialized = "";
     var error = false;
     const nmrOfEntities = Object.keys(this._instances).length;

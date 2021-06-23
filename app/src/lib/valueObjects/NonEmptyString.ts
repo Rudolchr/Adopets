@@ -1,6 +1,7 @@
 import { PossibleEmptyString } from './PossibleEmptyString.js';
 import { IntervalCreationOptions } from './ValueObject.js';
 
+/** a String that is definitely a String that is not empty */
 export class NonEmptyString extends PossibleEmptyString {
     protected constructor(value: string) {
         super(value);
@@ -11,7 +12,7 @@ export class NonEmptyString extends PossibleEmptyString {
      * @param errorPrefix to show on error messages
      * @param stringEnum an enum the value has to be in
      * @returns the value if the validation was successful
-     * @throws {@link TypeError} if the constraints are violated
+     * @throws {@link TypeError} if not a string or empty
      */
     public static validate<T extends string>(
         value: T,
@@ -43,7 +44,7 @@ export class NonEmptyString extends PossibleEmptyString {
      * @param errorPrefix to show on error messages
      * @param stringEnum an enum the value has to be in
      * @returns the value if the validation was successful
-     * @throws {@link TypeError} if the constraints are violated
+     * @throws {@link TypeError} if not a string or empty
      * @throws {@link RangeError} if the value is not inside the interval
      */
     public static validateWithInterval<T extends string>(
@@ -80,7 +81,7 @@ export class NonEmptyString extends PossibleEmptyString {
     }
 
     /**
-     * @param values an array of strings to create an array of NonEmptyStrings of
+     * @param values an array of strings to create an array of NonEmptyStrings from
      * @param options for the **individual** creation
      * @returns the array of ValueObjects
      */
