@@ -1,12 +1,11 @@
 /**
  * @author Christian Prinz
  */
-import {Entity} from "../lib/Entity.js";
+import {Entity, EntitySlots} from "../lib/Entity.js";
 import {NonEmptyString} from "../lib/valueObjects/NonEmptyString.js";
 import {PetStorage} from "./PetStorage.js";
 
-export interface PetSlots {
-  petId: number | string;
+export interface PetSlots extends EntitySlots {
   name: string;
 }
 
@@ -20,38 +19,12 @@ export class Pet extends Entity {
   private _name: NonEmptyString;
 
   constructor(slots: PetSlots) {
-    super(PetStorage, slots.petId);
+    super(PetStorage, slots.id);
     this._name = NonEmptyString.create(slots.name, {
       name: "Pet.name",
       min: 0,
       max: 120,
     });
-  }
-
-  // *** petId **************************************************************
-
-  /**
-   * @returns the unique identifier of the pet
-   */
-  get petId(): number {
-    return this.id;
-  }
-
-  /**
-   * checks if the given petId is present, >0 and unique
-   * @param petId
-   */
-  static checkPetId(petId: number | string) {
-    return this.validateUniqueId(PetStorage, petId);
-  }
-
-  /**
-   * sets a new petId
-   * - @private this is just used internally though the id is frozen
-   * @param petId
-   */
-  set petId(petId: number | string) {
-    this.setId(PetStorage, petId);
   }
 
   // *** name ****************************************************************
@@ -69,7 +42,7 @@ export class Pet extends Entity {
    */
   static checkName(name: string) {
     try {
-      NonEmptyString.validateWithInterval(name, 0, 120, "Pet.petId");
+      NonEmptyString.validateWithInterval(name, 0, 120, "Pet.name");
       return "";
     } catch (error) {
       console.error(error);
@@ -92,7 +65,7 @@ export class Pet extends Entity {
     let pet = null;
     try {
       pet = new Pet({
-        petId: slots.petId,
+        id: slots.id,
         name: slots.name,
       });
     } catch (e) {
@@ -109,11 +82,11 @@ export class Pet extends Entity {
    * @override the inherited toJSON()
    */
   toJSON(): PetSlots {
-    return { petId: this.petId, name: this.name };
+    return { id: this.id, name: this.name };
   }
 
   /** @returns the stringified Pet */
   toString() {
-    return `Pet{ id: ${this.petId}, name: ${this.name} }`;
+    return `Pet{ id: ${this.id}, name: ${this.name} }`;
   }
 }

@@ -1,19 +1,25 @@
+/**
+ * @author Christian Prinz
+ */
 import { fillSelectWithOptions } from "../lib/util.js";
 import { PetStorage } from "../m/PetStorage.js";
 const form = document.forms.namedItem("Pet");
 const deleteButton = form['deleteButton'];
 const petSelection = form['petSelection'];
-PetStorage.retrieveAll();
+// load all pets
+await PetStorage.retrieveAll();
+// set up the pet selection list
 fillSelectWithOptions(petSelection, PetStorage.instances, {
-    keyProp: "petId",
+    keyProp: "id",
     displayProp: "name",
 });
+// set an event handler for the delete button
 deleteButton.addEventListener("click", () => {
-    const petId = petSelection.value;
-    if (petId) {
-        PetStorage.destroy(petId);
+    const id = petSelection.value;
+    if (id) {
+        PetStorage.destroy(id);
+        // remove deleted pet from selection
         petSelection.remove(petSelection.selectedIndex);
     }
 });
-window.addEventListener("beforeunload", () => PetStorage.persist());
 //# sourceMappingURL=deletePet.js.map

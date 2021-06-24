@@ -5,7 +5,8 @@
   "main": "app/index.html",
   "scripts": {
     "build": "node node_modules/typescript/bin/tsc",
-    "watch": "node node_modules/typescript/bin/tsc --watch"
+    "watch": "node node_modules/typescript/bin/tsc --watch",
+    "serve": "firebase serve"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "4.24.0",

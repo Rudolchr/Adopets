@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/main.css" />
 
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="js/c/initialize.js"></script>
     <script src="./js/v/createPet.js" type="module"></script>
   </head>
 
@@ -37,11 +40,8 @@
       <div class="wrapper clearfix">
         <form id="Pet">
           <div>
-            <label>ID: <input name="petId" type="number" required /></label>
-          </div>
-          <div>
             <label
-              >Title:
+              >Name:
               <input
                 name="petName"
                 type="text"

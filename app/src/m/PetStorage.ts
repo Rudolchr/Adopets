@@ -5,90 +5,104 @@ import {Pet, PetSlots} from "./Pet.js";
  * internal
  */
 class PetStorageClass extends AbstractStorage<Pet, PetSlots> {
-  /** key for the `localStorage[key]` for the `this.instances` */
+  /** key for the `firestore.collection` for the `this.instances` */
   STORAGE_KEY = "pets";
 
   /**
    * adds a new Pet created from the given `slots` to the collection of `Pet`s
-   * if the slots fulfil their constraints. Does nothing otherwisey
+   * if the slots fulfil their constraints. Does nothing otherwise
    */
-  add(slots: PetSlots) {
+  async add(slots: Omit<PetSlots, 'id'>) {
     // the creation is nearly fully abstracted
-    super.addWithConstructor( Pet, slots);
+    await super.addWithConstructor(Pet, slots);
   }
 
   /**
-   * updates the `Pet` with the corresponding `slots.petId` and overwrites it's `name`
+   * updates the `Pet` with the corresponding `slots.id` and overwrites it's `name`
    */
-  update(slots: PetSlots) {
-    const {petId: petId, name} = slots;
-    var noConstraintViolated = true;
-    var updatedProperties = [];
-    const pet = this._instances[petId];
+  async update(slots: PetSlots) {
+    const {id, name} = slots;
+    const updateSlots: Partial<PetSlots> = {};
+    const pet = this._instances[id];
     const objectBeforeUpdate = pet.toJSON();
+    var noConstraintViolated = true;
 
+    // get the fresh snapshot
+    let entity: Pet;
+    try {
+      entity = await this.retrieve(id);
+    } catch (error) {
+      console.warn("could not retrieve the pet to update");
+      return;
+    }
+
+    // compare props an update instance
     try {
       // update name
-      if (pet.name !== name) {
+      if (entity.name !== name) {
         pet.name = name;
-        updatedProperties.push("name");
+        updateSlots.name = name;
       }
     } catch (e) {
-      console.warn(`${e.constructor.name}: ${e.message}`);
+      console.error("while updating pet property\n" + e);
       noConstraintViolated = false;
       // restore object to its state before updating
-      this._instances[petId] = Pet.deserialize(objectBeforeUpdate)!;
+      this._instances[id] = Pet.deserialize(objectBeforeUpdate)!;
     }
-    if (noConstraintViolated) {
-      if (updatedProperties.length > 0) {
+
+    // update the document in the db
+    if (noConstraintViolated && Object.keys(updateSlots).length > 0) {
+      try {
+        await this.DB.collection(this.STORAGE_KEY).doc(id).update(updateSlots);
         console.info(
-          `Properties ${updatedProperties.toString()} modified for pet ${petId}`,
+          `Properties ${Object.keys(updateSlots)} modified for pet ${id}`,
           pet
         );
-      } else {
-        console.info(`No property value changed for pet ${petId}!`);
+      } catch (error) {
+        console.error("while updating pet entry\n" + error);
+        // restore object to its state before updating
+        this._instances[id] = Pet.deserialize(objectBeforeUpdate)!;
       }
     }
   }
 
-  destroy(petId:string){
+  async destroy(id: string) {
     // The deletion is already fully abstracted
-    super.destroy(petId);
+    super.destroy(id);
   }
 
   /**
-   * loads all stored Pets from the `localStorage`, parses them and stores them
-   * to the `this.instances`
+   * loads a stored Pet from the `firestore`, parses it and stores it to the `this.instances` if 
+   * successful. ***Throws an Error otherwise***
+   * @throws {Error} if no entry found
    */
-  retrieveAll() {
-    super.retrieveAllWithConstructor(Pet);
+  private async retrieve(id: string) {
+    return super.retrieveWithConstructor(Pet, id);
   }
 
-  
+  /**
+   * loads all stored Pets from the `firestore`, parses them and stores them
+   * to the `this.instances`
+   */
+  async retrieveAll() {
+    await super.retrieveAllWithConstructor(Pet);
+  }
+
+  async clear() {
+    await this.retrieveAll();
+    await super.clear();
+  }
+
   /**
    * creates a set of 4 `Pet`s and stores it in the first 4 slots of the `this.instances`
    * - TODO: upgrade to always push new pets (requires ID automation)
    */
-  createTestData() {
+  async createTestData() {
     try {
-      this._instances[0] = new Pet({
-        petId: 0,
-        name: "Hansi",
-      });
-      this._instances[1] = new Pet({
-        petId: 1,
-        name: "Mietzi",
-      });
-      this._instances[2] = new Pet({
-        petId: 2,
-        name: "Hundu",
-      });
-      this._instances[3] = new Pet({
-        petId: 3,
-        name: "Bojack",
-      });
-      this.setNextId(4);
-      this.persist();
+      await this.add({name: "Wolfgang"});
+      await this.add({name: "Hundula"});
+      await this.add({name: "Katzarina"});
+      await this.add({name: "Vogeldemort"});
     } catch (e) {
       console.warn(`${e.constructor.name}: ${e.message}`);
     }
@@ -97,7 +111,7 @@ class PetStorageClass extends AbstractStorage<Pet, PetSlots> {
 
 /**
  * a singleton instance of the `PetStorage`.
- * - provides functions to create, retrieve, update and destroy `Pet`s at the `localStorage`
+ * - provides functions to create, retrieve, update and destroy `Pet`s at the `firestore`
  * - additionally provides auxiliary methods for testing
  */
 export const PetStorage = new PetStorageClass();

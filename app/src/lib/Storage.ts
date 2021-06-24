@@ -1,13 +1,14 @@
-import {Entity} from "./Entity.js";
+import {Entity, EntitySlots} from "./Entity.js";
 
 /**
  * An abstract Storage for Entities. The **Generic** has to be Provided with the stored `Entity` as well 
  * as the `Slots` used for the **constructor** of the Entity.
  */
-export abstract class AbstractStorage<E extends Entity, EntitySlots> {
+export abstract class AbstractStorage<E extends Entity, S extends EntitySlots> {
   protected _instances: {[id: string]: E;} = {};
   protected _nextId: number = -1;
   abstract STORAGE_KEY: string;
+  protected DB = firebase.firestore();
 
   /** @returns a map of the Entities from this Storage */
   get instances(): {readonly [id: string]: E;} {
@@ -22,17 +23,18 @@ export abstract class AbstractStorage<E extends Entity, EntitySlots> {
    * @param EntityConstructor the actual `class` of the Entity stored in this Storage
    * @param slots that are usually used for the Entity's constructor
    */
-  protected addWithConstructor(EntityConstructor: new (slots: EntitySlots) => E, slots: EntitySlots) {
+  protected async addWithConstructor(EntityConstructor: new (slots: S) => E, slots: Omit<S,'id'>) {
     let entity = null;
     try {
-      entity = new EntityConstructor(slots);
+      const collectionRef = this.DB.collection(this.STORAGE_KEY);
+      const newEntity = await collectionRef.add(slots);
+      entity = new EntityConstructor({id: newEntity.id, ...slots} as unknown as S);
     } catch (e) {
       console.warn(`${e.constructor.name}: ${e.message}`);
       entity = null;
     }
     if (entity) {
       this._instances[entity.id] = entity;
-      this.setNextId(entity.id + 1);
       console.info(`${entity.toString()} created`, entity);
     }
   }
@@ -45,27 +47,50 @@ export abstract class AbstractStorage<E extends Entity, EntitySlots> {
    * the first parameter
    * @param EntityConstructor the actual `class` of the Entity stored in this Storage
    */
-  protected retrieveAllWithConstructor(EntityConstructor: new (slots: EntitySlots) => E | null) {
-    let serialized = "";
+  protected async retrieveWithConstructor(EntityConstructor: new (slots: S) => E, id: string): Promise<E> {
+    const docRef = this.DB.collection(this.STORAGE_KEY).doc(id);
+    let doc: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData> | undefined;
     try {
-      if (localStorage[this.STORAGE_KEY]) {
-        serialized = localStorage[this.STORAGE_KEY];
-      }
-    } catch (e) {
-      alert("Error when reading from Local Storage\n" + e);
+      doc = await docRef.get();
+    } catch (firebaseError) {
+      return Promise.reject("Error when reading from firestore\n" + firebaseError);
     }
-    if (serialized && serialized.length > 0) {
-      const entities = JSON.parse(serialized);
-      const keys = Object.keys(entities);
-      console.info(`${keys.length} pets loaded`, entities);
-      for (const key of keys) {
-        const entity = new EntityConstructor(entities[key]);
-        if (entity) {
-          this._instances[key] = entity;
-          // store the current highest id (for receiving the next id later)
-          this.setNextId(Math.max(entity.id + 1, this._nextId));
+    let entity: E | null = null;
+    try {
+      entity = new EntityConstructor({id: doc.id, ...doc.data()} as unknown as S);
+      console.log("loaded", {id: doc.id, ...doc.data()});
+      return Promise.resolve(entity);
+    } catch (constructionError) {
+      return Promise.reject(constructionError);
+    }
+  }
+
+  /**
+   * uses the constructor of an Entity to create new Entities from the local stored (stringified) 
+   * Entities.
+   * The constructor has to be the actual class of the Entity. In case you would construct the 
+   * Entity manually by writing `new MyEntity(slots)`, then this function has to get `MyEntity` as 
+   * the first parameter
+   * @param EntityConstructor the actual `class` of the Entity stored in this Storage
+   */
+  protected async retrieveAllWithConstructor(EntityConstructor: new (slots: S) => E) {
+    let collection: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData> | undefined;
+    try {
+      collection = await this.DB.collection(this.STORAGE_KEY).get();
+    } catch (e) {
+      alert("Error when reading from firestore\n" + e);
+    }
+    if (collection !== undefined && !collection.empty) {
+      console.info(`${collection.size} entities loaded`);
+      collection.docs.forEach(doc => {
+        try {
+          const entity = new EntityConstructor({id: doc.id, ...doc.data()} as unknown as S);
+          console.log("loaded", {id: doc.id, ...doc.data()});
+          this._instances[doc.id] = entity;
+        } catch (error) {
+          console.warn(error);
         }
-      }
+      });
     }
   }
 
@@ -75,12 +100,15 @@ export abstract class AbstractStorage<E extends Entity, EntitySlots> {
    * deletes the Entity with the given id (`Entity.id`) from the Storage.
    * @param id of the Entity
    */
-  destroy(id: string) {
+  async destroy(id: string) {
+    try {
+      await this.DB.collection(this.STORAGE_KEY).doc(id).delete();
+    } catch (e) {
+      console.error(`Error when deleting entity: ${e}`);
+    }
     if (this._instances[id]) {
       console.info(`${this._instances[id].toString()} deleted`);
       delete this._instances[id];
-      // calculate nextId when last id is destroyed
-      id === this._nextId.toString() && this.calculateNextId();
     } else {
       console.info(
         `There is no entity with id ${id} to delete from the database`
@@ -89,33 +117,17 @@ export abstract class AbstractStorage<E extends Entity, EntitySlots> {
   }
 
   /**
-   * persists the current list of Entities (instances) to the local Storage. the old local storage
-   * will be fully overwritten (deleted Entities will disappear)
+   * clears all Entities from the `this.instances` as well as the `firestore`
    */
-  persist() {
-    var serialized = "";
-    var error = false;
-    const nmrOfEntities = Object.keys(this._instances).length;
+  async clear() {
     try {
-      serialized = JSON.stringify(this._instances);
-      localStorage.setItem(this.STORAGE_KEY, serialized);
-    } catch (e) {
-      alert("Error when writing to Local Storage\n" + e);
-    }
-
-    !error && console.info(`${nmrOfEntities} entities saved.`);
-  }
-
-
-  /**
-   * clears all `Movie`s from the `this.instances`
-   */
-  clear() {
-    try {
-      this._instances = {};
-      localStorage[this.STORAGE_KEY] = "{}";
-      this.setNextId(1);
-      console.info("All entities cleared.");
+      if (confirm("Do you really want to delete all book records?")) {
+        // delete all documents
+        await Promise.all(Object.keys(this.instances).map(
+          entityIds => this.DB.collection(this.STORAGE_KEY).doc(entityIds).delete()));
+        this._instances = {};
+        console.info("All entities cleared.");
+      }
     } catch (e) {
       console.warn(`${e.constructor.name}: ${e.message}`);
     }
@@ -126,41 +138,7 @@ export abstract class AbstractStorage<E extends Entity, EntitySlots> {
    * @param id the identifier of the pet to check
    * @returns true if the pet exists in the storage
    */
-  contains(id: number | string) {
-    return Object.keys(this._instances).includes(id.toString());
-  }
-
-  /*****************************************************************************
-   *** ID creation *************************************************************
-   *****************************************************************************/
-
-  /**
-   * calculates the next possible id and stores it internally to `this._nextId`
-   */
-  calculateNextId() {
-    let currentId = -1;
-    for (let key of Object.keys(this._instances)) {
-      const entity = this._instances[key];
-      currentId = Math.max(entity.id, currentId);
-    }
-    this.setNextId(currentId + 1);
-  }
-
-  /**
-   * looks up the current highest identifier and returns the following identifier to use for
-   * a possible `Pet` to add next.
-   * @returns the next identifier to use
-   */
-  nextId() {
-    // calculate the missing id if not already done
-    if (this._nextId < 0) {
-      this.calculateNextId();
-    }
-
-    return this._nextId;
-  }
-
-  protected setNextId(id: number) {
-    this._nextId = id;
+  contains(id: string) {
+    return Object.keys(this._instances).includes(id);
   }
 }

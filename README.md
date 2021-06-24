@@ -147,15 +147,18 @@ Further this is a NodeJS project meaning that the following steps have to be ful
 
 1. install `NodeJS` and `npm` ([Install instructions](www.fosstechnix.com/how-to-install-node-js-on-windows/))
 2. run `$ npm i` in a terminal within the root directory to install the node dependencies
+3. install the firebase-tools globally with `$ npm i -g firebase-tools`
+4. log into firebase with `$ firebase login` with the account that is registered at the firebase project related to this repo
 
 After that the project can be edited as following:
 
-- Typescript files will be edited in `./src/`
-- HTML / CSS is edited in `./app/`
-- The folder `./app/src/` should not be edited though there are the compiled JavaScript files, that will be overwritten after the building process.
+- Editable files are in `./app/src/` except ... 
+- The folder `./app/js/` should not be edited though there are the compiled JavaScript files, that will be overwritten after the building process.
 
 ## run
-To run the project just open a terminal in the root folder and run `$ npm run watch` to start the watcher which compiles the edited Typescript code on save, or run `$ npm build` to compile the code once. After that just open the `./app/index.html` in the firefox development browser.
+To run the project just open a terminal in the root folder and run `$ npm run watch` to start the watcher which compiles the edited Typescript code on save, or run `$ npm build` to compile the code once. 
+- After that just open the `./app/index.html` in the firefox development browser.
+- Alternatively run `$ npm run serve` to run a local firebase server in your common browser (recommended)
 
 ## debug
 To debug the code either use the dev tools from the firefox browser.

@@ -8,6 +8,7 @@
         "redhat.vscode-xml",
         "firefox-devtools.vscode-firefox-debug",
         "esbenp.prettier-vscode",
-        "dominicvonk.parameter-hints"
+        "dominicvonk.parameter-hints",
+        "toba.vsfire"
     ]
 }

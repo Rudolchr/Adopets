@@ -8,14 +8,13 @@ import {PetStorage} from "../m/PetStorage.js";
 const form = document.forms.namedItem("Pet")!;
 
 // load all pets
-PetStorage.retrieveAll();
+await PetStorage.retrieveAll();
 
 /*****************************************************************************
- * ### NAME_ID
- * ! The petId just has an Output on `update` because it is immutable.
+ * ### Pet_ID
  * Though there is no check needed
  */
-const petIdOutput: HTMLOutputElement = form["petId"];
+const idOutput: HTMLOutputElement = form["petId"];
 
 /*****************************************************************************
  * ### NAME
@@ -35,7 +34,7 @@ nameInput.addEventListener("input", () => {
  */
 const petSelection: HTMLSelectElement = form['petSelection'];
 fillSelectWithOptions(petSelection, PetStorage.instances, {
-  keyProp: "petId",
+  keyProp: "id",
   displayProp: "name",
 });
 
@@ -46,7 +45,7 @@ petSelection.addEventListener("change", () => {
   // fill the form with the pet's data
   if (petKey) {
     const pet = PetStorage.instances[petKey];
-    petIdOutput.value = petKey;
+    idOutput.value = petKey;
     nameInput.value = pet.name;
   } else {
     form.reset();
@@ -63,7 +62,7 @@ const saveButton: HTMLButtonElement = form["saveButton"];
 // event handler for save button
 saveButton.addEventListener("click", () => {
   const slots: PetSlots = {
-    petId: petSelection.value,
+    id: petSelection.value,
     name: nameInput.value,
   };
 
@@ -76,7 +75,7 @@ saveButton.addEventListener("click", () => {
 
   // save the input date only if all of the form fields are valid
   if (form.checkValidity()) {
-    // @ts-ignore
+    // @ts-ignore TODO
     PetStorage.update(slots);
 
     // update the selection list option element
@@ -89,6 +88,3 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   form.reset();
 });
-
-// set an event handler for the event when the browser window / tab is closed
-window.addEventListener("beforeunload", () => PetStorage.persist());
