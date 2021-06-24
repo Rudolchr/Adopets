@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Adopets</title>
+    <meta name="description" content="Adopets" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <link rel="icon" href="assets/favicon.svg" />
+    <link rel="mask-icon" href="assets/mask-icon.svg" color="#000000" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/manifest.json" />
+
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/main.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="js/c/initialize.js"></script>
+    <script type="module">
+      // the .mjs file types were working but linted by my ESLint configuration.
+      import { PetStorage } from "./js/m/PetStorage.js";
+      const clearButton = document.getElementById("clearData");
+      const createTestDataButton = document.getElementById("createTestData");
+
+      // set event handlers for the buttons
+      clearButton.addEventListener("click", async function () {
+        await PetStorage.clear();
+      });
+      createTestDataButton.addEventListener("click", async function () {
+        await PetStorage.createTestData();
+      });
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrapper clearfix">
+        <div class="title">
+          <h1>Adopets</h1>
+          <h2>Give home to pets</h2>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="createPet.html">C</a></li>
+            <li><a href="retrieveAndListAllPets.html">R</a></li>
+            <li><a href="updatePet.html">U</a></li>
+            <li><a href="deletePet.html">D</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper clearfix">
+        <p>This app supports the following operations:</p>
+        <div class="two-col-menu">
+          <menu class="crud">
+            <li><a href="createPet.html">Add a new pet</a></li>
+            <li><a href="retrieveAndListAllPets.html">List all pets</a></li>
+            <li><a href="updatePet.html">Update a pet</a></li>
+            <li><a href="deletePet.html">Delete a pet</a></li>
+          </menu>
+          <menu>
+            <li>
+              <button type="button" id="clearData">Clear database</button>
+            </li>
+            <li>
+              <button type="button" id="createTestData">
+                Create test data
+              </button>
+            </li>
+          </menu>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="foot-content wrapper">Oha Typescript + firebase</div>
+    </footer>
+  </body>
+</html>
