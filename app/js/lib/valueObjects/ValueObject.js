@@ -21,7 +21,7 @@ export class ValueObject {
     /**
      * this function is invoked by `JSON.stringify()` and converts the inner `"_propertyKey"` to `"propertyKey"`
      * "Gesamtkonto {NonEmptyString}"
-     * @returns {{}} the JSON object of the pet
+     * @returns {{}} the value
      */
     toJSON() {
         return this._value;

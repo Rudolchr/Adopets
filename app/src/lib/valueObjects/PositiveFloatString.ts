@@ -1,5 +1,5 @@
-import {PositiveNumber} from './PositiveNumber.js';
-import {IntervalCreationOptions, ValueObject} from './ValueObject.js';
+import { PositiveNumber } from './PositiveNumber.js';
+import { IntervalCreationOptions, ValueObject } from './ValueObject.js';
 
 /** a float that is greater than 0 an can be created from a (valid) string as well as a number */
 export class PositiveFloatString extends ValueObject<number> {
@@ -9,65 +9,42 @@ export class PositiveFloatString extends ValueObject<number> {
 
     /**
      * @param value to be validated
-     * @param errorPrefix to show on error messages
-     * @returns the parsed value if the validation was successful
-     * @throws {@link TypeError} if not a parsable number
+     * @returns the value if the validation was successful
+     * @throws {@link TypeError} if not a positive number
+     * @throws {@link RangeError} if the value is not inside the interval
      */
-    public static validateString(value: number | string, errorPrefix: string) {
+    public static validate(value: number | string, options?: IntervalCreationOptions) {
+        let transformed: number;
+
+        // string
         if (typeof value !== 'number') {
             if (isNaN(this.parse(value))) {
                 throw new TypeError(
-                    errorPrefix +
-                    `PositiveFloatString => the given value (${value}: ${typeof value}) has to be a number or a string representing a number!`
+                    this.pm(options?.name) +
+                        `PositiveFloatString => the given value (${value}: ${typeof value}) has to be a number or a string representing a number!`
                 );
             }
 
-            return this.parse(value);
+            transformed = this.parse(value);
         } else {
-            return value;
+            transformed = value;
         }
+
+        // type + interval
+        return PositiveNumber.validate(transformed, options);
     }
 
     /**
-     * @param value to be validated
-     * @param errorPrefix to show on error messages
-     * @returns the parsed value if the validation was successful
-     * @throws {@link TypeError} if not a positive number (representing string)
-     */
-    public static validate(value: number | string, errorPrefix: string) {
-        return PositiveNumber.validate(this.validateString(value, errorPrefix), errorPrefix);
-    }
-
-    /**
-     * @param value to be validated
-     * @param min the lower (inclusive) bound the value must take
-     * @param max the upper (inclusive) bound the value must take
-     * @param errorPrefix to show on error messages
-     * @returns the value if the validation was successful
-     * @throws {@link TypeError} if not a positive number (representing string)
-     * @throws {@link RangeError} if the value is not inside the interval
-     */
-    public static validateWithInterval(value: number | string, min: number, max: number, errorPrefix: string) {
-        return PositiveNumber.validateWithInterval(this.validateString(value, errorPrefix), min, max, errorPrefix);
-    }
-
-    /**
-     * @param value to create a PositiveFloatString from
+     * @param value to create a PositiveIntegerString from
      * @param options for the creation
      * @returns the created ValueObject
      */
     public static create(value: number | string, options?: IntervalCreationOptions) {
-        if (options && options.min !== undefined && options.max !== undefined) {
-            return new PositiveFloatString(
-                this.validateWithInterval(value, options.min, options.max, this.pm(options.name))
-            );
-        } else {
-            return new PositiveFloatString(this.validate(value, this.pm(options?.name)));
-        }
+        return new PositiveFloatString(this.validate(value, options));
     }
 
     /**
-     * @param values an array of numbers / strings to create an array of PositiveFloatString from
+     * @param values an array of strings to map to an array of ValueObjects
      * @param options for the **individual** creation
      * @returns the array of ValueObjects
      */
@@ -76,8 +53,8 @@ export class PositiveFloatString extends ValueObject<number> {
     }
 
     /**
-     * @param values an array of PositiveFloatString to convert to an array of numbers
-     * @returns the array of numbers
+     * @param values an array of ValueObjects to map to an array of their values
+     * @returns the array of values
      */
     public static toList(values: PositiveFloatString[]) {
         return values.map((nes) => nes.value);

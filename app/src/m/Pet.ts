@@ -42,7 +42,7 @@ export class Pet extends Entity {
    */
   static checkName(name: string) {
     try {
-      NonEmptyString.validateWithInterval(name, 0, 120, "Pet.name");
+      NonEmptyString.validate(name, {name: 'Pet.name', min: 0, max: 120});
       return "";
     } catch (error) {
       console.error(error);
@@ -52,7 +52,11 @@ export class Pet extends Entity {
 
   /** @param name - the new name to set */
   set name(name) {
-    this._name = NonEmptyString.create(name);
+    this._name = NonEmptyString.create(name, {
+      name: "Pet.name",
+      min: 0,
+      max: 120,
+    });
   }
 
   // *** serialization ********************************************************
