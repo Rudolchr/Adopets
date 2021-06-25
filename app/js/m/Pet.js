@@ -38,7 +38,7 @@ export class Pet extends Entity {
         }
         catch (error) {
             console.error(error);
-            return "The pet's name must not be empty or larger than 120 letters";
+            return "The pet's name must not be empty or larger than 120 letters!";
         }
     }
     /** @param name - the new name to set */
