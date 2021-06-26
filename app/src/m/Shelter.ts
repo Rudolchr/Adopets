@@ -1,46 +1,55 @@
 /**
  * @author Max Bergmann
  */
-import { Entity } from "../lib/Entity.js";
+import { Entity, EntitySlots } from "../lib/Entity.js";
 import { NonEmptyString } from "../lib/valueObjects/NonEmptyString.js";
 import { ShelterStorage } from "./ShelterStorage.js";
+
+export interface ShelterSlots extends EntitySlots {
+    name: string;
+}
 
 export class Shelter extends Entity{
     /** the name of the shelter
      * - requires NonEmptyString(120)
      */
-    _name;
+    private _name: NonEmptyString;
     /** the address of the shelter
      * - requires AddressFormat(street, number, city) TODO
      */
-    _address;
+    private _address;
     /** the phone number of the shelter 
      * - requires PhoneFormat(15 numbers) TODO
      */
-    _phone;
+    private _phone;
     /** the email address of the shelter
      * - requires EmailFormat TODO
      */
-    _email;
+    private _email;
     /** the office hours of the shelter
      * TODO: requirement
      */
-    _officeHours;
+    private _officeHours;
     /**
      * optional description of the shelter (max. 500 letters)
      */
-    _description;
+    private _description;
     /** 
      * list of pett IDs of pets assigned to this shelter
      */
-    _pets;
+    private _pets;
     /**
      * list of contact messages TODO
      */
-    _messages;
+    private _messages;
 
-    constructor(slots) {
+    constructor(slots: ShelterSlots) {
         super(ShelterStorage, slots.id);
+        this._name = NonEmptyString.create(slots.name, {
+            name: "Shelter.name",
+            min: 0,
+            max: 120,
+        });
         // TODO: set the shelter attributes from slots with given helper functions
     }
 
