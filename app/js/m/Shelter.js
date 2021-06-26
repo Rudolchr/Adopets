@@ -4,9 +4,9 @@
 import { Entity } from "../lib/Entity.js";
 import { NonEmptyString } from "../lib/valueObjects/NonEmptyString.js";
 import { ShelterStorage } from "./ShelterStorage.js";
-import { PositiveNumber } from "../lib/valueObjects/PositiveNumber.js";
 import { PhoneNumber } from "../lib/valueObjects/composed/PhoneNumber.js";
 import { Address } from "../lib/valueObjects/composed/Address.js";
+import { EmailAddress } from "../lib/valueObjects/composed/EmailAddress.js";
 export class Shelter extends Entity {
     /** the name of the shelter
      * - requires NonEmptyString(120)
@@ -50,11 +50,7 @@ export class Shelter extends Entity {
         });
         this._address = new Address(slots.address);
         this._phone = PhoneNumber.create(slots.phone, { name: "Shelter.phone" });
-        this._email = NonEmptyString.create(slots.email, {
-            name: "Shelter.email",
-            min: 0,
-            max: 120,
-        });
+        this._email = EmailAddress.create(slots.email, { name: "Shelter.email" });
         this._officeHours = slots.officeHours;
         this._description = slots.description;
     }
@@ -100,9 +96,9 @@ export class Shelter extends Entity {
      */
     static checkAddress(address) {
         try {
-            NonEmptyString.validate(address.street, { name: "Address.street", max: 120 });
-            NonEmptyString.validate(address.city, { name: "Address.city", max: 120 });
-            PositiveNumber.validate(address.number, { name: "Address.number" });
+            Address.checkStreet(address.street);
+            Address.checkCity(address.city);
+            Address.checkNumber(address.number);
             return "";
         }
         catch (error) {
@@ -142,7 +138,7 @@ export class Shelter extends Entity {
     }
     /** @param email - email address of shelter to set */
     set email(email) {
-        this._email = NonEmptyString.create(email);
+        this._email = EmailAddress.create(email, { name: "Shelter.email" });
     }
     /**
      * checks if the given email address is legit ([number,letters,sybols]@[letters].[letters])
@@ -152,12 +148,7 @@ export class Shelter extends Entity {
      */
     static checkEmail(email) {
         try {
-            NonEmptyString.validate(email, { name: "Shelter.email", max: 120 });
-            let regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if (!regex.test(email)) {
-                throw new RangeError("Shelter.email" +
-                    `emailFormat => the given email (${email}) does not match the RFC 5322 standard!`);
-            }
+            EmailAddress.validate(email, { name: "Shelter.email" });
             return "";
         }
         catch (error) {

@@ -9,6 +9,7 @@ export class NonEmptyString extends ValueObject {
      * @returns the value if the validation was successful
      * @throws {@link TypeError} if not a string or empty
      * @throws {@link TypeError} if doesn't fit the given enum
+     * @throws {@link RangeError} if the value is not matching the regex
      * @throws {@link RangeError} if the value is not inside the interval
      */
     static validate(value, options) {
@@ -27,6 +28,11 @@ export class NonEmptyString extends ValueObject {
             if ((options.min && value.length < options.min) || (options.max && value.length > options.max)) {
                 throw new RangeError(this.pm(options.name) +
                     `NonEmptyString => the given string's length (${value}) must be in the interval [${options.min ?? 1}, ${options.max ?? Number.MAX_VALUE}]!`);
+            }
+            // regex
+            if (options.regex && !options.regex.test(value)) {
+                throw new RangeError(this.pm(options.name) +
+                    `NonEmptyString => the given value (${value}: ${typeof value}) does not match the RFC 5322 standard!`);
             }
         }
         return value;

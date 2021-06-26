@@ -1,4 +1,5 @@
-import { IntervalCreationOptions, ValueObject } from './ValueObject.js';
+import {OptionalStringOptions} from './OptionalString.js';
+import {ValueObject} from './ValueObject.js';
 
 /** a String that is definitely a String that is not empty */
 export class NonEmptyString extends ValueObject<string> {
@@ -11,6 +12,7 @@ export class NonEmptyString extends ValueObject<string> {
      * @returns the value if the validation was successful
      * @throws {@link TypeError} if not a string or empty
      * @throws {@link TypeError} if doesn't fit the given enum
+     * @throws {@link RangeError} if the value is not matching the regex
      * @throws {@link RangeError} if the value is not inside the interval
      */
     public static validate<T extends string>(value: T, options?: NonEmptyStringOptions<T>) {
@@ -18,7 +20,7 @@ export class NonEmptyString extends ValueObject<string> {
         if (!value || typeof value !== 'string' || value === '') {
             throw new TypeError(
                 this.pm(options?.name) +
-                    `NonEmptyString => the given value (${value}: ${typeof value}) has to be a string with length > 0!`
+                `NonEmptyString => the given value (${value}: ${typeof value}) has to be a string with length > 0!`
             );
         }
 
@@ -27,9 +29,9 @@ export class NonEmptyString extends ValueObject<string> {
             if (options.stringEnum && !Object.values(options.stringEnum).includes(value)) {
                 throw new TypeError(
                     this.pm(options.name) +
-                        `NonEmptyString => the given value (${value}: ${typeof value}) is not in the stringEnum ${JSON.stringify(
-                            options?.stringEnum
-                        )}`
+                    `NonEmptyString => the given value (${value}: ${typeof value}) is not in the stringEnum ${JSON.stringify(
+                        options?.stringEnum
+                    )}`
                 );
             }
 
@@ -37,9 +39,15 @@ export class NonEmptyString extends ValueObject<string> {
             if ((options.min && value.length < options.min) || (options.max && value.length > options.max)) {
                 throw new RangeError(
                     this.pm(options.name) +
-                        `NonEmptyString => the given string's length (${value}) must be in the interval [${
-                            options.min ?? 1
-                        }, ${options.max ?? Number.MAX_VALUE}]!`
+                    `NonEmptyString => the given string's length (${value}) must be in the interval [${options.min ?? 1
+                    }, ${options.max ?? Number.MAX_VALUE}]!`
+                );
+            }
+
+            // regex
+            if (options.regex && !options.regex.test(value)) {
+                throw new RangeError(this.pm(options.name) +
+                    `NonEmptyString => the given value (${value}: ${typeof value}) does not match the RFC 5322 standard!`
                 );
             }
         }
@@ -74,7 +82,7 @@ export class NonEmptyString extends ValueObject<string> {
     }
 }
 
-export interface NonEmptyStringOptions<T extends string> extends IntervalCreationOptions {
+export interface NonEmptyStringOptions<T extends string> extends OptionalStringOptions {
     /**
      * an Enumeration containing all possible values, the given value can take.
      * String enums must be structured like this:

@@ -9,6 +9,7 @@ export class OptionalString extends ValueObject {
      * @returns the value if the validation was successful
      * @throws {@link TypeError} if not a string (when defined)
      * @throws {@link TypeError} if doesn't fit the given enum (when defined)
+     * @throws {@link RangeError} if the value is not matching the regex (when defined)
      * @throws {@link RangeError} if the value is not inside the interval (when defined)
      */
     static validate(value, options) {
@@ -16,11 +17,16 @@ export class OptionalString extends ValueObject {
         if (typeof value !== 'string') {
             throw new TypeError(this.pm(options?.name) + `String => the given value (${value}: ${typeof value}) has to be a string!`);
         }
-        // interval
         if (value.length > 0 && options) {
+            // interval
             if ((options.min && value.length < options.min) || (options.max && value.length > options.max)) {
                 throw new RangeError(this.pm(options.name) +
                     `String => the given string's length (${value}) must be in the interval [${options.min ?? 1}, ${options.max ?? Number.MAX_VALUE}]!`);
+            }
+            // regex
+            if (options.regex && !options.regex.test(value)) {
+                throw new RangeError(this.pm(options.name) +
+                    `String => the given value (${value}: ${typeof value}) does not match the regular expression!`);
             }
         }
         return value;

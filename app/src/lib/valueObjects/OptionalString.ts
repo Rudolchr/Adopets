@@ -1,4 +1,4 @@
-import { IntervalCreationOptions, ValueObject } from './ValueObject.js';
+import {IntervalCreationOptions, ValueObject} from './ValueObject.js';
 
 /** a String that can (by creation) be either `"" | undefined` as well as a conventional string */
 export class OptionalString extends ValueObject<string> {
@@ -11,9 +11,10 @@ export class OptionalString extends ValueObject<string> {
      * @returns the value if the validation was successful
      * @throws {@link TypeError} if not a string (when defined)
      * @throws {@link TypeError} if doesn't fit the given enum (when defined)
+     * @throws {@link RangeError} if the value is not matching the regex (when defined)
      * @throws {@link RangeError} if the value is not inside the interval (when defined)
      */
-    public static validate(value: string, options?: IntervalCreationOptions) {
+    public static validate(value: string, options?: OptionalStringOptions) {
         // type
         if (typeof value !== 'string') {
             throw new TypeError(
@@ -21,14 +22,20 @@ export class OptionalString extends ValueObject<string> {
             );
         }
 
-        // interval
         if (value.length > 0 && options) {
+            // interval
             if ((options.min && value.length < options.min) || (options.max && value.length > options.max)) {
                 throw new RangeError(
                     this.pm(options.name) +
-                        `String => the given string's length (${value}) must be in the interval [${options.min ?? 1}, ${
-                            options.max ?? Number.MAX_VALUE
-                        }]!`
+                    `String => the given string's length (${value}) must be in the interval [${options.min ?? 1}, ${options.max ?? Number.MAX_VALUE
+                    }]!`
+                );
+            }
+
+            // regex
+            if (options.regex && !options.regex.test(value)) {
+                throw new RangeError(this.pm(options.name) +
+                    `String => the given value (${value}: ${typeof value}) does not match the regular expression!`
                 );
             }
         }
@@ -41,7 +48,7 @@ export class OptionalString extends ValueObject<string> {
      * @param options for the creation
      * @returns the created ValueObject
      */
-    public static create(value: string | undefined, options?: IntervalCreationOptions) {
+    public static create(value: string | undefined, options?: OptionalStringOptions) {
         return new OptionalString(this.validate(value ?? '', options));
     }
 
@@ -50,7 +57,7 @@ export class OptionalString extends ValueObject<string> {
      * @param options for the **individual** creation
      * @returns the array of ValueObjects
      */
-    public static fromList(values: string[], options?: IntervalCreationOptions) {
+    public static fromList(values: string[], options?: OptionalStringOptions) {
         return values.map((val) => this.create(val, options));
     }
 
@@ -61,4 +68,9 @@ export class OptionalString extends ValueObject<string> {
     public static toList(values: OptionalString[]) {
         return values.map((pes) => pes.value);
     }
+}
+
+export interface OptionalStringOptions extends IntervalCreationOptions {
+    /** a regular expression the given value must match against */
+    regex?: RegExp;
 }

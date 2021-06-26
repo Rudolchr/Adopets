@@ -4,11 +4,8 @@ export class PhoneNumber extends NonEmptyString {
         super(value);
     }
     static validate(value, options) {
-        NonEmptyString.validate(value, { name: options?.name ?? 'PhoneNumber', min: 8, max: 30 });
         let regex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
-        if (!regex.test(value)) {
-            throw new RangeError(`PhoneNumber => the given phone number (${value}) must start with + and one digit followed by max. 15 digits separated by max. 1 space!`);
-        }
+        NonEmptyString.validate(value, { name: options?.name ?? 'PhoneNumber', min: 8, max: 30, regex });
         return value;
     }
     /**
