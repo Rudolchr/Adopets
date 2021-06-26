@@ -27,7 +27,7 @@ export class Entity {
             if (storage.contains(id)) {
                 return "This ID is already taken";
             }
-            NonEmptyString.validate(id, 'Entity.id');
+            NonEmptyString.validate(id, { name: 'Entity.id' });
             return "";
         }
         catch (error) {

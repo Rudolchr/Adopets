@@ -1,6 +1,6 @@
 import { CreationOptions, ValueObject } from './ValueObject.js';
 
-/** a Date that is definitely a Date that can be created from either a Date or a string that 
+/** a Date that is definitely a Date that can be created from either a Date or a string that
  * represents a Date or a number that represents the Time in ms */
 export class SafeDate extends ValueObject<Date> {
     protected constructor(value: Date) {
@@ -13,63 +13,59 @@ export class SafeDate extends ValueObject<Date> {
      * @returns the value if the validation was successful
      * @throws {@link TypeError} if not parsable to a valid Date
      */
-    public static validate(value: Dateable, errorPrefix: string) {
+    public static validate(value: Dateable, options?: DateCreationOptions) {
+        // safe date
+        let safeDate: Date;
         if (typeof value === 'string' || typeof value === 'number') {
             if (typeof value === 'string' ? isNaN(Date.parse(value)) : isNaN(value)) {
                 throw new TypeError(
-                    errorPrefix + `SafeDate => the given (${value}: ${typeof value}) is not parsable!`
+                    this.pm(options?.name) + `SafeDate => the given (${value}: ${typeof value}) is not parsable!`
                 );
             } else {
-                return new Date(value);
+                safeDate = new Date(value);
             }
         } else if (!(value instanceof Date)) {
             throw new TypeError(
-                errorPrefix +
+                this.pm(options?.name) +
                     `SafeDate => the given (${value}: ${typeof value}) is whether a Date nor a string | number!`
             );
         } else {
-            return value;
+            safeDate = value;
         }
+
+        if (options) {
+            // interval
+            const safeMin =
+                options.min !== undefined ? this.validate(options.min, { name: options.name + '.min' }) : undefined;
+            const safeMax =
+                options.max !== undefined ? this.validate(options.max, { name: options.name + '.max' }) : undefined;
+            if (
+                (safeMin && safeDate.getTime() < safeMin.getTime()) ||
+                (safeMax && safeDate.getTime() > safeMax.getTime())
+            ) {
+                throw new RangeError(
+                    this.pm(options.name) +
+                        `SafeDate => the given Date (${safeDate}) must be in the interval [${safeMin ?? '*'}, ${
+                            safeMax ?? '*'
+                        }]!`
+                );
+            }
+        }
+
+        return safeDate;
     }
 
     /**
-     * @param value to be validated
-     * @param min the (inclusive) minimum Date the value can be
-     * @param max the (inclusive) maximum Date the value can be
-     * @param errorPrefix to show on error messages
-     * @returns the value if the validation was successful
-     * @throws {@link TypeError} if any of the Dates is not parsable
-     * @throws {@link RangeError} if the value is not inside the interval
-     */
-    public static validateWithInterval(value: Dateable, min: Dateable, max: Dateable, errorPrefix: string) {
-        const safeValue = this.validate(value, errorPrefix);
-        const safeMin = this.validate(min, errorPrefix + '.min');
-        const safeMax = this.validate(max, errorPrefix + '.max');
-        if (safeValue.getTime() < safeMin.getTime() || safeValue.getTime() > safeMax.getTime()) {
-            throw new RangeError(
-                errorPrefix +
-                    `SafeDate => the given Date (${safeValue}) must be in the interval [${safeMin}, ${safeMax}]!`
-            );
-        }
-
-        return safeValue;
-    }
-
-    /**
-     * @param value to create a SafeDate of
+     * @param value to create a PositiveIntegerString from
      * @param options for the creation
      * @returns the created ValueObject
      */
     public static create(value: Dateable, options?: DateCreationOptions) {
-        if (options && options.min !== undefined && options.max !== undefined) {
-            return new SafeDate(this.validateWithInterval(value, options.min, options.max, this.pm(options.name)));
-        } else {
-            return new SafeDate(this.validate(value, this.pm(options?.name)));
-        }
+        return new SafeDate(this.validate(value, options));
     }
 
     /**
-     * @param values an array of parsable Dates to create an array of SafeDates from
+     * @param values an array of strings to map to an array of ValueObjects
      * @param options for the **individual** creation
      * @returns the array of ValueObjects
      */
@@ -78,8 +74,8 @@ export class SafeDate extends ValueObject<Date> {
     }
 
     /**
-     * @param values an array of SafeDates to convert to an array of Dates
-     * @returns the array of strings
+     * @param values an array of ValueObjects to map to an array of their values
+     * @returns the array of values
      */
     public static toList(values: SafeDate[]) {
         return values.map((pi) => pi.value);

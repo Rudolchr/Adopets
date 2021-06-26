@@ -11,57 +11,46 @@ export class SafeDate extends ValueObject {
      * @returns the value if the validation was successful
      * @throws {@link TypeError} if not parsable to a valid Date
      */
-    static validate(value, errorPrefix) {
+    static validate(value, options) {
+        // safe date
+        let safeDate;
         if (typeof value === 'string' || typeof value === 'number') {
             if (typeof value === 'string' ? isNaN(Date.parse(value)) : isNaN(value)) {
-                throw new TypeError(errorPrefix + `SafeDate => the given (${value}: ${typeof value}) is not parsable!`);
+                throw new TypeError(this.pm(options?.name) + `SafeDate => the given (${value}: ${typeof value}) is not parsable!`);
             }
             else {
-                return new Date(value);
+                safeDate = new Date(value);
             }
         }
         else if (!(value instanceof Date)) {
-            throw new TypeError(errorPrefix +
+            throw new TypeError(this.pm(options?.name) +
                 `SafeDate => the given (${value}: ${typeof value}) is whether a Date nor a string | number!`);
         }
         else {
-            return value;
+            safeDate = value;
         }
+        if (options) {
+            // interval
+            const safeMin = options.min !== undefined ? this.validate(options.min, { name: options.name + '.min' }) : undefined;
+            const safeMax = options.max !== undefined ? this.validate(options.max, { name: options.name + '.max' }) : undefined;
+            if ((safeMin && safeDate.getTime() < safeMin.getTime()) ||
+                (safeMax && safeDate.getTime() > safeMax.getTime())) {
+                throw new RangeError(this.pm(options.name) +
+                    `SafeDate => the given Date (${safeDate}) must be in the interval [${safeMin ?? '*'}, ${safeMax ?? '*'}]!`);
+            }
+        }
+        return safeDate;
     }
     /**
-     * @param value to be validated
-     * @param min the (inclusive) minimum Date the value can be
-     * @param max the (inclusive) maximum Date the value can be
-     * @param errorPrefix to show on error messages
-     * @returns the value if the validation was successful
-     * @throws {@link TypeError} if any of the Dates is not parsable
-     * @throws {@link RangeError} if the value is not inside the interval
-     */
-    static validateWithInterval(value, min, max, errorPrefix) {
-        const safeValue = this.validate(value, errorPrefix);
-        const safeMin = this.validate(min, errorPrefix + '.min');
-        const safeMax = this.validate(max, errorPrefix + '.max');
-        if (safeValue.getTime() < safeMin.getTime() || safeValue.getTime() > safeMax.getTime()) {
-            throw new RangeError(errorPrefix +
-                `SafeDate => the given Date (${safeValue}) must be in the interval [${safeMin}, ${safeMax}]!`);
-        }
-        return safeValue;
-    }
-    /**
-     * @param value to create a SafeDate of
+     * @param value to create a PositiveIntegerString from
      * @param options for the creation
      * @returns the created ValueObject
      */
     static create(value, options) {
-        if (options && options.min !== undefined && options.max !== undefined) {
-            return new SafeDate(this.validateWithInterval(value, options.min, options.max, this.pm(options.name)));
-        }
-        else {
-            return new SafeDate(this.validate(value, this.pm(options?.name)));
-        }
+        return new SafeDate(this.validate(value, options));
     }
     /**
-     * @param values an array of parsable Dates to create an array of SafeDates from
+     * @param values an array of strings to map to an array of ValueObjects
      * @param options for the **individual** creation
      * @returns the array of ValueObjects
      */
@@ -69,8 +58,8 @@ export class SafeDate extends ValueObject {
         return values.map((val) => this.create(val, options));
     }
     /**
-     * @param values an array of SafeDates to convert to an array of Dates
-     * @returns the array of strings
+     * @param values an array of ValueObjects to map to an array of their values
+     * @returns the array of values
      */
     static toList(values) {
         return values.map((pi) => pi.value);

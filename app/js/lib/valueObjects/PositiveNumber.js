@@ -6,47 +6,35 @@ export class PositiveNumber extends ValueObject {
     }
     /**
      * @param value to be validated
-     * @param errorPrefix to show on error messages
-     * @returns the parsed value if the validation was successful
-     * @throws {@link TypeError} if not a positive number
-     */
-    static validate(value, errorPrefix) {
-        if (typeof value !== 'number' || value < 0) {
-            throw new TypeError(errorPrefix + `PositiveNumber => the given value (${value}: ${typeof value}) has to be a number >= 0!`);
-        }
-        return value;
-    }
-    /**
-     * @param value to be validated
-     * @param min the lower (inclusive) bound the value must take
-     * @param max the upper (inclusive) bound the value must take
-     * @param errorPrefix to show on error messages
      * @returns the value if the validation was successful
-     * @throws {@link TypeError} if not a positive number (representing string)
+     * @throws {@link TypeError} if not a positive number
      * @throws {@link RangeError} if the value is not inside the interval
      */
-    static validateWithInterval(value, min, max, errorPrefix) {
-        this.validate(value, errorPrefix);
-        if (value < min || value > max) {
-            throw new RangeError(errorPrefix + `PositiveNumber => the given value (${value}) must be in the interval [${min}, ${max}]!`);
+    static validate(value, options) {
+        // type
+        if (typeof value !== 'number' || value < 0) {
+            throw new TypeError(this.pm(options?.name) +
+                `PositiveNumber => the given value (${value}: ${typeof value}) has to be a number >= 0!`);
+        }
+        if (options) {
+            // interval
+            if ((options.min && value < options.min) || (options.max && value > options.max)) {
+                throw new RangeError(this.pm(options.name) +
+                    `PositiveNumber => the given value (${value}) must be in the interval [${options.min}, ${options.max}]!`);
+            }
         }
         return value;
     }
     /**
-     * @param value to create a PositiveNumber from
+     * @param value to create the ValueObject of
      * @param options for the creation
      * @returns the created ValueObject
      */
     static create(value, options) {
-        if (options && options.min !== undefined && options.max !== undefined) {
-            return new PositiveNumber(this.validateWithInterval(value, options.min, options.max, this.pm(options.name)));
-        }
-        else {
-            return new PositiveNumber(this.validate(value, this.pm(options?.name)));
-        }
+        return new PositiveNumber(this.validate(value, options));
     }
     /**
-     * @param values an array of numbers to create an array of PositiveNumber of
+     * @param values an array of strings to map to an array of ValueObjects
      * @param options for the **individual** creation
      * @returns the array of ValueObjects
      */
@@ -54,8 +42,8 @@ export class PositiveNumber extends ValueObject {
         return values.map((val) => this.create(val, options));
     }
     /**
-     * @param values an array of PositiveNumber to convert to an array of numbers
-     * @returns the array of numbers
+     * @param values an array of ValueObjects to map to an array of their values
+     * @returns the array of values
      */
     static toList(values) {
         return values.map((pi) => pi.value);
