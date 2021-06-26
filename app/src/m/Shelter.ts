@@ -54,14 +54,14 @@ export class Shelter extends Entity{
         this._name = NonEmptyString.create(name);
     }
     /**
-     * checks if the given name is not empty and has a maximum 120 letters
+     * checks if the given name is not empty and has a maximum of 120 letters
      * @param name 
      * @returns ConstraintViolation
      * @public
      */
     static checkName(name) {
         try {
-            NonEmptyString.validateWithInterval(name, 0, 120, "Shelter.name");
+            NonEmptyString.validateWithInterval(name, 1, 120, "Shelter.name");
             return "";
         }
         catch (error) {
