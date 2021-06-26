@@ -4,9 +4,22 @@
 import { Entity, EntitySlots } from "../lib/Entity.js";
 import { NonEmptyString } from "../lib/valueObjects/NonEmptyString.js";
 import { ShelterStorage } from "./ShelterStorage.js";
+import { PositiveNumber } from "../lib/valueObjects/PositiveNumber.js";
+import { PhoneNumber } from "../lib/valueObjects/composed/PhoneNumber.js";
+
+interface AddressSlots {
+    street: string; // requires NonEmptyString(120)
+    number: number; // requires PositiveNumber (TODO: use regex for using numbers like 10a etc)
+    city: string;   // requires NonEmptyString(120)
+}
 
 export interface ShelterSlots extends EntitySlots {
     name: string;
+    address: AddressSlots;
+    phone: string;
+    email: string;
+    officeHours: string;
+    description: string;
 }
 
 export class Shelter extends Entity{
@@ -17,31 +30,32 @@ export class Shelter extends Entity{
     /** the address of the shelter
      * - requires AddressFormat(street, number, city) TODO
      */
-    private _address;
+    private _address: AddressSlots;
     /** the phone number of the shelter 
-     * - requires PhoneFormat(15 numbers) TODO
+     * - requires NonEmptyString(15)
+     * - requires matching regex = /^\+(?:[0-9] ?){6,14}[0-9]$/
      */
-    private _phone;
+    private _phone: PhoneNumber;
     /** the email address of the shelter
      * - requires EmailFormat TODO
      */
-    private _email;
+    private _email: NonEmptyString;
     /** the office hours of the shelter
      * TODO: requirement
      */
-    private _officeHours;
+    private _officeHours: string;
     /**
      * optional description of the shelter (max. 500 letters)
      */
-    private _description;
+    private _description: string;
     /** 
      * list of pett IDs of pets assigned to this shelter
      */
-    private _pets;
+    // private _pets;
     /**
      * list of contact messages TODO
      */
-    private _messages;
+    // private _messages;
 
     constructor(slots: ShelterSlots) {
         super(ShelterStorage, slots.id);
@@ -50,16 +64,24 @@ export class Shelter extends Entity{
             min: 0,
             max: 120,
         });
-        // TODO: set the shelter attributes from slots with given helper functions
+        this._address = slots.address;
+        this._phone = PhoneNumber.create(slots.phone);
+        this._email = NonEmptyString.create(slots.email, {
+            name: "Shelter.email",
+            min: 0,
+            max: 120,
+        });
+        this._officeHours = slots.officeHours;
+        this._description = slots.description;
     }
 
     // *** name ****************************************************************
     /** @returns the name of the shelter */
-    get name() {
+    get name(): string {
         return this._name.value;
     }
     /** @param name - the name of shelter to be set */
-    set name(name) {
+    set name(name: string) {
         this._name = NonEmptyString.create(name);
     }
     /**
@@ -68,9 +90,9 @@ export class Shelter extends Entity{
      * @returns ConstraintViolation
      * @public
      */
-    static checkName(name) {
+    static checkName(name: string) {
         try {
-            NonEmptyString.validateWithInterval(name, 1, 120, "Shelter.name");
+            NonEmptyString.validateWithInterval(name, 0, 120, "Shelter.name");
             return "";
         }
         catch (error) {
@@ -80,13 +102,12 @@ export class Shelter extends Entity{
     }
     // *** address *************************************************************
     /** @returns the address of the shelter */
-    get address() {
-        return this._address.value;
+    get address(): AddressSlots {
+        return this._address;
     }
     /** @param address - the address of the shelter to be set */
-    set address(address) {
-        // TODO: use someting else instead of NonEmptyString
-        this._address = NonEmptyString.create(address);
+    set address(address: AddressSlots) {
+        this._address = address;
     }
     /**
      * checks if the given shelter address is given and consists of street, number and city
@@ -94,10 +115,11 @@ export class Shelter extends Entity{
      * @returns ConstraintViolation
      * @public
      */
-    static checkAddress(address) {
+    static checkAddress(address: AddressSlots) {
         try {
-            // TODO: use something else NonEmptyString
-            NonEmptyString.validateWithInterval(address, 0, 120, "Shelter.address");
+            NonEmptyString.validateWithInterval(address.street, 0, 120, "Address.street");
+            NonEmptyString.validateWithInterval(address.city, 0, 120, "Address.city");
+            PositiveNumber.validate(address.number, "Address.number");
             return "";
         }
         catch (error) {
@@ -107,13 +129,12 @@ export class Shelter extends Entity{
     }
     // *** phone ***************************************************************
     /** @returns phone number of this shelter */
-    get phone() {
+    get phone(): string {
         return this._phone.value;
     }
     /** @param phone - the phone number of shelter to be set */
-    set phone(phone) {
-        // TODO: replace NonEmptyString by something else
-        this._phone = NonEmptyString.create(phone);
+    set phone(phone: string) {
+        this._phone = PhoneNumber.create(phone);
     }
     /**
      * checks if the given phone number is given and consists of maximum 15 numbers and only numbers
@@ -121,25 +142,22 @@ export class Shelter extends Entity{
      * @returns Constraint Violation
      * @public
      */
-    static checkPhone(phone) {
+    static checkPhone(phone: string) {
         try {
-            // TODO: replace NonEmptyString by something else
-            NonEmptyString.validateWithInterval(phone, 1, 120, "Shelter.phone");
+            PhoneNumber.validate(phone, "Shelter.phone");
             return "";
-        }
-        catch (error) {
+        } catch (error) {
             console.error(error);
-            return "The shelters phone number is not in given Format (only numbers and max. 15)!";
+            return "The shelters phone number is not given or nor in given Format!";
         }
     }
     // *** email ***************************************************************
     /** @returns the shelters email address */
-    get email() {
+    get email(): string {
         return this._email.value;
     }
     /** @param email - email address of shelter to set */
-    set email(email) {
-        // TODO: replace NonEmptyString by something else
+    set email(email: string) {
         this._email = NonEmptyString.create(email);
     }
     /**
@@ -148,10 +166,15 @@ export class Shelter extends Entity{
      * @returns Constraint Violation
      * @public
      */
-    static checkEmail(email) {
+    static checkEmail(email: string) {
         try {
-            // TODO: replace NonEmptyString by something else
             NonEmptyString.validateWithInterval(email, 1, 120, "Shelter.email");
+            let regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            if (!regex.test(email)) {
+                throw new RangeError("Shelter.email" +  
+                    `emailFormat => the given email (${email}) does not match the RFC 5322 standard!`
+                );
+            }
             return "";
         }
         catch (error) {
@@ -160,75 +183,75 @@ export class Shelter extends Entity{
         }
     }
     // *** officeHours *********************************************************
-    /** @returns office hours of this shelter */
-    get officeHours() {
-        return this._officeHours.value;
-    }
-    /** @param officeHours - officeHours of the shelter to set */
-    set officeHours(officeHours) {
-        // TODO: replace NonEmptyString by something else
-        this._officeHours = NonEmptyString.create(officeHours);
-    }
-    /**
-     * checks if the officeHours are given and matching teh constraints (TODO)
-     * @param officeHours 
-     * @returns ConstraintViolation
-     * @public 
-     */
-    static checkOfficeHours(officeHours) {
-        try {
-            // TODO: replace NonEmptyString by something else
-            NonEmptyString.validateWithInterval(officeHours, 1, 120, "Shelter.officeHours");
-            return "";
-        }
-        catch (error) {
-            console.error(error);
-            return "The shelter's office hours are not matching the constraints!";
-        }
-    }
-    // *** description *********************************************************
-    /** @returns the description of this shelter */
-    get description() {
-        return this._description.value;
-    }
-    /** @param description - of the shelter */
-    set description(description) {
-        this._description = NonEmptyString.create(description);
-    }
-    /**
-     * checks if the given description is not to long (max. 500 letters)
-     * @param description 
-     * @returns ConstraintViolation
-     * @public 
-     */
-    static checkDescription(description) {
-        try {
-            NonEmptyString.validateWithInterval(description, 0, 500, "Shelter.description");
-            return "";
-        }
-        catch (error) {
-            console.log(error);
-            return "The shelter's description is to long!";
-        }
-    }
-    // *** pets ****************************************************************
-    /** @returns the pets assigned to this shelter */
-    get pets() {
-        return this._pets.value;
-    }
-    // TODO: sets, add and checks
-    // *** messages ************************************************************
-    /** @returns the messages the shelter received */
-    get messages() {
-        return this._messages.value;
-    }
+    // /** @returns office hours of this shelter */
+    // get officeHours() {
+    //     return this._officeHours.value;
+    // }
+    // /** @param officeHours - officeHours of the shelter to set */
+    // set officeHours(officeHours) {
+    //     // TODO: replace NonEmptyString by something else
+    //     this._officeHours = NonEmptyString.create(officeHours);
+    // }
+    // /**
+    //  * checks if the officeHours are given and matching teh constraints (TODO)
+    //  * @param officeHours 
+    //  * @returns ConstraintViolation
+    //  * @public 
+    //  */
+    // static checkOfficeHours(officeHours) {
+    //     try {
+    //         // TODO: replace NonEmptyString by something else
+    //         NonEmptyString.validateWithInterval(officeHours, 1, 120, "Shelter.officeHours");
+    //         return "";
+    //     }
+    //     catch (error) {
+    //         console.error(error);
+    //         return "The shelter's office hours are not matching the constraints!";
+    //     }
+    // }
+    // // *** description *********************************************************
+    // /** @returns the description of this shelter */
+    // get description() {
+    //     return this._description.value;
+    // }
+    // /** @param description - of the shelter */
+    // set description(description) {
+    //     this._description = NonEmptyString.create(description);
+    // }
+    // /**
+    //  * checks if the given description is not to long (max. 500 letters)
+    //  * @param description 
+    //  * @returns ConstraintViolation
+    //  * @public 
+    //  */
+    // static checkDescription(description) {
+    //     try {
+    //         NonEmptyString.validateWithInterval(description, 0, 500, "Shelter.description");
+    //         return "";
+    //     }
+    //     catch (error) {
+    //         console.log(error);
+    //         return "The shelter's description is to long!";
+    //     }
+    // }
+    // // *** pets ****************************************************************
+    // /** @returns the pets assigned to this shelter */
+    // get pets() {
+    //     return this._pets.value;
+    // }
+    // // TODO: sets, add and checks
+    // // *** messages ************************************************************
+    // /** @returns the messages the shelter received */
+    // get messages() {
+    //     return this._messages.value;
+    // }
     // TODO: sets, add and checks
     // *** serialization ********************************************************
     /**
      * a static function that creates a `new Shelter` from a serialized one.
      * @returns a new `Shelter` with the corresponding slots if they pass their constraints. `null` otherwise.
      */
-    static deserialize(slots) {
+    static deserialize(slots: ShelterSlots) {
         // TODO
         let shelter = null;
         try {
@@ -240,8 +263,8 @@ export class Shelter extends Entity{
                 email: slots.email,
                 officeHours: slots.officeHours,
                 description: slots.description,
-                pets: slots.pets,
-                messages: slots.messages
+                // pets: slots.pets,
+                // messages: slots.messages
             });
         }
         catch (e) {
@@ -260,6 +283,7 @@ export class Shelter extends Entity{
     /** @returns the stringified Pet */
     toString() {
         // TODO: improve
-        return `Shelter{ id: ${this.id}, name: ${this.name}, address: ${this.address}, phone: ${this.phone}, email: ${this.email}, officeHours: ${this.officeHours}, description: ${this.description}, pets: ${this.pets}, messages:${this.messages} }`;
+        // return `Shelter{ id: ${this.id}, name: ${this.name}, address: ${this.address}, phone: ${this.phone}, email: ${this.email}, officeHours: ${this.officeHours}, description: ${this.description}, pets: ${this.pets}, messages:${this.messages} }`;
+        return `Shelter{ id: ${this.id}, name: ${this.name}, address: ${this.address}, phone: ${this.phone}, email: ${this.email} }`;
     }
 }

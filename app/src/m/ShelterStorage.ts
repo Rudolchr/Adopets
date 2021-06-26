@@ -1,26 +1,26 @@
 import { AbstractStorage } from "../lib/Storage.js";
-import { Shelter } from "./Shelter.js";
+import { Shelter, ShelterSlots } from "./Shelter.js";
 /**
  * internal
  */
-class ShelterStorageClass extends AbstractStorage {
+class ShelterStorageClass extends AbstractStorage<Shelter, ShelterSlots> {
     /** key for the `firestore.collection` for the `this.instances` */
     STORAGE_KEY = "shelters";
     /**
      * adds a new Shelter created from the given `slots` to the collection of `Shelters`s
      * if the slots fulfil their constraints. Does nothing otherwise
      */
-    async add(slots) {
+    async add(slots: Omit<ShelterSlots, 'id'>) {
         // the creation is nearly fully abstracted
         await super.addWithConstructor(Shelter, slots);
     }
     /**
      * updates the `Shelter` with the corresponding `slots.id` and overwrites it's `name`
      */
-    async update(slots) {
+    async update(slots: ShelterSlots) {
         // TODO
     }
-    async destroy(id) {
+    async destroy(id: string) {
         // TODO
     }
     /**
@@ -28,7 +28,7 @@ class ShelterStorageClass extends AbstractStorage {
      * successful. ***Throws an Error otherwise***
      * @throws {Error} if no entry found
      */
-    async retrieve(id) {
+    async retrieve(id: string) {
         return super.retrieveWithConstructor(Shelter, id);
     }
     /**
