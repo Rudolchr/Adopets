@@ -6,6 +6,7 @@ import { NonEmptyString } from "../lib/valueObjects/NonEmptyString.js";
 import { ShelterStorage } from "./ShelterStorage.js";
 import { PositiveNumber } from "../lib/valueObjects/PositiveNumber.js";
 import { PhoneNumber } from "../lib/valueObjects/composed/PhoneNumber.js";
+import { Address } from "../lib/valueObjects/composed/Address.js";
 export class Shelter extends Entity {
     /** the name of the shelter
      * - requires NonEmptyString(120)
@@ -47,8 +48,8 @@ export class Shelter extends Entity {
             min: 0,
             max: 120,
         });
-        this._address = slots.address;
-        this._phone = PhoneNumber.create(slots.phone);
+        this._address = new Address(slots.address);
+        this._phone = PhoneNumber.create(slots.phone, { name: "Shelter.phone" });
         this._email = NonEmptyString.create(slots.email, {
             name: "Shelter.email",
             min: 0,
@@ -74,7 +75,7 @@ export class Shelter extends Entity {
      */
     static checkName(name) {
         try {
-            NonEmptyString.validateWithInterval(name, 0, 120, "Shelter.name");
+            NonEmptyString.validate(name, { name: 'Shelter.name', max: 120 });
             return "";
         }
         catch (error) {
@@ -89,7 +90,7 @@ export class Shelter extends Entity {
     }
     /** @param address - the address of the shelter to be set */
     set address(address) {
-        this._address = address;
+        this._address = new Address(address);
     }
     /**
      * checks if the given shelter address is given and consists of street, number and city
@@ -99,9 +100,9 @@ export class Shelter extends Entity {
      */
     static checkAddress(address) {
         try {
-            NonEmptyString.validateWithInterval(address.street, 0, 120, "Address.street");
-            NonEmptyString.validateWithInterval(address.city, 0, 120, "Address.city");
-            PositiveNumber.validate(address.number, "Address.number");
+            NonEmptyString.validate(address.street, { name: "Address.street", max: 120 });
+            NonEmptyString.validate(address.city, { name: "Address.city", max: 120 });
+            PositiveNumber.validate(address.number, { name: "Address.number" });
             return "";
         }
         catch (error) {
@@ -116,7 +117,7 @@ export class Shelter extends Entity {
     }
     /** @param phone - the phone number of shelter to be set */
     set phone(phone) {
-        this._phone = PhoneNumber.create(phone);
+        this._phone = PhoneNumber.create(phone, { name: "Shelter.phone" });
     }
     /**
      * checks if the given phone number is given and consists of maximum 15 numbers and only numbers
@@ -126,7 +127,7 @@ export class Shelter extends Entity {
      */
     static checkPhone(phone) {
         try {
-            PhoneNumber.validate(phone, "Shelter.phone");
+            PhoneNumber.validate(phone, { name: "Shelter.phone" });
             return "";
         }
         catch (error) {
@@ -151,7 +152,7 @@ export class Shelter extends Entity {
      */
     static checkEmail(email) {
         try {
-            NonEmptyString.validateWithInterval(email, 1, 120, "Shelter.email");
+            NonEmptyString.validate(email, { name: "Shelter.email", max: 120 });
             let regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if (!regex.test(email)) {
                 throw new RangeError("Shelter.email" +

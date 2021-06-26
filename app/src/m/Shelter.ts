@@ -1,17 +1,12 @@
 /**
  * @author Max Bergmann
  */
-import { Entity, EntitySlots } from "../lib/Entity.js";
-import { NonEmptyString } from "../lib/valueObjects/NonEmptyString.js";
-import { ShelterStorage } from "./ShelterStorage.js";
-import { PositiveNumber } from "../lib/valueObjects/PositiveNumber.js";
-import { PhoneNumber } from "../lib/valueObjects/composed/PhoneNumber.js";
-
-interface AddressSlots {
-    street: string; // requires NonEmptyString(120)
-    number: number; // requires PositiveNumber (TODO: use regex for using numbers like 10a etc)
-    city: string;   // requires NonEmptyString(120)
-}
+import {Entity, EntitySlots} from "../lib/Entity.js";
+import {NonEmptyString} from "../lib/valueObjects/NonEmptyString.js";
+import {ShelterStorage} from "./ShelterStorage.js";
+import {PositiveNumber} from "../lib/valueObjects/PositiveNumber.js";
+import {PhoneNumber} from "../lib/valueObjects/composed/PhoneNumber.js";
+import {Address, AddressSlots} from "../lib/valueObjects/composed/Address.js";
 
 export interface ShelterSlots extends EntitySlots {
     name: string;
@@ -22,7 +17,7 @@ export interface ShelterSlots extends EntitySlots {
     description: string;
 }
 
-export class Shelter extends Entity{
+export class Shelter extends Entity {
     /** the name of the shelter
      * - requires NonEmptyString(120)
      */
@@ -30,7 +25,7 @@ export class Shelter extends Entity{
     /** the address of the shelter
      * - requires AddressFormat(street, number, city) TODO
      */
-    private _address: AddressSlots;
+    private _address: Address;
     /** the phone number of the shelter 
      * - requires NonEmptyString(15)
      * - requires matching regex = /^\+(?:[0-9] ?){6,14}[0-9]$/
@@ -64,8 +59,8 @@ export class Shelter extends Entity{
             min: 0,
             max: 120,
         });
-        this._address = slots.address;
-        this._phone = PhoneNumber.create(slots.phone);
+        this._address = new Address(slots.address);
+        this._phone = PhoneNumber.create(slots.phone, {name: "Shelter.phone"});
         this._email = NonEmptyString.create(slots.email, {
             name: "Shelter.email",
             min: 0,
@@ -92,7 +87,7 @@ export class Shelter extends Entity{
      */
     static checkName(name: string) {
         try {
-            NonEmptyString.validateWithInterval(name, 0, 120, "Shelter.name");
+            NonEmptyString.validate(name, {name: 'Shelter.name', max: 120});
             return "";
         }
         catch (error) {
@@ -107,7 +102,7 @@ export class Shelter extends Entity{
     }
     /** @param address - the address of the shelter to be set */
     set address(address: AddressSlots) {
-        this._address = address;
+        this._address = new Address(address);
     }
     /**
      * checks if the given shelter address is given and consists of street, number and city
@@ -117,9 +112,9 @@ export class Shelter extends Entity{
      */
     static checkAddress(address: AddressSlots) {
         try {
-            NonEmptyString.validateWithInterval(address.street, 0, 120, "Address.street");
-            NonEmptyString.validateWithInterval(address.city, 0, 120, "Address.city");
-            PositiveNumber.validate(address.number, "Address.number");
+            NonEmptyString.validate(address.street, {name: "Address.street", max: 120});
+            NonEmptyString.validate(address.city, {name: "Address.city", max: 120});
+            PositiveNumber.validate(address.number, {name: "Address.number"});
             return "";
         }
         catch (error) {
@@ -134,7 +129,7 @@ export class Shelter extends Entity{
     }
     /** @param phone - the phone number of shelter to be set */
     set phone(phone: string) {
-        this._phone = PhoneNumber.create(phone);
+        this._phone = PhoneNumber.create(phone, {name: "Shelter.phone"});
     }
     /**
      * checks if the given phone number is given and consists of maximum 15 numbers and only numbers
@@ -144,7 +139,7 @@ export class Shelter extends Entity{
      */
     static checkPhone(phone: string) {
         try {
-            PhoneNumber.validate(phone, "Shelter.phone");
+            PhoneNumber.validate(phone, {name: "Shelter.phone"});
             return "";
         } catch (error) {
             console.error(error);
@@ -168,10 +163,10 @@ export class Shelter extends Entity{
      */
     static checkEmail(email: string) {
         try {
-            NonEmptyString.validateWithInterval(email, 1, 120, "Shelter.email");
+            NonEmptyString.validate(email, {name: "Shelter.email", max: 120});
             let regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if (!regex.test(email)) {
-                throw new RangeError("Shelter.email" +  
+                throw new RangeError("Shelter.email" +
                     `emailFormat => the given email (${email}) does not match the RFC 5322 standard!`
                 );
             }
@@ -179,7 +174,7 @@ export class Shelter extends Entity{
         }
         catch (error) {
             console.error(error);
-            return "The shelter's email address is not legit!"
+            return "The shelter's email address is not legit!";
         }
     }
     // *** officeHours *********************************************************
@@ -278,7 +273,7 @@ export class Shelter extends Entity{
      */
     toJSON() {
         // TODO: not complete
-        return { id: this.id, name: this.name };
+        return {id: this.id, name: this.name};
     }
     /** @returns the stringified Pet */
     toString() {

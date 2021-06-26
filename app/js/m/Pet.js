@@ -33,7 +33,7 @@ export class Pet extends Entity {
      */
     static checkName(name) {
         try {
-            NonEmptyString.validate(name, { name: 'Pet.name', min: 0, max: 120 });
+            NonEmptyString.validate(name, { name: 'Pet.name', max: 120 });
             return "";
         }
         catch (error) {

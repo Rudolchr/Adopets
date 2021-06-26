@@ -14,14 +14,14 @@ export class Address {
      * - requires NonEmptyString(120)
      */
     _city;
-    constructor(street, number, city) {
-        this._street = NonEmptyString.create(street, {
+    constructor(slots) {
+        this._street = NonEmptyString.create(slots.street, {
             name: "Address.street",
             min: 0,
             max: 120,
         });
-        this._number = PositiveNumber.create(number);
-        this._city = NonEmptyString.create(city, {
+        this._number = PositiveNumber.create(slots.number, { name: "Address.number", max: 10000 });
+        this._city = NonEmptyString.create(slots.city, {
             name: "Address.city",
             min: 0,
             max: 120,
@@ -34,7 +34,7 @@ export class Address {
     }
     /** @param street - the street to be set */
     set street(street) {
-        this._street = NonEmptyString.create(street);
+        this._street = NonEmptyString.create(street, { name: "Address.street", max: 120 });
     }
     /**
      * checks if the given street is not empty and not longer than 120 letters
@@ -44,7 +44,7 @@ export class Address {
      */
     static checkStreet(street) {
         try {
-            NonEmptyString.validateWithInterval(street, 0, 120, "Address.street");
+            NonEmptyString.validate(street, { name: "Address.street", max: 120 });
             return "";
         }
         catch (error) {
@@ -59,7 +59,7 @@ export class Address {
     }
     /** @param number - number in street to set */
     set number(number) {
-        this._number = PositiveNumber.create(number);
+        this._number = PositiveNumber.create(number, { name: "Address.number", max: 10000 });
     }
     /**
      * checks if the given number is a positive integer (TODO: change when using regex)
@@ -71,7 +71,7 @@ export class Address {
         try {
             // TODO: probably change validation when changing to regex mode
             // TODO: configure the maximum number
-            PositiveNumber.validateWithInterval(number, 1, 10000, "Pet.name");
+            PositiveNumber.validate(number, { name: "Address.number", max: 10000 });
             return "";
         }
         catch (error) {
@@ -84,7 +84,7 @@ export class Address {
         return this._city.value;
     }
     set city(city) {
-        this._city = NonEmptyString.create(city);
+        this._city = NonEmptyString.create(city, { name: "Address.city", max: 120 });
     }
     /**
      * checks if the given city is not empty and not longer than 120 letters
@@ -94,7 +94,7 @@ export class Address {
      */
     static checkCity(city) {
         try {
-            NonEmptyString.validateWithInterval(city, 0, 120, "Address.city");
+            NonEmptyString.validate(city, { name: "Address.city", max: 120 });
             return "";
         }
         catch (error) {

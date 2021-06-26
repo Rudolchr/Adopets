@@ -1,6 +1,7 @@
-import { NonEmptyString, NonEmptyStringOptions } from "../NonEmptyString.js";
+import {NonEmptyString} from "../NonEmptyString.js";
+import {CreationOptions} from "../ValueObject.js";
 
-export class PhoneNumber  extends NonEmptyString {
+export class PhoneNumber extends NonEmptyString {
 
     protected constructor(value: string) {
         super(value);
@@ -8,14 +9,13 @@ export class PhoneNumber  extends NonEmptyString {
 
     public static validate<T extends string>(
         value: T,
-        errorPrefix: string,
-        stringEnum?: NonEmptyStringOptions<T>['stringEnum'],
+        options?: CreationOptions
     ) {
-        NonEmptyString.validateWithInterval(value, 8, 30, errorPrefix);
+        NonEmptyString.validate(value, {name: options?.name ?? 'PhoneNumber', min: 8, max: 30});
         let regex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
         if (!regex.test(value)) {
-            throw new RangeError(errorPrefix +  
-                `PhoneNumberFormat => the given phone number (${value}) must start with + and one digit followed by max. 15 digits seperated by max. 1 space!`
+            throw new RangeError(
+                `PhoneNumber => the given phone number (${value}) must start with + and one digit followed by max. 15 digits separated by max. 1 space!`
             );
         }
 
@@ -27,7 +27,7 @@ export class PhoneNumber  extends NonEmptyString {
      * @param options for the creation
      * @returns the created ValueObject
      */
-    public static create<T extends string>(value: T) {
-        return new PhoneNumber(value);
+    public static create(value: string, options?: CreationOptions) {
+        return new PhoneNumber(this.validate(value, options));
     }
 }
