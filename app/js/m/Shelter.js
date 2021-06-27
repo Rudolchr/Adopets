@@ -2,11 +2,15 @@
  * @author Max Bergmann
  */
 import { Entity } from "../lib/Entity.js";
-import { NonEmptyString } from "../lib/valueObjects/NonEmptyString.js";
-import { ShelterStorage } from "./ShelterStorage.js";
-import { PhoneNumber } from "../lib/valueObjects/composed/PhoneNumber.js";
+import { catchValidation } from "../lib/newUtil.js";
 import { Address } from "../lib/valueObjects/composed/Address.js";
 import { EmailAddress } from "../lib/valueObjects/composed/EmailAddress.js";
+import { PhoneNumber } from "../lib/valueObjects/composed/PhoneNumber.js";
+import { NonEmptyString } from "../lib/valueObjects/NonEmptyString.js";
+import { ShelterStorage } from "./ShelterStorage.js";
+const NAME_CONSTRAINTS = { name: "Shelter.name", max: 120 };
+const PHONE_CONSTRAINTS = { name: "Shelter.phone" };
+const EMAIL_CONSTRAINTS = { name: "Shelter.email" };
 export class Shelter extends Entity {
     /** the name of the shelter
      * - requires NonEmptyString(120)
@@ -43,14 +47,10 @@ export class Shelter extends Entity {
     // private _messages;
     constructor(slots) {
         super(ShelterStorage, slots.id);
-        this._name = NonEmptyString.create(slots.name, {
-            name: "Shelter.name",
-            min: 0,
-            max: 120,
-        });
+        this._name = NonEmptyString.create(slots.name, NAME_CONSTRAINTS);
         this._address = new Address(slots.address);
-        this._phone = PhoneNumber.create(slots.phone, { name: "Shelter.phone" });
-        this._email = EmailAddress.create(slots.email, { name: "Shelter.email" });
+        this._phone = PhoneNumber.create(slots.phone, PHONE_CONSTRAINTS);
+        this._email = EmailAddress.create(slots.email, EMAIL_CONSTRAINTS);
         this._officeHours = slots.officeHours;
         this._description = slots.description;
     }
@@ -61,7 +61,7 @@ export class Shelter extends Entity {
     }
     /** @param name - the name of shelter to be set */
     set name(name) {
-        this._name = NonEmptyString.create(name);
+        this._name = NonEmptyString.create(name, NAME_CONSTRAINTS);
     }
     /**
      * checks if the given name is not empty and has a maximum of 120 letters
@@ -70,14 +70,7 @@ export class Shelter extends Entity {
      * @public
      */
     static checkName(name) {
-        try {
-            NonEmptyString.validate(name, { name: 'Shelter.name', max: 120 });
-            return "";
-        }
-        catch (error) {
-            console.error(error);
-            return "The shelter's name must not be empty or larger than 120 letters!";
-        }
+        return catchValidation(() => NonEmptyString.validate(name, NAME_CONSTRAINTS), "The shelter's name must not be empty or larger than 120 letters!");
     }
     // *** address *************************************************************
     /** @returns the address of the shelter */
@@ -95,16 +88,11 @@ export class Shelter extends Entity {
      * @public
      */
     static checkAddress(address) {
-        try {
+        return catchValidation(() => {
             Address.checkStreet(address.street);
             Address.checkCity(address.city);
             Address.checkNumber(address.number);
-            return "";
-        }
-        catch (error) {
-            console.error(error);
-            return "The shelters address is not in the given format!";
-        }
+        }, "The shelters address is not in the given format!");
     }
     // *** phone ***************************************************************
     /** @returns phone number of this shelter */
@@ -113,7 +101,7 @@ export class Shelter extends Entity {
     }
     /** @param phone - the phone number of shelter to be set */
     set phone(phone) {
-        this._phone = PhoneNumber.create(phone, { name: "Shelter.phone" });
+        this._phone = PhoneNumber.create(phone, PHONE_CONSTRAINTS);
     }
     /**
      * checks if the given phone number is given and consists of maximum 15 numbers and only numbers
@@ -122,14 +110,7 @@ export class Shelter extends Entity {
      * @public
      */
     static checkPhone(phone) {
-        try {
-            PhoneNumber.validate(phone, { name: "Shelter.phone" });
-            return "";
-        }
-        catch (error) {
-            console.error(error);
-            return "The shelters phone number is not given or nor in given Format!";
-        }
+        return catchValidation(() => PhoneNumber.validate(phone, PHONE_CONSTRAINTS), "The shelters phone number is not given or nor in given Format!");
     }
     // *** email ***************************************************************
     /** @returns the shelters email address */
@@ -138,7 +119,7 @@ export class Shelter extends Entity {
     }
     /** @param email - email address of shelter to set */
     set email(email) {
-        this._email = EmailAddress.create(email, { name: "Shelter.email" });
+        this._email = EmailAddress.create(email, EMAIL_CONSTRAINTS);
     }
     /**
      * checks if the given email address is legit ([number,letters,sybols]@[letters].[letters])
@@ -147,14 +128,7 @@ export class Shelter extends Entity {
      * @public
      */
     static checkEmail(email) {
-        try {
-            EmailAddress.validate(email, { name: "Shelter.email" });
-            return "";
-        }
-        catch (error) {
-            console.error(error);
-            return "The shelter's email address is not legit!";
-        }
+        return catchValidation(() => EmailAddress.validate(email, EMAIL_CONSTRAINTS), "The shelter's email address is not legit!");
     }
     // *** officeHours *********************************************************
     // /** @returns office hours of this shelter */

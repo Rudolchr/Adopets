@@ -20,10 +20,7 @@ export class NonEmptyString extends ValueObject {
         }
         if (options) {
             // enum
-            if (options.stringEnum && !Object.values(options.stringEnum).includes(value)) {
-                throw new TypeError(this.pm(options.name) +
-                    `NonEmptyString => the given value (${value}: ${typeof value}) is not in the stringEnum ${JSON.stringify(options?.stringEnum)}`);
-            }
+            NonEmptyString.validateRange(value, options);
             // interval
             if ((options.min && value.length < options.min) || (options.max && value.length > options.max)) {
                 throw new RangeError(this.pm(options.name) +
@@ -36,6 +33,15 @@ export class NonEmptyString extends ValueObject {
             }
         }
         return value;
+    }
+    static validateRange(value, options) {
+        if (options.range) {
+            if (Array.isArray(options.range) && !options.range.includes(value)
+                || typeof options.range === 'object' && !Object.values(options.range).includes(value)) {
+                throw new TypeError(this.pm(options.name) +
+                    `NonEmptyString => the given value (${value}: ${typeof value}) is not in the range ${JSON.stringify(options?.range)}`);
+            }
+        }
     }
     /**
      * @param value to create the ValueObject of

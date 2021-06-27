@@ -2,18 +2,19 @@
  * @author Christian Prinz
  */
 import {Entity, EntitySlots} from "../lib/Entity.js";
+import {catchValidation} from "../lib/newUtil.js";
 import {NonEmptyString, NonEmptyStringOptions} from "../lib/valueObjects/NonEmptyString.js";
 import {Dateable, SafeDateOptions, SafeDate} from "../lib/valueObjects/SafeDate.js";
 import {PetStorage} from "./PetStorage.js";
 
 export interface PetSlots extends EntitySlots {
   name: string;
-  species: string;
-  birthDate: Dateable;
+  species?: string;
+  birthDate?: Dateable;
 }
-const NAME_CONSTRAINTS: NonEmptyStringOptions = {name: "Pet.name", max: 120};
+const NAME_CONSTRAINTS: NonEmptyStringOptions = {name: "Pet.name", min: 5, max: 120};
 export enum SpeciesEnum {CAT = 'Cat', DOG = 'Dog', BIRD = 'Bird'}
-const SPECIES_CONSTRAINTS: NonEmptyStringOptions = {name: "Pet.species", range: SpeciesEnum };
+const SPECIES_CONSTRAINTS: NonEmptyStringOptions = {name: "Pet.species", range: SpeciesEnum};
 const BIRTH_DATE_CONSTRAINTS: SafeDateOptions = {name: "Pet.birthdate", min: "1990-01-01"};
 
 
@@ -31,8 +32,9 @@ export class Pet extends Entity {
   constructor(slots: PetSlots) {
     super(PetStorage, slots.id);
     this._name = NonEmptyString.create(slots.name, NAME_CONSTRAINTS);
-    this._species = NonEmptyString.create(SpeciesEnum.BIRD, SPECIES_CONSTRAINTS);
-    this._birthDate = SafeDate.create(slots.birthDate, BIRTH_DATE_CONSTRAINTS);
+    // TODO
+    this._species = NonEmptyString.create(slots.species ?? '', SPECIES_CONSTRAINTS);
+    this._birthDate = SafeDate.create(slots.birthDate ?? '2020-20-12', BIRTH_DATE_CONSTRAINTS);
   }
 
   // *** name ****************************************************************
@@ -49,13 +51,10 @@ export class Pet extends Entity {
    * @public
    */
   static checkName(name: string) {
-    try {
-      NonEmptyString.validate(name, NAME_CONSTRAINTS);
-      return "";
-    } catch (error) {
-      console.error(error);
-      return "The pet's name must not be empty or larger than 120 letters";
-    }
+    return catchValidation(() =>
+      NonEmptyString.validate(name, NAME_CONSTRAINTS),
+      "The pet's name must not be empty or larger than 120 letters!"
+    );
   }
 
   /** @param name - the new name to set */
@@ -77,18 +76,16 @@ export class Pet extends Entity {
    * @public
    */
   static checkSpecies(species: string) {
-    try {
-      NonEmptyString.validate(species, SPECIES_CONSTRAINTS);
-      return "";
-    } catch (error) {
-      console.error(error);
-      return "The pet's species must not be empty or larger than 120 letters";
-    }
+    return catchValidation(() =>
+      NonEmptyString.validate(species, SPECIES_CONSTRAINTS),
+      "The pet's species must not be either 'Dog', 'Cat', or 'Bird!"
+    );
+
   }
 
   /** @param species - the new species to set */
   set species(species: string) {
-    this._species = NonEmptyString.create(species, SPECIES_CONSTRAINTS)
+    this._species = NonEmptyString.create(species, SPECIES_CONSTRAINTS);
   }
 
   // *** birthDate ****************************************************************
@@ -105,13 +102,9 @@ export class Pet extends Entity {
    * @public
    */
   static checkBirthDate(birthDate: Dateable) {
-    try {
-      SafeDate.validate(birthDate, BIRTH_DATE_CONSTRAINTS);
-      return "";
-    } catch (error) {
-      console.error(error);
-      return "The pet's birthDate must not be empty or larger than 120 letters";
-    }
+    return catchValidation(() =>
+      SafeDate.validate(birthDate, BIRTH_DATE_CONSTRAINTS),
+      "The pet's birthDate must be a valid Date after 01.01.1990!");
   }
 
   /** @param birthDate - the new birthDate to set */

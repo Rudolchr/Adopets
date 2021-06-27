@@ -2,6 +2,7 @@
  * @author Max Bergmann
  */
 import {Entity, EntitySlots} from "../lib/Entity.js";
+import {catchValidation} from "../lib/newUtil.js";
 import {Address, AddressSlots} from "../lib/valueObjects/composed/Address.js";
 import {EmailAddress} from "../lib/valueObjects/composed/EmailAddress.js";
 import {PhoneNumber} from "../lib/valueObjects/composed/PhoneNumber.js";
@@ -82,14 +83,10 @@ export class Shelter extends Entity {
      * @public
      */
     static checkName(name: string) {
-        try {
-            NonEmptyString.validate(name, NAME_CONSTRAINTS);
-            return "";
-        }
-        catch (error) {
-            console.error(error);
-            return "The shelter's name must not be empty or larger than 120 letters!";
-        }
+        return catchValidation(() =>
+            NonEmptyString.validate(name, NAME_CONSTRAINTS),
+            "The shelter's name must not be empty or larger than 120 letters!"
+        );
     }
     // *** address *************************************************************
     /** @returns the address of the shelter */
@@ -107,16 +104,11 @@ export class Shelter extends Entity {
      * @public
      */
     static checkAddress(address: AddressSlots) {
-        try {
+        return catchValidation(() => {
             Address.checkStreet(address.street);
             Address.checkCity(address.city);
             Address.checkNumber(address.number);
-            return "";
-        }
-        catch (error) {
-            console.error(error);
-            return "The shelters address is not in the given format!";
-        }
+        }, "The shelters address is not in the given format!");
     }
     // *** phone ***************************************************************
     /** @returns phone number of this shelter */
@@ -134,13 +126,10 @@ export class Shelter extends Entity {
      * @public
      */
     static checkPhone(phone: string) {
-        try {
-            PhoneNumber.validate(phone, PHONE_CONSTRAINTS);
-            return "";
-        } catch (error) {
-            console.error(error);
-            return "The shelters phone number is not given or nor in given Format!";
-        }
+        return catchValidation(() =>
+            PhoneNumber.validate(phone, PHONE_CONSTRAINTS),
+            "The shelters phone number is not given or nor in given Format!"
+        );
     }
     // *** email ***************************************************************
     /** @returns the shelters email address */
@@ -158,14 +147,10 @@ export class Shelter extends Entity {
      * @public
      */
     static checkEmail(email: string) {
-        try {
-            EmailAddress.validate(email, EMAIL_CONSTRAINTS);
-            return "";
-        }
-        catch (error) {
-            console.error(error);
-            return "The shelter's email address is not legit!";
-        }
+        return catchValidation(() =>
+            EmailAddress.validate(email, EMAIL_CONSTRAINTS),
+            "The shelter's email address is not legit!"
+        );
     }
     // *** officeHours *********************************************************
     // /** @returns office hours of this shelter */
