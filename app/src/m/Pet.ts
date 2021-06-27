@@ -2,12 +2,20 @@
  * @author Christian Prinz
  */
 import {Entity, EntitySlots} from "../lib/Entity.js";
-import {NonEmptyString} from "../lib/valueObjects/NonEmptyString.js";
+import {NonEmptyString, NonEmptyStringOptions} from "../lib/valueObjects/NonEmptyString.js";
+import {Dateable, SafeDateOptions, SafeDate} from "../lib/valueObjects/SafeDate.js";
 import {PetStorage} from "./PetStorage.js";
 
 export interface PetSlots extends EntitySlots {
   name: string;
+  species: string;
+  birthDate: Dateable;
 }
+const NAME_CONSTRAINTS: NonEmptyStringOptions = {name: "Pet.name", max: 120};
+export enum SpeciesEnum {CAT = 'Cat', DOG = 'Dog', BIRD = 'Bird'}
+const SPECIES_CONSTRAINTS: NonEmptyStringOptions = {name: "Pet.species", range: SpeciesEnum };
+const BIRTH_DATE_CONSTRAINTS: SafeDateOptions = {name: "Pet.birthdate", min: "1990-01-01"};
+
 
 /**
  * The entity of a Pet
@@ -17,14 +25,14 @@ export class Pet extends Entity {
    * - required NonEmptyString(120)
    */
   private _name: NonEmptyString;
+  private _species: NonEmptyString;
+  private _birthDate: SafeDate;
 
   constructor(slots: PetSlots) {
     super(PetStorage, slots.id);
-    this._name = NonEmptyString.create(slots.name, {
-      name: "Pet.name",
-      min: 0,
-      max: 120,
-    });
+    this._name = NonEmptyString.create(slots.name, NAME_CONSTRAINTS);
+    this._species = NonEmptyString.create(SpeciesEnum.BIRD, SPECIES_CONSTRAINTS);
+    this._birthDate = SafeDate.create(slots.birthDate, BIRTH_DATE_CONSTRAINTS);
   }
 
   // *** name ****************************************************************
@@ -42,7 +50,7 @@ export class Pet extends Entity {
    */
   static checkName(name: string) {
     try {
-      NonEmptyString.validate(name, {name: 'Pet.name', max: 120});
+      NonEmptyString.validate(name, NAME_CONSTRAINTS);
       return "";
     } catch (error) {
       console.error(error);
@@ -52,11 +60,63 @@ export class Pet extends Entity {
 
   /** @param name - the new name to set */
   set name(name) {
-    this._name = NonEmptyString.create(name, {
-      name: "Pet.name",
-      min: 0,
-      max: 120,
-    });
+    this._name = NonEmptyString.create(name, NAME_CONSTRAINTS);
+  }
+
+  // *** species ****************************************************************
+
+  /** @returns the species of the pet */
+  get species(): string {
+    return this._species.value;
+  }
+
+  /**
+   * checks if the given species is present and between [1,120] letters
+   * @param species
+   * @returns a ConstraintViolation
+   * @public
+   */
+  static checkSpecies(species: string) {
+    try {
+      NonEmptyString.validate(species, SPECIES_CONSTRAINTS);
+      return "";
+    } catch (error) {
+      console.error(error);
+      return "The pet's species must not be empty or larger than 120 letters";
+    }
+  }
+
+  /** @param species - the new species to set */
+  set species(species: string) {
+    this._species = NonEmptyString.create(species, SPECIES_CONSTRAINTS)
+  }
+
+  // *** birthDate ****************************************************************
+
+  /** @returns the birthDate of the pet */
+  get birthDate(): Date {
+    return this._birthDate.value;
+  }
+
+  /**
+   * checks if the given birthDate is present and between [1,120] letters
+   * @param birthDate
+   * @returns a ConstraintViolation
+   * @public
+   */
+  static checkBirthDate(birthDate: Dateable) {
+    try {
+      SafeDate.validate(birthDate, BIRTH_DATE_CONSTRAINTS);
+      return "";
+    } catch (error) {
+      console.error(error);
+      return "The pet's birthDate must not be empty or larger than 120 letters";
+    }
+  }
+
+  /** @param birthDate - the new birthDate to set */
+  set birthDate(birthDate: Dateable) {
+    this._birthDate = SafeDate.create(birthDate, BIRTH_DATE_CONSTRAINTS);
   }
 
   // *** serialization ********************************************************
@@ -71,6 +131,8 @@ export class Pet extends Entity {
       pet = new Pet({
         id: slots.id,
         name: slots.name,
+        species: slots.species,
+        birthDate: slots.birthDate,
       });
     } catch (e) {
       console.warn(
@@ -86,7 +148,7 @@ export class Pet extends Entity {
    * @override the inherited toJSON()
    */
   toJSON(): PetSlots {
-    return { id: this.id, name: this.name };
+    return {id: this.id, name: this.name, birthDate: this.birthDate.toJSON(), species: this.species};
   }
 
   /** @returns the stringified Pet */

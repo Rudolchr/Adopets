@@ -13,7 +13,7 @@ export class SafeDate extends ValueObject<Date> {
      * @returns the value if the validation was successful
      * @throws {@link TypeError} if not parsable to a valid Date
      */
-    public static validate(value: Dateable, options?: DateCreationOptions) {
+    public static validate(value: Dateable, options?: SafeDateOptions) {
         // safe date
         let safeDate: Date;
         if (typeof value === 'string' || typeof value === 'number') {
@@ -60,7 +60,7 @@ export class SafeDate extends ValueObject<Date> {
      * @param options for the creation
      * @returns the created ValueObject
      */
-    public static create(value: Dateable, options?: DateCreationOptions) {
+    public static create(value: Dateable, options?: SafeDateOptions) {
         return new SafeDate(this.validate(value, options));
     }
 
@@ -69,7 +69,7 @@ export class SafeDate extends ValueObject<Date> {
      * @param options for the **individual** creation
      * @returns the array of ValueObjects
      */
-    public static fromList(values: [Dateable], options?: DateCreationOptions) {
+    public static fromList(values: [Dateable], options?: SafeDateOptions) {
         return values.map((val) => this.create(val, options));
     }
 
@@ -90,7 +90,7 @@ export class SafeDate extends ValueObject<Date> {
 
 export type Dateable = Date | string | number;
 
-export interface DateCreationOptions extends CreationOptions {
+export interface SafeDateOptions extends CreationOptions {
     max?: Dateable;
     min?: Dateable;
 }

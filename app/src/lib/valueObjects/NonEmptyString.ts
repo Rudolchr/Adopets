@@ -15,7 +15,7 @@ export class NonEmptyString extends ValueObject<string> {
      * @throws {@link RangeError} if the value is not matching the regex
      * @throws {@link RangeError} if the value is not inside the interval
      */
-    public static validate<T extends string>(value: T, options?: NonEmptyStringOptions<T>) {
+    public static validate(value: string, options?: NonEmptyStringOptions) {
         // type
         if (!value || typeof value !== 'string' || value === '') {
             throw new TypeError(
@@ -26,14 +26,7 @@ export class NonEmptyString extends ValueObject<string> {
 
         if (options) {
             // enum
-            if (options.stringEnum && !Object.values(options.stringEnum).includes(value)) {
-                throw new TypeError(
-                    this.pm(options.name) +
-                    `NonEmptyString => the given value (${value}: ${typeof value}) is not in the stringEnum ${JSON.stringify(
-                        options?.stringEnum
-                    )}`
-                );
-            }
+            NonEmptyString.validateRange( value, options);
 
             // interval
             if ((options.min && value.length < options.min) || (options.max && value.length > options.max)) {
@@ -55,12 +48,26 @@ export class NonEmptyString extends ValueObject<string> {
         return value;
     }
 
+    private static validateRange(value: string, options: NonEmptyStringOptions ) {
+        if (options.range) {
+            if (Array.isArray(options.range) && !options.range.includes(value)
+                || typeof options.range === 'object' && !Object.values(options.range).includes(value)) {
+                throw new TypeError(
+                    this.pm(options.name) +
+                    `NonEmptyString => the given value (${value}: ${typeof value}) is not in the range ${JSON.stringify(
+                        options?.range
+                    )}`
+                );
+            }
+        }
+    }
+
     /**
      * @param value to create the ValueObject of
      * @param options for the creation
      * @returns the created ValueObject
      */
-    public static create<T extends string>(value: T, options?: NonEmptyStringOptions<T>) {
+    public static create(value: string, options?: NonEmptyStringOptions) {
         return new NonEmptyString(this.validate(value, options));
     }
 
@@ -69,7 +76,7 @@ export class NonEmptyString extends ValueObject<string> {
      * @param options for the **individual** creation
      * @returns the array of ValueObjects
      */
-    public static fromList<T extends string>(values: T[], options?: NonEmptyStringOptions<T>) {
+    public static fromList(values: string[], options?: NonEmptyStringOptions) {
         return values.map((val) => this.create(val, options));
     }
 
@@ -82,10 +89,12 @@ export class NonEmptyString extends ValueObject<string> {
     }
 }
 
-export interface NonEmptyStringOptions<T extends string> extends OptionalStringOptions {
-    /**
-     * an Enumeration containing all possible values, the given value can take.
-     * String enums must be structured like this:
+export interface NonEmptyStringOptions extends OptionalStringOptions {
+    /** a list of all possible values the given value can match. This can either be a simple Array:
+     * ```typescript
+     * ['first', 'second', ..., 'last']
+     * ```
+     * or a String enum structured like this:
      * ```typescript
      * enum MyEnum {
      *   first = 'first',
@@ -95,7 +104,5 @@ export interface NonEmptyStringOptions<T extends string> extends OptionalStringO
      * }
      * ```
      */
-    stringEnum?: {
-        [s: string]: T;
-    };
+    range?: string[] | {[s: string]: string;};
 }

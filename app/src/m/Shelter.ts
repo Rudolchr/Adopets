@@ -2,12 +2,11 @@
  * @author Max Bergmann
  */
 import {Entity, EntitySlots} from "../lib/Entity.js";
-import {NonEmptyString} from "../lib/valueObjects/NonEmptyString.js";
-import {ShelterStorage} from "./ShelterStorage.js";
-import {PositiveNumber} from "../lib/valueObjects/PositiveNumber.js";
-import {PhoneNumber} from "../lib/valueObjects/composed/PhoneNumber.js";
 import {Address, AddressSlots} from "../lib/valueObjects/composed/Address.js";
 import {EmailAddress} from "../lib/valueObjects/composed/EmailAddress.js";
+import {PhoneNumber} from "../lib/valueObjects/composed/PhoneNumber.js";
+import {NonEmptyString, NonEmptyStringOptions} from "../lib/valueObjects/NonEmptyString.js";
+import {ShelterStorage} from "./ShelterStorage.js";
 
 export interface ShelterSlots extends EntitySlots {
     name: string;
@@ -17,6 +16,10 @@ export interface ShelterSlots extends EntitySlots {
     officeHours: string;
     description: string;
 }
+
+const NAME_CONSTRAINTS: NonEmptyStringOptions = {name: "Shelter.name", max: 120};
+const PHONE_CONSTRAINTS: NonEmptyStringOptions = {name: "Shelter.phone"};
+const EMAIL_CONSTRAINTS: NonEmptyStringOptions = {name: "Shelter.email"};
 
 export class Shelter extends Entity {
     /** the name of the shelter
@@ -55,14 +58,10 @@ export class Shelter extends Entity {
 
     constructor(slots: ShelterSlots) {
         super(ShelterStorage, slots.id);
-        this._name = NonEmptyString.create(slots.name, {
-            name: "Shelter.name",
-            min: 0,
-            max: 120,
-        });
+        this._name = NonEmptyString.create(slots.name, NAME_CONSTRAINTS);
         this._address = new Address(slots.address);
-        this._phone = PhoneNumber.create(slots.phone, {name: "Shelter.phone"});
-        this._email = EmailAddress.create(slots.email, {name: "Shelter.email"});
+        this._phone = PhoneNumber.create(slots.phone, PHONE_CONSTRAINTS);
+        this._email = EmailAddress.create(slots.email, EMAIL_CONSTRAINTS);
         this._officeHours = slots.officeHours;
         this._description = slots.description;
     }
@@ -74,7 +73,7 @@ export class Shelter extends Entity {
     }
     /** @param name - the name of shelter to be set */
     set name(name: string) {
-        this._name = NonEmptyString.create(name);
+        this._name = NonEmptyString.create(name, NAME_CONSTRAINTS);
     }
     /**
      * checks if the given name is not empty and has a maximum of 120 letters
@@ -84,7 +83,7 @@ export class Shelter extends Entity {
      */
     static checkName(name: string) {
         try {
-            NonEmptyString.validate(name, {name: 'Shelter.name', max: 120});
+            NonEmptyString.validate(name, NAME_CONSTRAINTS);
             return "";
         }
         catch (error) {
@@ -126,7 +125,7 @@ export class Shelter extends Entity {
     }
     /** @param phone - the phone number of shelter to be set */
     set phone(phone: string) {
-        this._phone = PhoneNumber.create(phone, {name: "Shelter.phone"});
+        this._phone = PhoneNumber.create(phone, PHONE_CONSTRAINTS);
     }
     /**
      * checks if the given phone number is given and consists of maximum 15 numbers and only numbers
@@ -136,7 +135,7 @@ export class Shelter extends Entity {
      */
     static checkPhone(phone: string) {
         try {
-            PhoneNumber.validate(phone, {name: "Shelter.phone"});
+            PhoneNumber.validate(phone, PHONE_CONSTRAINTS);
             return "";
         } catch (error) {
             console.error(error);
@@ -150,7 +149,7 @@ export class Shelter extends Entity {
     }
     /** @param email - email address of shelter to set */
     set email(email: string) {
-        this._email = EmailAddress.create(email, {name: "Shelter.email"});
+        this._email = EmailAddress.create(email, EMAIL_CONSTRAINTS);
     }
     /**
      * checks if the given email address is legit ([number,letters,sybols]@[letters].[letters])
@@ -160,7 +159,7 @@ export class Shelter extends Entity {
      */
     static checkEmail(email: string) {
         try {
-            EmailAddress.validate(email, {name: "Shelter.email"});
+            EmailAddress.validate(email, EMAIL_CONSTRAINTS);
             return "";
         }
         catch (error) {

@@ -12,7 +12,7 @@ export class PositiveNumber extends ValueObject<number> {
      * @throws {@link TypeError} if not a positive number
      * @throws {@link RangeError} if the value is not inside the interval
      */
-    public static validate(value: number, options?: IntervalCreationOptions) {
+    public static validate(value: number, options?: PositiveNumberOptions) {
         // type
         if (typeof value !== 'number' || value < 0) {
             throw new TypeError(
@@ -39,7 +39,7 @@ export class PositiveNumber extends ValueObject<number> {
      * @param options for the creation
      * @returns the created ValueObject
      */
-    public static create(value: number, options?: IntervalCreationOptions) {
+    public static create(value: number, options?: PositiveNumberOptions) {
         return new PositiveNumber(this.validate(value, options));
     }
 
@@ -48,7 +48,7 @@ export class PositiveNumber extends ValueObject<number> {
      * @param options for the **individual** creation
      * @returns the array of ValueObjects
      */
-    public static fromList(values: number[], options?: IntervalCreationOptions) {
+    public static fromList(values: number[], options?: PositiveNumberOptions) {
         return values.map((val) => this.create(val, options));
     }
 
@@ -60,3 +60,5 @@ export class PositiveNumber extends ValueObject<number> {
         return values.map((pi) => pi.value);
     }
 }
+
+export interface PositiveNumberOptions extends IntervalCreationOptions {}

@@ -1,11 +1,15 @@
-import {NonEmptyString} from "../NonEmptyString";
-import {PositiveNumber} from "../PositiveNumber";
+import {NonEmptyString, NonEmptyStringOptions} from "../NonEmptyString";
+import {PositiveNumber, PositiveNumberOptions} from "../PositiveNumber";
 
 export interface AddressSlots {
     street: string; // requires NonEmptyString(120)
     number: number; // requires PositiveNumber (TODO: use regex for using numbers like 10a etc)
     city: string;   // requires NonEmptyString(120)
 }
+
+const STREET_CONSTRAINTS: NonEmptyStringOptions = {name: "Address.street",max: 120}
+const NUMBER_CONSTRAINTS: PositiveNumberOptions = {name: "Address.number", max: 10000}
+const CITY_CONSTRAINTS: PositiveNumberOptions = {name: "Address.city", max: 120}
 
 export class Address {
 
@@ -24,17 +28,9 @@ export class Address {
     private _city: NonEmptyString;
 
     constructor(slots: AddressSlots) {
-        this._street = NonEmptyString.create(slots.street, {
-            name: "Address.street",
-            min: 0,
-            max: 120,
-        });
-        this._number = PositiveNumber.create(slots.number, {name: "Address.number", max: 10000});
-        this._city = NonEmptyString.create(slots.city, {
-            name: "Address.city",
-            min: 0,
-            max: 120,
-        });
+        this._street = NonEmptyString.create(slots.street, STREET_CONSTRAINTS);
+        this._number = PositiveNumber.create(slots.number, NUMBER_CONSTRAINTS);
+        this._city = NonEmptyString.create(slots.city, CITY_CONSTRAINTS);
     }
 
     // *** street ****************************************************************
@@ -44,7 +40,7 @@ export class Address {
     }
     /** @param street - the street to be set */
     set street(street: string) {
-        this._street = NonEmptyString.create(street, {name: "Address.street", max: 120});
+        this._street = NonEmptyString.create(street, STREET_CONSTRAINTS);
     }
     /**
      * checks if the given street is not empty and not longer than 120 letters
@@ -54,7 +50,7 @@ export class Address {
      */
     static checkStreet(street: string) {
         try {
-            NonEmptyString.validate(street, {name: "Address.street", max: 120});
+            NonEmptyString.validate(street, STREET_CONSTRAINTS);
             return "";
         } catch (error) {
             console.error(error);
@@ -68,7 +64,7 @@ export class Address {
     }
     /** @param number - number in street to set */
     set number(number: number) {
-        this._number = PositiveNumber.create(number, {name: "Address.number", max: 10000});
+        this._number = PositiveNumber.create(number, NUMBER_CONSTRAINTS);
     }
     /**
      * checks if the given number is a positive integer (TODO: change when using regex)
@@ -80,7 +76,7 @@ export class Address {
         try {
             // TODO: probably change validation when changing to regex mode
             // TODO: configure the maximum number
-            PositiveNumber.validate(number, {name: "Address.number", max: 10000});
+            PositiveNumber.validate(number, NUMBER_CONSTRAINTS);
             return "";
         } catch (error) {
             console.error(error);
@@ -92,7 +88,7 @@ export class Address {
         return this._city.value;
     }
     set city(city: string) {
-        this._city = NonEmptyString.create(city, {name: "Address.city", max: 120});
+        this._city = NonEmptyString.create(city, CITY_CONSTRAINTS);
     }
     /**
      * checks if the given city is not empty and not longer than 120 letters
@@ -102,7 +98,7 @@ export class Address {
      */
     static checkCity(city: string) {
         try {
-            NonEmptyString.validate(city, {name: "Address.city", max: 120});
+            NonEmptyString.validate(city, CITY_CONSTRAINTS);
             return "";
         } catch (error) {
             console.error(error);

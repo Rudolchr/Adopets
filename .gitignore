@@ -4,3 +4,6 @@ node_modules/
 
 # mappings for typescript debugging
 *.js.map
+
+# firebase
+*.log
