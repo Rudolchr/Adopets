@@ -6,7 +6,7 @@ import { catchValidation } from "../lib/newUtil.js";
 import { NonEmptyString } from "../lib/valueObjects/NonEmptyString.js";
 import { SafeDate } from "../lib/valueObjects/SafeDate.js";
 import { PetStorage } from "./PetStorage.js";
-const NAME_CONSTRAINTS = { name: "Pet.name", min: 5, max: 120 };
+const NAME_CONSTRAINTS = { name: "Pet.name", max: 120 };
 export var SpeciesEnum;
 (function (SpeciesEnum) {
     SpeciesEnum["CAT"] = "Cat";
@@ -28,9 +28,8 @@ export class Pet extends Entity {
     constructor(slots) {
         super(PetStorage, slots.id);
         this._name = NonEmptyString.create(slots.name, NAME_CONSTRAINTS);
-        // TODO
-        this._species = NonEmptyString.create(slots.species ?? '', SPECIES_CONSTRAINTS);
-        this._birthDate = SafeDate.create(slots.birthDate ?? '2020-20-12', BIRTH_DATE_CONSTRAINTS);
+        this._species = NonEmptyString.create(slots.species, SPECIES_CONSTRAINTS);
+        this._birthDate = SafeDate.create(slots.birthDate, BIRTH_DATE_CONSTRAINTS);
     }
     // *** name ****************************************************************
     /** @returns the name of the pet */

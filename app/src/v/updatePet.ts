@@ -1,8 +1,8 @@
 /**
  * @author Christian Prinz
  */
-import {fillSelectWithOptions} from "../lib/util.js";
-import {Pet, PetSlots} from "../m/Pet.js";
+import {fillSelectWithEntities, fillSelectWithRange} from "../lib/newUtil.js";
+import {Pet, PetSlots, SpeciesEnum} from "../m/Pet.js";
 import {PetStorage} from "../m/PetStorage.js";
 
 const form = document.forms.namedItem("Pet")!;
@@ -10,33 +10,36 @@ const form = document.forms.namedItem("Pet")!;
 // load all pets
 await PetStorage.retrieveAll();
 
-/*****************************************************************************
- * ### Pet_ID
- * Though there is no check needed
- */
+/** ### Pet_ID ------------------------------------------------------------- */
 const idOutput: HTMLOutputElement = form["petId"];
 
-/*****************************************************************************
- * ### NAME
- * - responsive validation
- */
-const nameInput: HTMLInputElement = form["petName"];
-nameInput.addEventListener("input", () => {
-  nameInput.setCustomValidity(
-    Pet.checkName(nameInput.value)
+/** ### PET_NAME ----------------------------------------------------------- */
+const petNameInput: HTMLInputElement = form["petName"];
+petNameInput.addEventListener("input", () =>
+  petNameInput.setCustomValidity(
+    Pet.checkName(petNameInput.value)
+  )
+);
+
+/** ### SPECIES ------------------------------------------------------------ */
+const speciesSelection: HTMLSelectElement = form["species"];
+speciesSelection.addEventListener("change", () => {
+  speciesSelection.setCustomValidity(
+    Pet.checkSpecies(speciesSelection.value)
   );
 });
 
-/*****************************************************************************
- * ### PET_SELECTION
- * - fill with options
- * - change listener
- */
-const petSelection: HTMLSelectElement = form['petSelection'];
-fillSelectWithOptions(petSelection, PetStorage.instances, {
-  keyProp: "id",
-  displayProp: "name",
+/** ### BIRTH_DATE --------------------------------------------------------- */
+const birthDateInput: HTMLInputElement = form["birthDate"];
+birthDateInput.addEventListener("input", () => {
+  birthDateInput.setCustomValidity(
+    Pet.checkBirthDate(birthDateInput.value)
+  );
 });
+
+/** ### PET_SELECTION ------------------------------------------------------ */
+const petSelection: HTMLSelectElement = form['petSelection'];
+fillSelectWithEntities(petSelection, PetStorage.instances, 'name');
 
 // when a pet is selected, populate the form with its data
 petSelection.addEventListener("change", () => {
@@ -46,7 +49,9 @@ petSelection.addEventListener("change", () => {
   if (petKey) {
     const pet = PetStorage.instances[petKey];
     idOutput.value = petKey;
-    nameInput.value = pet.name;
+    petNameInput.value = pet.name;
+    fillSelectWithRange(speciesSelection, SpeciesEnum, [pet.species]);
+    birthDateInput.valueAsDate = pet.birthDate;
   } else {
     form.reset();
   }
@@ -61,25 +66,25 @@ const saveButton: HTMLButtonElement = form["saveButton"];
 
 // event handler for save button
 saveButton.addEventListener("click", () => {
-  const slots: PetSlots = {
-    id: petSelection.value,
-    name: nameInput.value,
-  };
-
-
   // set error messages in case of constraint violations
-  nameInput.setCustomValidity(Pet.checkName(slots.name));
+  petNameInput.setCustomValidity(Pet.checkName(petSelection.value));
+  speciesSelection.setCustomValidity(Pet.checkSpecies(speciesSelection.value));
+  birthDateInput.setCustomValidity(Pet.checkBirthDate(birthDateInput.value));
 
   // show possible errors
   form.reportValidity();
 
   // save the input date only if all of the form fields are valid
   if (form.checkValidity()) {
-    // @ts-ignore TODO
-    PetStorage.update(slots);
+    PetStorage.update({
+      id: petSelection.value,
+      name: petNameInput.value,
+      species: speciesSelection.value,
+      birthDate: birthDateInput.value,
+    });
 
     // update the selection list option element
-    petSelection.options[petSelection.selectedIndex].text = slots.name;
+    petSelection.options[petSelection.selectedIndex].text = petNameInput.value;
   }
 });
 

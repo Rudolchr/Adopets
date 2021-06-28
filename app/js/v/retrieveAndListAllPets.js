@@ -13,5 +13,7 @@ for (let key of Object.keys(PetStorage.instances)) {
     const pet = PetStorage.instances[key];
     row.insertCell().textContent = pet.id;
     row.insertCell().textContent = pet.name;
+    row.insertCell().textContent = pet.species;
+    row.insertCell().textContent = pet.birthDate.toLocaleDateString();
 }
 //# sourceMappingURL=retrieveAndListAllPets.js.map

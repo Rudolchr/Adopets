@@ -9,10 +9,10 @@ import {PetStorage} from "./PetStorage.js";
 
 export interface PetSlots extends EntitySlots {
   name: string;
-  species?: string;
-  birthDate?: Dateable;
+  species: string;
+  birthDate: Dateable;
 }
-const NAME_CONSTRAINTS: NonEmptyStringOptions = {name: "Pet.name", min: 5, max: 120};
+const NAME_CONSTRAINTS: NonEmptyStringOptions = {name: "Pet.name", max: 120};
 export enum SpeciesEnum {CAT = 'Cat', DOG = 'Dog', BIRD = 'Bird'}
 const SPECIES_CONSTRAINTS: NonEmptyStringOptions = {name: "Pet.species", range: SpeciesEnum};
 const BIRTH_DATE_CONSTRAINTS: SafeDateOptions = {name: "Pet.birthdate", min: "1990-01-01"};
@@ -32,9 +32,8 @@ export class Pet extends Entity {
   constructor(slots: PetSlots) {
     super(PetStorage, slots.id);
     this._name = NonEmptyString.create(slots.name, NAME_CONSTRAINTS);
-    // TODO
-    this._species = NonEmptyString.create(slots.species ?? '', SPECIES_CONSTRAINTS);
-    this._birthDate = SafeDate.create(slots.birthDate ?? '2020-20-12', BIRTH_DATE_CONSTRAINTS);
+    this._species = NonEmptyString.create(slots.species, SPECIES_CONSTRAINTS);
+    this._birthDate = SafeDate.create(slots.birthDate, BIRTH_DATE_CONSTRAINTS);
   }
 
   // *** name ****************************************************************

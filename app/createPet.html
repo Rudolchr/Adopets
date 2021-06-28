@@ -49,6 +49,22 @@
                 minlength="1"
                 maxlength="120"
               />
+              <div class="select-one">
+                <label
+                  >Species:
+                  <select name="species"></select
+                ></label>
+              </div>
+              <label
+                >Birth date:           
+                <!-- pattern is the fallback validation for the missing date input 
+                in safari (which uses the text type ) -->
+                <input
+                  name="birthDate"
+                  type="date"
+                  min="1895-12-28"
+                  pattern="\d{4}-\d{2}-\d{2}"
+                />
             </label>
           </div>
           <div><button type="submit" name="addButton">Add</button></div>

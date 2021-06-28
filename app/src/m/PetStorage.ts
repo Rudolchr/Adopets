@@ -1,5 +1,6 @@
 import {AbstractStorage} from "../lib/Storage.js";
-import {Pet, PetSlots} from "./Pet.js";
+import {SafeDate} from "../lib/valueObjects/SafeDate.js";
+import {Pet, PetSlots, SpeciesEnum} from "./Pet.js";
 
 /**
  * internal
@@ -21,7 +22,7 @@ class PetStorageClass extends AbstractStorage<Pet, PetSlots> {
    * updates the `Pet` with the corresponding `slots.id` and overwrites it's `name`
    */
   async update(slots: PetSlots) {
-    const {id, name} = slots;
+    const {id, name,species,birthDate} = slots;
     const updateSlots: Partial<PetSlots> = {};
     const pet = this._instances[id];
     const objectBeforeUpdate = pet.toJSON();
@@ -42,6 +43,16 @@ class PetStorageClass extends AbstractStorage<Pet, PetSlots> {
       if (entity.name !== name) {
         pet.name = name;
         updateSlots.name = name;
+      }
+      // update species
+      if (entity.species !== species) {
+        pet.species = species;
+        updateSlots.species = species;
+      }
+      // update birthDate
+      if (SafeDate.create(entity.birthDate).value !== SafeDate.create(birthDate).value) {
+        pet.birthDate = birthDate;
+        updateSlots.birthDate = birthDate;
       }
     } catch (e) {
       console.error("while updating pet property\n" + e);
@@ -99,10 +110,10 @@ class PetStorageClass extends AbstractStorage<Pet, PetSlots> {
    */
   async createTestData() {
     try {
-      await this.add({name: "Wolfgang"});
-      await this.add({name: "Hundula"});
-      await this.add({name: "Katzarina"});
-      await this.add({name: "Vogeldemort"});
+      await this.add({name: "Wolfgang", species: SpeciesEnum.DOG, birthDate: "2020-05-09"});
+      await this.add({name: "Hundula", species: SpeciesEnum.DOG, birthDate: "2019-07-22"});
+      await this.add({name: "Katzarina", species: SpeciesEnum.CAT, birthDate: "2012-11-14"});
+      await this.add({name: "Vogeldemort", species: SpeciesEnum.BIRD, birthDate: "2001-06-08"});
     } catch (e) {
       console.warn(`${e.constructor.name}: ${e.message}`);
     }
