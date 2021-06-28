@@ -22,7 +22,7 @@ const NAME_CONSTRAINTS: NonEmptyStringOptions = {name: "Shelter.name", max: 120}
 const PHONE_CONSTRAINTS: NonEmptyStringOptions = {name: "Shelter.phone"};
 const EMAIL_CONSTRAINTS: NonEmptyStringOptions = {name: "Shelter.email"};
 
-export class Shelter extends Entity {
+export class Shelter extends Entity<ShelterSlots> {
     /** the name of the shelter
      * - requires NonEmptyString(120)
      */
@@ -65,6 +65,11 @@ export class Shelter extends Entity {
         this._email = EmailAddress.create(slots.email, EMAIL_CONSTRAINTS);
         this._officeHours = slots.officeHours;
         this._description = slots.description;
+    }
+
+    update(slots: ShelterSlots): Partial<ShelterSlots> {
+        // TODO See how its done in Pet 
+        throw new Error("Method not implemented.");
     }
 
     // *** name ****************************************************************
@@ -220,6 +225,9 @@ export class Shelter extends Entity {
     /**
      * a static function that creates a `new Shelter` from a serialized one.
      * @returns a new `Shelter` with the corresponding slots if they pass their constraints. `null` otherwise.
+     * TODO: delete this
+     * @deprecated THIS WILL NOT BE USED ANYMORE. make sure that teh `toJSON()` returns exactly the 
+     *             slots that can be reconstructed with the `constructor`
      */
     static deserialize(slots: ShelterSlots) {
         // TODO
@@ -246,9 +254,12 @@ export class Shelter extends Entity {
     /**
      * this function is invoked by `JSON.stringify()` and converts the inner `"_propertyKey"` to `"propertyKey"`
      */
-    toJSON() {
+    toJSON(): ShelterSlots {
         // TODO: not complete
-        return {id: this.id, name: this.name};
+        // return {id: this.id, name: this.name};
+        // TODO See how its done in Pet 
+        throw new Error("Method not implemented.");
+
     }
     /** @returns the stringified Pet */
     toString() {

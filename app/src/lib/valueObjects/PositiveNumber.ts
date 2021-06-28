@@ -59,6 +59,10 @@ export class PositiveNumber extends ValueObject<number> {
     public static toList(values: PositiveNumber[]) {
         return values.map((pi) => pi.value);
     }
+
+    public equals(obj: PositiveNumber){
+        return (obj instanceof PositiveNumber ? obj.value : obj) === this._value;
+    }
 }
 
 export interface PositiveNumberOptions extends IntervalCreationOptions {}

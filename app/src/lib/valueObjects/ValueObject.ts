@@ -23,6 +23,12 @@ export abstract class ValueObject<T> {
     }
 
     /**
+     * compares if the given value is either an equal ValueObject, or an equal value which would create an equal ValueObject
+     * @param obj to compare of equality
+     */
+    abstract equals(obj: ValueObject<T> | any): boolean;
+
+    /**
      * this function is invoked by `JSON.stringify()` and converts the inner `"_propertyKey"` to `"propertyKey"`
      * "Gesamtkonto {NonEmptyString}"
      * @returns {{}} the value

@@ -54,5 +54,8 @@ export class OptionalString extends ValueObject {
     static toList(values) {
         return values.map((pes) => pes.value);
     }
+    equals(obj) {
+        return (obj instanceof OptionalString ? obj.value : obj) === this._value;
+    }
 }
 //# sourceMappingURL=OptionalString.js.map

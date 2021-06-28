@@ -21,7 +21,7 @@ const BIRTH_DATE_CONSTRAINTS: SafeDateOptions = {name: "Pet.birthdate", min: "19
 /**
  * The entity of a Pet
  */
-export class Pet extends Entity {
+export class Pet extends Entity<PetSlots> {
   /** the name of the pet
    * - required NonEmptyString(120)
    */
@@ -34,6 +34,33 @@ export class Pet extends Entity {
     this._name = NonEmptyString.create(slots.name, NAME_CONSTRAINTS);
     this._species = NonEmptyString.create(slots.species, SPECIES_CONSTRAINTS);
     this._birthDate = SafeDate.create(slots.birthDate, BIRTH_DATE_CONSTRAINTS);
+  }
+
+  /**
+   * updates the matching properties for the given slots, if the are different. Afterwards the
+   * slots that are different are returned.
+   * @param slots to update on this Pet
+   * @returns the updated slots (that are different)
+   */
+  update(slots: PetSlots) {
+    const updateSlots: Partial<PetSlots> = {};
+    // update name
+    if (!this._name.equals(slots.name)) {
+      this.name = slots.name;
+      updateSlots.name = slots.name;
+    }
+    // update species
+    if (!this._species.equals(slots.species)) {
+      this.species = slots.species;
+      updateSlots.species = slots.species;
+    }
+    // update birthDate
+    if (!this._birthDate.equals(slots.birthDate)) {
+      this.birthDate = slots.birthDate;
+      updateSlots.birthDate = slots.birthDate;
+    }
+
+    return updateSlots;
   }
 
   // *** name ****************************************************************

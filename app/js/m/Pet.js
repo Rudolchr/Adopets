@@ -31,6 +31,31 @@ export class Pet extends Entity {
         this._species = NonEmptyString.create(slots.species, SPECIES_CONSTRAINTS);
         this._birthDate = SafeDate.create(slots.birthDate, BIRTH_DATE_CONSTRAINTS);
     }
+    /**
+     * updates the matching properties for the given slots, if the are different. Afterwards the
+     * slots that are different are returned.
+     * @param slots to update on this Pet
+     * @returns the updated slots (that are different)
+     */
+    update(slots) {
+        const updateSlots = {};
+        // update name
+        if (!this._name.equals(slots.name)) {
+            this.name = slots.name;
+            updateSlots.name = slots.name;
+        }
+        // update species
+        if (!this._species.equals(slots.species)) {
+            this.species = slots.species;
+            updateSlots.species = slots.species;
+        }
+        // update birthDate
+        if (!this._birthDate.equals(slots.birthDate)) {
+            this.birthDate = slots.birthDate;
+            updateSlots.birthDate = slots.birthDate;
+        }
+        return updateSlots;
+    }
     // *** name ****************************************************************
     /** @returns the name of the pet */
     get name() {

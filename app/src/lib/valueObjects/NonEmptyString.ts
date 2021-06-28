@@ -87,6 +87,10 @@ export class NonEmptyString extends ValueObject<string> {
     public static toList(values: NonEmptyString[]) {
         return values.map((nes) => nes.value);
     }
+
+    public equals(obj: NonEmptyString | string){
+        return (obj instanceof NonEmptyString ? obj.value : obj) === this._value;
+    }
 }
 
 export interface NonEmptyStringOptions extends OptionalStringOptions {

@@ -17,7 +17,7 @@ export function catchValidation(validationFunction: () => any, errorMessage: str
   }
 }
 
-export function fillSelectWithEntities<E extends Entity>(selection: HTMLSelectElement, entities: {[key: string]: E;}, property: keyof E){
+export function fillSelectWithEntities<E extends Entity<any>>(selection: HTMLSelectElement, entities: {[key: string]: E;}, property: keyof E){
   // delete old contents
   selection.innerHTML = "";
 

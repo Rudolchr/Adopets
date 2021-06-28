@@ -59,6 +59,10 @@ export class PositiveIntegerString extends ValueObject<number> {
     public static toList(values: PositiveIntegerString[]) {
         return values.map((nes) => nes.value);
     }
+
+    public equals(obj: PositiveIntegerString){
+        return (obj instanceof PositiveIntegerString ? obj.value : obj) === this._value;
+    }
 }
 
 export interface PositiveIntegerStringOptions extends IntervalCreationOptions {}

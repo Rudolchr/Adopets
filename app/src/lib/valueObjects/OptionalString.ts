@@ -68,6 +68,10 @@ export class OptionalString extends ValueObject<string> {
     public static toList(values: OptionalString[]) {
         return values.map((pes) => pes.value);
     }
+
+    public equals(obj: OptionalString){
+        return (obj instanceof OptionalString ? obj.value : obj) === this._value;
+    }
 }
 
 export interface OptionalStringOptions extends IntervalCreationOptions {

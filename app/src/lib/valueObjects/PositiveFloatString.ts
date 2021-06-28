@@ -68,6 +68,10 @@ export class PositiveFloatString extends ValueObject<number> {
     public static parse(value: string) {
         return parseFloat(value.replace(',', '.'));
     }
+
+    public equals(obj: PositiveFloatString){
+        return (obj instanceof PositiveFloatString ? obj.value : obj) === this._value;
+    }
 }
 
 export interface PositiveFloatStringOptions extends IntervalCreationOptions {}

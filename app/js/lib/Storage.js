@@ -34,6 +34,9 @@ export class AbstractStorage {
             console.info(`${entity.toString()} created`, entity);
         }
     }
+    /** -------------------------------------------------------------------------
+     * RETRIEVE -----------------------------------------------------------------
+     * ------------------------------------------------------------------------*/
     /**
      * uses the constructor of an Entity to create new Entities from the local stored (stringified)
      * Entities.
@@ -49,7 +52,7 @@ export class AbstractStorage {
             doc = await docRef.get();
         }
         catch (firebaseError) {
-            return Promise.reject("Error when reading from firestore\n" + firebaseError);
+            return Promise.reject(`Error when reading entity (${id}) from firestore\n` + firebaseError);
         }
         let entity = null;
         try {
@@ -75,7 +78,7 @@ export class AbstractStorage {
             collection = await this.DB.collection(this.STORAGE_KEY).get();
         }
         catch (e) {
-            alert("Error when reading from firestore\n" + e);
+            alert(`Error when reading all entities from firestore\n` + e);
         }
         if (collection !== undefined && !collection.empty) {
             console.info(`${collection.size} entities loaded`);
@@ -91,6 +94,62 @@ export class AbstractStorage {
             });
         }
     }
+    /**
+     * updates the entity for the given slots in the local instances as well as in the firestore.
+     * This function uses the Entities constructor for restoring the old entity after a failed update.
+     * @param EntityConstructor the actual `class` of the Entity stored in this Storage
+     * @param slots that are usually used for the Entity's constructor
+     */
+    async updateWithConstructor(EntityConstructor, slots) {
+        const { id } = slots;
+        let updateSlots = {};
+        const instance = this._instances[id];
+        const objectBeforeUpdate = instance.toJSON();
+        var updateFailed = false;
+        // get the fresh snapshot
+        let entity;
+        try {
+            entity = await this.retrieveWithConstructor(EntityConstructor, id);
+        }
+        catch (error) {
+            console.warn(`could not retrieve the entity (${id}) to update:\n` + error);
+            return;
+        }
+        // compare props an update instance
+        try {
+            updateSlots = entity.update(slots);
+        }
+        catch (e) {
+            console.error(`while updating entity (${id}) property\n` + e);
+            updateFailed = true;
+        }
+        // update the document in the db and the instance
+        if (!updateFailed && Object.keys(updateSlots).length > 0) {
+            try {
+                await this.DB.collection(this.STORAGE_KEY).doc(id).update(updateSlots);
+                this._instances[id] = entity;
+                console.info(`Properties ${Object.keys(updateSlots).join(', ')} modified for entity ${id}: ${JSON.stringify(entity)}`);
+            }
+            catch (error) {
+                console.error(`while updating entity (${id}) on firebase\n` + error);
+                updateFailed = true;
+            }
+        }
+        if (updateFailed) {
+            try {
+                // restore object to its state before updating
+                this._instances[id] = instance;
+                console.info(`Destroy corrupted entity (${id}). `);
+                this.destroy(id);
+            }
+            catch (error) {
+                console.error(`while restoring entity (${id}) after failed update:\n` + error);
+            }
+        }
+    }
+    /** -------------------------------------------------------------------------
+     * DESTROY ------------------------------------------------------------------
+     * ------------------------------------------------------------------------*/
     /**
      * deletes the Entity with the given id (`Entity.id`) from the Storage.
      * @param id of the Entity
@@ -126,6 +185,9 @@ export class AbstractStorage {
             console.warn(`${e.constructor.name}: ${e.message}`);
         }
     }
+    /** -------------------------------------------------------------------------
+     * HELPER -------------------------------------------------------------------
+     * ------------------------------------------------------------------------*/
     /**
      * checks if an `Entity` with the given `id` exists in the storage.
      * @param id the identifier of the pet to check

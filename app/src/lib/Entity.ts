@@ -4,7 +4,7 @@ import {NonEmptyString} from "./valueObjects/NonEmptyString.js";
 export interface EntitySlots {
   id: string;
 }
-export abstract class Entity implements EntitySlots {
+export abstract class Entity<S extends EntitySlots> {
   /** the unique identifier of the pet
    * - unique required PositiveInteger {id}
    */
@@ -14,7 +14,7 @@ export abstract class Entity implements EntitySlots {
    * @param storage of the entity to validate uniqueness of the id
    * @param id the unique identifier
    */
-  constructor(storage: AbstractStorage<Entity, any>, id: string) {
+  constructor(storage: AbstractStorage<Entity<S>, any>, id: string) {
     Entity.validateUniqueId(storage, id);
     this._id = NonEmptyString.create(id, {name: 'Entity.id'});
   }
@@ -23,13 +23,15 @@ export abstract class Entity implements EntitySlots {
     return this._id.value;
   }
 
+  abstract update(slots: S): Partial<S>
+
   /**
    * checks if the given id is present, >0 and unique
    * @param storage to lookup uniqueness of the id
    * @param id to validate as unique identifier
    * @protected
    */
-  protected static validateUniqueId(storage: AbstractStorage<Entity, any>, id: string) {
+  protected static validateUniqueId(storage: AbstractStorage<Entity<any>, any>, id: string) {
     try {
       // check uniqueness
       if (storage.contains(id)) {
@@ -48,8 +50,10 @@ export abstract class Entity implements EntitySlots {
    * @param storage of the entity to validate uniqueness of the id
    * @param id the unique identifier
    */
-  protected setId(storage: AbstractStorage<Entity, any>, id: string) {
+  protected setId(storage: AbstractStorage<Entity<S>, any>, id: string) {
     Entity.validateUniqueId(storage, id);
     this._id = NonEmptyString.create(id);
   }
+
+  abstract toJSON(): S;
 }

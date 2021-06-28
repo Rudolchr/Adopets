@@ -58,5 +58,8 @@ export class PositiveFloatString extends ValueObject {
     static parse(value) {
         return parseFloat(value.replace(',', '.'));
     }
+    equals(obj) {
+        return (obj instanceof PositiveFloatString ? obj.value : obj) === this._value;
+    }
 }
 //# sourceMappingURL=PositiveFloatString.js.map

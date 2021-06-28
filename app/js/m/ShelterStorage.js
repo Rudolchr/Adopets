@@ -11,25 +11,7 @@ class ShelterStorageClass extends AbstractStorage {
      * if the slots fulfil their constraints. Does nothing otherwise
      */
     async add(slots) {
-        // the creation is nearly fully abstracted
         await super.addWithConstructor(Shelter, slots);
-    }
-    /**
-     * updates the `Shelter` with the corresponding `slots.id` and overwrites it's `name`
-     */
-    async update(slots) {
-        // TODO
-    }
-    async destroy(id) {
-        // TODO
-    }
-    /**
-     * loads a stored Shelter from the `firestore`, parses it and stores it to the `this.instances` if
-     * successful. ***Throws an Error otherwise***
-     * @throws {Error} if no entry found
-     */
-    async retrieve(id) {
-        return super.retrieveWithConstructor(Shelter, id);
     }
     /**
      * loads all stored Shelters from the `firestore`, parses them and stores them
@@ -37,6 +19,15 @@ class ShelterStorageClass extends AbstractStorage {
      */
     async retrieveAll() {
         await super.retrieveAllWithConstructor(Shelter);
+    }
+    /**
+     * updates the `Shelter` with the corresponding `slots.id` and overwrites it's `name`
+     */
+    async update(slots) {
+        await super.updateWithConstructor(Shelter, slots);
+    }
+    async destroy(id) {
+        super.destroy(id);
     }
     async clear() {
         await this.retrieveAll();

@@ -66,5 +66,8 @@ export class NonEmptyString extends ValueObject {
     static toList(values) {
         return values.map((nes) => nes.value);
     }
+    equals(obj) {
+        return (obj instanceof NonEmptyString ? obj.value : obj) === this._value;
+    }
 }
 //# sourceMappingURL=NonEmptyString.js.map
