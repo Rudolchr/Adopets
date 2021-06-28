@@ -1,5 +1,5 @@
-import {NonEmptyString, NonEmptyStringOptions} from "../NonEmptyString";
-import {PositiveNumber, PositiveNumberOptions} from "../PositiveNumber";
+import {NonEmptyString, NonEmptyStringOptions} from "../NonEmptyString.js";
+import {PositiveNumber, PositiveNumberOptions} from "../PositiveNumber.js";
 
 export interface AddressSlots {
     street: string; // requires NonEmptyString(120)

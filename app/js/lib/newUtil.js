@@ -15,7 +15,7 @@ export function catchValidation(validationFunction, errorMessage) {
         return errorMessage;
     }
 }
-export function fillSelectWithEntities(selection, entities, property) {
+export function fillSelectWithEntities(selection, entities, property, selected) {
     // delete old contents
     selection.innerHTML = "";
     // create "no selection yet" entry
@@ -26,6 +26,7 @@ export function fillSelectWithEntities(selection, entities, property) {
         const key = entity.id;
         const text = entity[property];
         const option = createOption(key, text);
+        option.selected = selected?.includes(key) ?? false;
         selection.add(option);
     }
 }

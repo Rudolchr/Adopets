@@ -104,7 +104,6 @@ export class AbstractStorage {
         const { id } = slots;
         let updateSlots = {};
         const instance = this._instances[id];
-        const objectBeforeUpdate = instance.toJSON();
         var updateFailed = false;
         // get the fresh snapshot
         let entity;
@@ -174,12 +173,15 @@ export class AbstractStorage {
      */
     async clear() {
         try {
-            if (confirm("Do you really want to delete all book records?")) {
+            // if (confirm("Do you really want to delete all book records?")) {
+            const collection = await this.DB.collection(this.STORAGE_KEY).get();
+            if (collection !== undefined && !collection.empty) {
                 // delete all documents
-                await Promise.all(Object.keys(this.instances).map(entityIds => this.DB.collection(this.STORAGE_KEY).doc(entityIds).delete()));
-                this._instances = {};
-                console.info("All entities cleared.");
+                await Promise.all(collection.docs.map(doc => this.DB.collection(this.STORAGE_KEY).doc(doc.id).delete()));
             }
+            this._instances = {};
+            console.info("All entities cleared.");
+            // }
         }
         catch (e) {
             console.warn(`${e.constructor.name}: ${e.message}`);
@@ -193,8 +195,16 @@ export class AbstractStorage {
      * @param id the identifier of the pet to check
      * @returns true if the pet exists in the storage
      */
-    contains(id) {
-        return Object.keys(this._instances).includes(id);
+    async contains(id) {
+        try {
+            const docRef = this.DB.collection(this.STORAGE_KEY).doc(id);
+            const doc = await docRef.get();
+            return doc.exists;
+        }
+        catch (firebaseError) {
+            console.error(`Error when reading entity (${id}) from firestore\n` + firebaseError);
+            return false;
+        }
     }
 }
 //# sourceMappingURL=Storage.js.map

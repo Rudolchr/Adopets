@@ -17,7 +17,7 @@ export function catchValidation(validationFunction: () => any, errorMessage: str
   }
 }
 
-export function fillSelectWithEntities<E extends Entity<any>>(selection: HTMLSelectElement, entities: {[key: string]: E;}, property: keyof E){
+export function fillSelectWithEntities<E extends Entity<any>>(selection: HTMLSelectElement, entities: {[key: string]: E;}, property: keyof E, selected?: string[]){
   // delete old contents
   selection.innerHTML = "";
 
@@ -29,6 +29,7 @@ export function fillSelectWithEntities<E extends Entity<any>>(selection: HTMLSel
     const key = entity.id;
     const text = entity[property] as unknown as string;
     const option = createOption(key,text);
+    option.selected = selected?.includes(key) ?? false;
 
     selection.add(option);
   }

@@ -1,12 +1,15 @@
 /**
  * @author Christian Prinz
  */
-import {Pet} from "../m/Pet.js";
+import {fillSelectWithEntities, fillSelectWithRange} from "../lib/newUtil.js";
+import {Pet, SpeciesEnum} from "../m/Pet.js";
 import {PetStorage} from "../m/PetStorage.js";
+import {ShelterStorage} from "../m/ShelterStorage.js";
 
 const form = document.forms.namedItem("Pet")!;
 
 // load all pets
+await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
 
 /** ### PET_NAME ----------------------------------------------------------- */
@@ -19,6 +22,7 @@ petNameInput.addEventListener("input", () =>
 
 /** ### SPECIES ------------------------------------------------------------ */
 const speciesSelection: HTMLSelectElement = form["species"];
+fillSelectWithRange(speciesSelection, SpeciesEnum);
 speciesSelection.addEventListener("change", () => {
   speciesSelection.setCustomValidity(
     Pet.checkSpecies(speciesSelection.value)
@@ -33,6 +37,15 @@ birthDateInput.addEventListener("input", () => {
   );
 });
 
+/** ### SHELTER ------------------------------------------------------------ */
+const shelterSelection: HTMLSelectElement = form["shelter"];
+fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name');
+shelterSelection.addEventListener("change", () => {
+  shelterSelection.setCustomValidity(
+    Pet.checkShelterId(shelterSelection.value)
+  );
+});
+
 /** ### SAVE_BUTTON -------------------------------------------------------- */
 const saveButton: HTMLButtonElement = form["addButton"];
 saveButton.addEventListener("click", () => {
@@ -41,6 +54,7 @@ saveButton.addEventListener("click", () => {
   petNameInput.setCustomValidity(Pet.checkName(petNameInput.value));
   speciesSelection.setCustomValidity(Pet.checkSpecies(speciesSelection.value));
   birthDateInput.setCustomValidity(Pet.checkBirthDate(birthDateInput.value));
+  shelterSelection.setCustomValidity(Pet.checkShelterId(shelterSelection.value));
 
   // show possible errors
   form.reportValidity();
@@ -50,6 +64,7 @@ saveButton.addEventListener("click", () => {
     name: petNameInput.value,
     species: speciesSelection.value,
     birthDate: birthDateInput.value,
+    shelterId: shelterSelection.value,
   });
 });
 

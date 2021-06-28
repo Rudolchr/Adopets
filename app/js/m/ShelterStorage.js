@@ -27,10 +27,9 @@ class ShelterStorageClass extends AbstractStorage {
         await super.updateWithConstructor(Shelter, slots);
     }
     async destroy(id) {
-        super.destroy(id);
+        await super.destroy(id);
     }
     async clear() {
-        await this.retrieveAll();
         await super.clear();
     }
 }

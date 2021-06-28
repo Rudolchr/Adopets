@@ -4,8 +4,10 @@
 import { fillSelectWithEntities, fillSelectWithRange } from "../lib/newUtil.js";
 import { Pet, SpeciesEnum } from "../m/Pet.js";
 import { PetStorage } from "../m/PetStorage.js";
+import { ShelterStorage } from "../m/ShelterStorage.js";
 const form = document.forms.namedItem("Pet");
 // load all pets
+await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
 /** ### Pet_ID ------------------------------------------------------------- */
 const idOutput = form["petId"];
@@ -14,6 +16,7 @@ const petNameInput = form["petName"];
 petNameInput.addEventListener("input", () => petNameInput.setCustomValidity(Pet.checkName(petNameInput.value)));
 /** ### SPECIES ------------------------------------------------------------ */
 const speciesSelection = form["species"];
+fillSelectWithRange(speciesSelection, SpeciesEnum);
 speciesSelection.addEventListener("change", () => {
     speciesSelection.setCustomValidity(Pet.checkSpecies(speciesSelection.value));
 });
@@ -21,6 +24,12 @@ speciesSelection.addEventListener("change", () => {
 const birthDateInput = form["birthDate"];
 birthDateInput.addEventListener("input", () => {
     birthDateInput.setCustomValidity(Pet.checkBirthDate(birthDateInput.value));
+});
+/** ### SHELTER ------------------------------------------------------------ */
+const shelterSelection = form["shelter"];
+fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name');
+shelterSelection.addEventListener("change", () => {
+    shelterSelection.setCustomValidity(Pet.checkShelterId(shelterSelection.value));
 });
 /** ### PET_SELECTION ------------------------------------------------------ */
 const petSelection = form['petSelection'];
@@ -35,6 +44,7 @@ petSelection.addEventListener("change", () => {
         petNameInput.value = pet.name;
         fillSelectWithRange(speciesSelection, SpeciesEnum, [pet.species]);
         birthDateInput.valueAsDate = pet.birthDate;
+        fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name', [pet.shelterId]);
     }
     else {
         form.reset();
@@ -52,6 +62,7 @@ saveButton.addEventListener("click", () => {
     petNameInput.setCustomValidity(Pet.checkName(petSelection.value));
     speciesSelection.setCustomValidity(Pet.checkSpecies(speciesSelection.value));
     birthDateInput.setCustomValidity(Pet.checkBirthDate(birthDateInput.value));
+    shelterSelection.setCustomValidity(Pet.checkBirthDate(shelterSelection.value));
     // show possible errors
     form.reportValidity();
     // save the input date only if all of the form fields are valid
@@ -61,6 +72,7 @@ saveButton.addEventListener("click", () => {
             name: petNameInput.value,
             species: speciesSelection.value,
             birthDate: birthDateInput.value,
+            shelterId: shelterSelection.value,
         });
         // update the selection list option element
         petSelection.options[petSelection.selectedIndex].text = petNameInput.value;

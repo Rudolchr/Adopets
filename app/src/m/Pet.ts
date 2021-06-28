@@ -3,37 +3,41 @@
  */
 import {Entity, EntitySlots} from "../lib/Entity.js";
 import {catchValidation} from "../lib/newUtil.js";
+import {IdReference, IdReferenceOptions} from "../lib/valueObjects/composed/IdReference.js";
 import {NonEmptyString, NonEmptyStringOptions} from "../lib/valueObjects/NonEmptyString.js";
 import {Dateable, SafeDateOptions, SafeDate} from "../lib/valueObjects/SafeDate.js";
 import {PetStorage} from "./PetStorage.js";
+import {Shelter, ShelterSlots} from "./Shelter.js";
+import {ShelterStorage} from "./ShelterStorage.js";
 
 export interface PetSlots extends EntitySlots {
   name: string;
   species: string;
   birthDate: Dateable;
+  shelterId: string
 }
 const NAME_CONSTRAINTS: NonEmptyStringOptions = {name: "Pet.name", max: 120};
 export enum SpeciesEnum {CAT = 'Cat', DOG = 'Dog', BIRD = 'Bird'}
 const SPECIES_CONSTRAINTS: NonEmptyStringOptions = {name: "Pet.species", range: SpeciesEnum};
 const BIRTH_DATE_CONSTRAINTS: SafeDateOptions = {name: "Pet.birthdate", min: "1990-01-01"};
+const SHELTER_ID_CONSTRAINTS: IdReferenceOptions<ShelterSlots, Shelter> = {name: "Pet.shelter", foreignStorage: ShelterStorage};
 
 
 /**
  * The entity of a Pet
  */
 export class Pet extends Entity<PetSlots> {
-  /** the name of the pet
-   * - required NonEmptyString(120)
-   */
   private _name: NonEmptyString;
   private _species: NonEmptyString;
   private _birthDate: SafeDate;
+  private _shelterId: IdReference<Shelter>;
 
   constructor(slots: PetSlots) {
     super(PetStorage, slots.id);
     this._name = NonEmptyString.create(slots.name, NAME_CONSTRAINTS);
     this._species = NonEmptyString.create(slots.species, SPECIES_CONSTRAINTS);
     this._birthDate = SafeDate.create(slots.birthDate, BIRTH_DATE_CONSTRAINTS);
+    this._shelterId = IdReference.create(slots.shelterId, SHELTER_ID_CONSTRAINTS)
   }
 
   /**
@@ -138,36 +142,38 @@ export class Pet extends Entity<PetSlots> {
     this._birthDate = SafeDate.create(birthDate, BIRTH_DATE_CONSTRAINTS);
   }
 
-  // *** serialization ********************************************************
+  // *** shelterId ****************************************************************
+
+  /** @returns the shelterId of the pet */
+  get shelterId(): string {
+    return this._shelterId.value;
+  }
 
   /**
-   * a static function that creates a `new Pet` from a serialized one.
-   * @returns a new `Pet` with the corresponding slots if they pass their constraints. `null` otherwise.
+   * checks if the given shelterId is present and between [1,120] letters
+   * @param shelterId
+   * @returns a ConstraintViolation
+   * @public
    */
-  static deserialize(slots: PetSlots) {
-    let pet = null;
-    try {
-      pet = new Pet({
-        id: slots.id,
-        name: slots.name,
-        species: slots.species,
-        birthDate: slots.birthDate,
-      });
-    } catch (e) {
-      console.warn(
-        `${e.constructor.name} while deserializing a pet: ${e.message}`
-      );
-      pet = null;
-    }
-    return pet;
+  static checkShelterId(shelterId: string) {
+    return catchValidation(() =>
+      IdReference.validate(shelterId, SHELTER_ID_CONSTRAINTS),
+      "The pet's shelter does not exist!");
   }
+
+  /** @param shelterId - the new shelterId to set */
+  set shelterId(shelterId: string) {
+    this._shelterId = IdReference.create(shelterId, SHELTER_ID_CONSTRAINTS);
+  }
+
+  // *** serialization ********************************************************
 
   /**
    * this function is invoked by `JSON.stringify()` and converts the inner `"_propertyKey"` to `"propertyKey"`
    * @override the inherited toJSON()
    */
   toJSON(): PetSlots {
-    return {id: this.id, name: this.name, birthDate: this.birthDate.toJSON(), species: this.species};
+    return {id: this.id, name: this.name, birthDate: this.birthDate.toJSON(), species: this.species, shelterId: this.shelterId};
   }
 
   /** @returns the stringified Pet */

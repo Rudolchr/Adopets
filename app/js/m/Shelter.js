@@ -32,11 +32,11 @@ export class Shelter extends Entity {
     /** the office hours of the shelter
      * TODO: requirement
      */
-    _officeHours;
+    // private _officeHours: string;
     /**
      * optional description of the shelter (max. 500 letters)
      */
-    _description;
+    // private _description: string;
     /**
      * list of pett IDs of pets assigned to this shelter
      */
@@ -51,8 +51,8 @@ export class Shelter extends Entity {
         this._address = new Address(slots.address);
         this._phone = PhoneNumber.create(slots.phone, PHONE_CONSTRAINTS);
         this._email = EmailAddress.create(slots.email, EMAIL_CONSTRAINTS);
-        this._officeHours = slots.officeHours;
-        this._description = slots.description;
+        // this._officeHours = slots.officeHours;
+        // this._description = slots.description;
     }
     update(slots) {
         // TODO See how its done in Pet 
@@ -233,9 +233,7 @@ export class Shelter extends Entity {
      */
     toJSON() {
         // TODO: not complete
-        // return {id: this.id, name: this.name};
-        // TODO See how its done in Pet 
-        throw new Error("Method not implemented.");
+        return { id: this.id, name: this.name, address: this.address, email: this.email, officeHours: '', phone: this.phone, description: '' };
     }
     /** @returns the stringified Pet */
     toString() {

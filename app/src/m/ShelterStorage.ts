@@ -30,11 +30,10 @@ class ShelterStorageClass extends AbstractStorage<Shelter, ShelterSlots> {
     }
 
     async destroy(id: string) {
-        super.destroy(id);
+        await super.destroy(id);
     }
 
     async clear() {
-        await this.retrieveAll();
         await super.clear();
     }
 
