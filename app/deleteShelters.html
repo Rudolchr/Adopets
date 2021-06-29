@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Adopets: Delete Shelter</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <link rel="icon" href="assets/favicon.svg" />
+    <link rel="mask-icon" href="assets/mask-icon.svg" color="#000000" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/manifest.json" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/main.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="js/c/initialize.js"></script>
+    <script src="js/v/deleteShelter.js" type="module"></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrapper clearfix">
+        <div class="title">
+          <h1>Delete a shelter</h1>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="createShelter.html">C</a></li>
+            <li><a href="retrieveAndListAllShelters.html">R</a></li>
+            <li><a href="updateShelters.html">U</a></li>
+            <li><a href="deleteShelters.html">D</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper clearfix">
+        <form id="Shelter">
+          <div>
+            <label
+              >Select a shelter:
+              <select name="shelterSelection">
+                <option value="">---</option>
+              </select>
+            </label>
+          </div>
+          <div><button type="button" name="deleteButton">Delete</button></div>
+        </form>
+      </div>
+    </main>
+    <footer>
+      <div class="foot-content wrapper">
+        <a href="index.html">Back to main menu</a>
+      </div>
+    </footer>
+  </body>
+</html>

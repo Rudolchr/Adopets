@@ -72,11 +72,11 @@ export class Address {
      * @returns ConstraintViolation
      * @public
      */
-    static checkNumber(number: number) {
+    static checkNumber(number: number | string) {
         try {
-            // TODO: probably change validation when changing to regex mode
-            // TODO: configure the maximum number
-            PositiveNumber.validate(number, NUMBER_CONSTRAINTS);
+            if (typeof number === "number" || parseInt(number)) {
+                PositiveNumber.validate(+number, NUMBER_CONSTRAINTS);
+            }
             return "";
         } catch (error) {
             console.error(error);
@@ -105,4 +105,8 @@ export class Address {
             return "The address' city should not be empty or larger than 120 letters";
         }
     }
+    /** @returns the stringified address */
+    toString() {
+        return `Street: ${this.street}  ${this.number}\nCity: ${this.city}`;
+    }   
 }

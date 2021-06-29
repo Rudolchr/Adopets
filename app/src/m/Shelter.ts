@@ -35,7 +35,7 @@ export class Shelter extends Entity<ShelterSlots> {
      */
     private _address: Address;
     /** the phone number of the shelter 
-     * - requires NonEmptyString(15)
+     * - requires NonEmptyString(30)
      * - requires matching regex = /^\+(?:[0-9] ?){6,14}[0-9]$/
      */
     private _phone: PhoneNumber;

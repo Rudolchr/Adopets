@@ -36,8 +36,6 @@ class ShelterStorageClass extends AbstractStorage<Shelter, ShelterSlots> {
     async clear() {
         await super.clear();
     }
-
-    // TODO: createTestData() 
 }
 
 /**

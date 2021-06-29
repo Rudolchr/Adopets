@@ -64,9 +64,9 @@ export class Address {
      */
     static checkNumber(number) {
         try {
-            // TODO: probably change validation when changing to regex mode
-            // TODO: configure the maximum number
-            PositiveNumber.validate(number, NUMBER_CONSTRAINTS);
+            if (typeof number === "number" || parseInt(number)) {
+                PositiveNumber.validate(+number, NUMBER_CONSTRAINTS);
+            }
             return "";
         }
         catch (error) {
@@ -96,6 +96,10 @@ export class Address {
             console.error(error);
             return "The address' city should not be empty or larger than 120 letters";
         }
+    }
+    /** @returns the stringified address */
+    toString() {
+        return `Street: ${this.street}  ${this.number}\nCity: ${this.city}`;
     }
 }
 //# sourceMappingURL=Address.js.map

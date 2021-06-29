@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Adopets: Create Shelter</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <link rel="icon" href="assets/favicon.svg" />
+    <link rel="mask-icon" href="assets/mask-icon.svg" color="#000000" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/manifest.json" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/main.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="js/c/initialize.js"></script>
+    <script src="./js/v/createShelter.js" type="module"></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrapper clearfix">
+        <div class="title">
+          <h1>Create a new Shelter</h1>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="createShelter.html">C</a></li>
+            <li><a href="retrieveAndListAllShelters.html">R</a></li>
+            <li><a href="updateShelters.html">U</a></li>
+            <li><a href="deleteShelters.html">D</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper clearfix">
+        <form id="Shelter">
+          <div>
+            <label
+              >Name:
+              <input
+                name="shelterName"
+                type="text"
+                required
+                minlength="1"
+                maxlength="120"
+              />
+            </label>
+          </div>
+          <div>
+            <label>Address:
+              <ul>
+                <li>
+                  <label>Street:
+                    <input
+                    name="AddressStreet"
+                    type="text"
+                    required
+                    minlength="1"
+                    maxlength="120"
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label>Number:
+                    <input
+                    name="AddressNumber"
+                    type="number"
+                    required
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label>City:
+                    <input
+                    name="AddressCity"
+                    type="text"
+                    required
+                    minlength="1"
+                    maxlength="120"
+                    />
+                  </label>
+                </li>
+              </ul>
+            </label>
+          </div>
+          <div>
+            <label>Phone Number:
+              <input
+                name="shelterPhone"
+                type="tel"
+                required
+                placeholder="+012 345 6789"
+              />
+            </label>
+          </div>
+          <div>
+            <label>E-Mail Address:
+              <input
+                name="shelterEmail"
+                type="email"
+                required
+                minlength="5"
+                maxlength="120"
+              />
+            </label>
+          </div>
+          <div>
+            <label>Office Hours:
+              <input
+                name="shelterOfficeHours"
+                type="text"
+                required
+                minlength="1"
+                maxlength="120"
+              />
+            </label>
+          </div>
+          <div>
+            <label>Shelter Description:
+              <input
+                name="shelterDescription"
+                type="text"
+                maxlength="120"
+              />
+            </label>
+          </div>
+          <div><button type="submit" name="addButton">Add</button></div>
+        </form>
+      </div>
+      </div>
+    </main>
+    <footer>
+      <div class="foot-content wrapper">
+        <a href="index.html">Back to main menu</a>
+      </div>
+    </footer>
+  </body>
+</html>
