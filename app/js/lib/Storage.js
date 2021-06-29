@@ -4,7 +4,6 @@
  */
 export class AbstractStorage {
     _instances = {};
-    _nextId = -1;
     DB = firebase.firestore();
     /** @returns a map of the Entities from this Storage */
     get instances() {

@@ -2,23 +2,20 @@
  * @author Christian Prinz
  */
 
-import {fillSelectWithOptions} from "../lib/util.js";
-import { PetStorage } from "../m/PetStorage.js";
+import {fillSelectWithEntities} from "../lib/newUtil.js";
+import {PetStorage} from "../m/PetStorage.js";
 
 const form = document.forms.namedItem("Pet")!;
-const deleteButton: HTMLButtonElement = form['deleteButton'];
 const petSelection: HTMLSelectElement = form['petSelection'];
 
 // load all pets
 await PetStorage.retrieveAll();
 
 // set up the pet selection list
-fillSelectWithOptions(petSelection, PetStorage.instances, {
-  keyProp: "id",
-  displayProp: "name",
-});
+fillSelectWithEntities(petSelection, PetStorage.instances, 'name');
 
-// set an event handler for the delete button
+// Delete Button
+const deleteButton: HTMLButtonElement = form['deleteButton'];
 deleteButton.addEventListener("click", () => {
   const id = petSelection.value;
   if (id) {

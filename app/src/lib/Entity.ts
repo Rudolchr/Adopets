@@ -23,7 +23,7 @@ export abstract class Entity<S extends EntitySlots> {
     return this._id.value;
   }
 
-  abstract update(slots: S): Partial<S>
+  abstract update(slots: Partial<S>): Partial<S>
 
   /**
    * checks if the given id is present, >0 and unique

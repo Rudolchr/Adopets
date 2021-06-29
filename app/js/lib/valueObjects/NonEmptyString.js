@@ -10,7 +10,7 @@ export class NonEmptyString extends ValueObject {
      * @throws {@link TypeError} if not a string or empty
      * @throws {@link TypeError} if doesn't fit the given enum
      * @throws {@link RangeError} if the value is not matching the regex
-     * @throws {@link RangeError} if the value is not inside the interval
+     * @throws {@link RangeError} if the value's length is not inside the interval
      */
     static validate(value, options) {
         // type
@@ -38,7 +38,7 @@ export class NonEmptyString extends ValueObject {
         if (options.range) {
             if (Array.isArray(options.range) && !options.range.includes(value)
                 || typeof options.range === 'object' && !Object.values(options.range).includes(value)) {
-                throw new TypeError(this.pm(options.name) +
+                throw new RangeError(this.pm(options.name) +
                     `NonEmptyString => the given value (${value}: ${typeof value}) is not in the range ${JSON.stringify(options?.range)}`);
             }
         }

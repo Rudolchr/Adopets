@@ -6,7 +6,6 @@ import {Entity, EntitySlots} from "./Entity.js";
  */
 export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlots> {
   protected _instances: {[id: string]: E;} = {};
-  protected _nextId: number = -1;
   abstract STORAGE_KEY: string;
   protected DB = firebase.firestore();
 

@@ -63,6 +63,11 @@ export class Pet extends Entity<PetSlots> {
       this.birthDate = slots.birthDate;
       updateSlots.birthDate = slots.birthDate;
     }
+    // update shelter
+    if (!this._shelterId.equals(slots.shelterId)) {
+        this.shelterId = slots.shelterId;
+        updateSlots.shelterId = slots.shelterId;
+    }
 
     return updateSlots;
   }
