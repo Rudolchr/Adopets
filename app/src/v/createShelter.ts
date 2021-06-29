@@ -2,9 +2,9 @@
  * @author Max Bergmann
  */
 import { Address } from "../lib/valueObjects/composed/Address.js";
-import {PetStorage} from "../m/PetStorage.js";
+import { PetStorage } from "../m/PetStorage.js";
 import { Shelter } from "../m/Shelter.js";
-import {ShelterStorage} from "../m/ShelterStorage.js";
+import { ShelterStorage } from "../m/ShelterStorage.js";
 
 const form = document.forms.namedItem("Shelter")!;
 
@@ -92,11 +92,11 @@ saveButton.addEventListener("click", () => {
   // save the input data only if all of the form fields are valid
   form.checkValidity() && ShelterStorage.add({
     name: shelterNameInput.value,
-    address: new Address({
+    address: {
       street: shelterAddressStreetInput.value,
       number: +shelterAddressNumberInput.value,
       city: shelterAddressCityInput.value,
-    }),
+    },
     phone: shelterPhoneInput.value,
     email: shelterEmailInput.value,
     officeHours: shelterOHInput.value,

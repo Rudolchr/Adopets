@@ -1,4 +1,3 @@
-import { Address } from "../lib/valueObjects/composed/Address.js";
 import { SpeciesEnum } from "../m/Pet.js";
 import { PetStorage } from "../m/PetStorage.js";
 import { ShelterStorage } from "../m/ShelterStorage.js";
@@ -9,9 +8,9 @@ import { ShelterStorage } from "../m/ShelterStorage.js";
 export async function createTestData() {
     // create shelters
     try {
-        await ShelterStorage.add({ name: 'Pet Stop', address: new Address({ city: 'Düsseldog', number: 69, street: 'Am Catdog' }), email: 'pet@stop.com', officeHours: 'open', phone: '+1234567890' });
-        await ShelterStorage.add({ name: 'Pussy Willow', address: new Address({ city: 'Catbus', number: 13, street: 'Dingsda' }), email: 'cat@bus.com', officeHours: 'closed', phone: '+0345617829' });
-        await ShelterStorage.add({ name: 'Cerberus', address: new Address({ city: 'Bärlin', number: 17, street: 'Kuhdamm' }), email: 'bär@damm.com', officeHours: 'unknown', phone: '+5601432897' });
+        await ShelterStorage.add({ name: 'Pet Stop', address: { city: 'Düsseldog', number: 69, street: 'Am Catdog' }, email: 'pet@stop.com', officeHours: 'open', phone: '+1234567890' });
+        await ShelterStorage.add({ name: 'Pussy Willow', address: { city: 'Catbus', number: 13, street: 'Dingsda' }, email: 'cat@bus.com', officeHours: 'closed', phone: '+0345617829' });
+        await ShelterStorage.add({ name: 'Cerberus', address: { city: 'Bärlin', number: 17, street: 'Kuhdamm' }, email: 'bär@damm.com', officeHours: 'unknown', phone: '+5601432897' });
     }
     catch (e) {
         console.warn(`${e.constructor.name}: ${e.message}`);

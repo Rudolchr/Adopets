@@ -48,11 +48,11 @@ saveButton.addEventListener("click", () => {
     // save the input data only if all of the form fields are valid
     form.checkValidity() && ShelterStorage.add({
         name: shelterNameInput.value,
-        address: new Address({
+        address: {
             street: shelterAddressStreetInput.value,
             number: +shelterAddressNumberInput.value,
             city: shelterAddressCityInput.value,
-        }),
+        },
         phone: shelterPhoneInput.value,
         email: shelterEmailInput.value,
         officeHours: shelterOHInput.value,

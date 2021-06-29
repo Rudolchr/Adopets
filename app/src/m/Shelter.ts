@@ -3,7 +3,7 @@
  */
 import {Entity, EntitySlots} from "../lib/Entity.js";
 import {catchValidation} from "../lib/newUtil.js";
-import {Address} from "../lib/valueObjects/composed/Address.js";
+import {Address, AddressSlots} from "../lib/valueObjects/composed/Address.js";
 import {EmailAddress} from "../lib/valueObjects/composed/EmailAddress.js";
 import {PhoneNumber} from "../lib/valueObjects/composed/PhoneNumber.js";
 import {NonEmptyString, NonEmptyStringOptions} from "../lib/valueObjects/NonEmptyString.js";
@@ -12,7 +12,7 @@ import {ShelterStorage} from "./ShelterStorage.js";
 
 export interface ShelterSlots extends EntitySlots {
     name: string;
-    address: Address;
+    address: AddressSlots;
     phone: string;
     email: string;
     officeHours: string;
