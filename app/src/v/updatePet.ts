@@ -33,6 +33,6 @@ formFactory.createSubmitButton<PetSlots, Pet>(
   'saveButton',
   formElements,
   (slots) => PetStorage.update(slots),
+  entitySelection,
   'name',
-  entitySelection
 );

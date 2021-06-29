@@ -18,5 +18,5 @@ const formElements = {
     shelterId: formFactory.createReferenceSelection("shelter", Pet.checkShelterId, ShelterStorage.instances, 'name'),
 };
 const entitySelection = formFactory.createEntitySelection('petSelection', PetStorage.instances, 'name', formElements);
-formFactory.createSubmitButton('saveButton', formElements, (slots) => PetStorage.update(slots), 'name', entitySelection);
+formFactory.createSubmitButton('saveButton', formElements, (slots) => PetStorage.update(slots), entitySelection, 'name');
 //# sourceMappingURL=updatePet.js.map
