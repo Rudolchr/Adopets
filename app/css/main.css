@@ -91,26 +91,26 @@ header .title {
    ============== */
 
 nav ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
 nav a {
-  display: block;
-  margin-bottom: 10px;
-  padding: 15px 0;
-  text-align: center;
-  text-decoration: none;
-  font-weight: bold;
-  color: white;
-  background: var(--dark-bg-color);
+    display: block;
+    margin-bottom: 10px;
+    padding: 15px 0;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    background: var(--dark-bg-color);
 }
 nav a:hover,
 nav a:visited {
-  color: white;
+    color: white;
 }
 nav a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 header figure {
@@ -123,7 +123,7 @@ main {
   padding: 30px 0;
 }
 footer div.foot-content {
-  color: white;
+  color: black;
   padding: 20px 0;
 }
 
@@ -134,8 +134,14 @@ footer div.foot-content {
   font-size: smaller;
   /* margin: 2em auto; */
 }
+footer div.foot-content li {
+  display:inline-block;
+  background-color:var(--dark-bg-color);
+  list-style-type:none;
+  padding:1em;
+}
 footer div.foot-content a {
-  color: white;
+  color: black;
 }
 table {
   border-collapse: collapse;
@@ -167,7 +173,11 @@ div.two-col-menu ul.menu {
   display: inline-block;
   vertical-align: top;
   margin: 0;
+  list-style: none;
   margin-left: 3em;
+}
+div.two-col-menu li {
+  list-style: none;
 }
 ul.menu li {
   list-style: none;
@@ -212,7 +222,6 @@ form > div > label > select,
 form > div > label > div.MultiChoiceWidget,
 form > div > label > output {
   position: absolute;
-  left: 11em;
 }
 /* the height of multi-line elements must be limited */
 form > div.select-many {
