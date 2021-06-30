@@ -1,3 +1,12 @@
+export function createListFromList(list) {
+    const listEl = document.createElement("ul");
+    for (const time of list) {
+        const listItemEl = document.createElement("li");
+        listItemEl.textContent = time;
+        listEl.appendChild(listItemEl);
+    }
+    return listEl;
+}
 /**
  * runs the given `validationFunction` and returns the given `errorMessage` if the function throws an Error - which will be also logged to `console.error`.
  * Returns an empty string otherwise.

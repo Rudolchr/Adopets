@@ -1,20 +1,28 @@
-import { Address } from "../lib/valueObjects/composed/Address.js";
+import { OHSlots } from "../lib/valueObjects/composed/OfficeHours.js";
 import {SpeciesEnum} from "../m/Pet.js";
 import {PetStorage} from "../m/PetStorage.js";
 import {ShelterStorage} from "../m/ShelterStorage.js";
-
-
 
 /**
  * creates a set of 4 `Pet`s and stores it in the first 4 slots of the `this.instances`
  * - TODO: upgrade to always push new pets (requires ID automation)
  */
 export async function createTestData() {
+    const oh: OHSlots = {
+        monday: ["", ""],
+        tuesday: ["", ""],
+        wednesday: ["", ""],
+        thursday: ["", ""],
+        friday: ["", ""],
+        saturday: ["", ""],
+        sunday: ["", ""],
+    }
+
     // create shelters
     try {
-        await ShelterStorage.add({name: 'Pet Stop', city: 'Düsseldog', number: 69, street: 'Am Catdog', email: 'pet@stop.com', officeHours: 'open', phone: '+1234567890'})
-        await ShelterStorage.add({name: 'Pussy Willow', city: 'Catbus', number: 13, street: 'Dingsda', email: 'cat@bus.com', officeHours: 'closed', phone: '+0345617829'})
-        await ShelterStorage.add({name: 'Cerberus', city: 'Bärlin', number: 17, street: 'Kuhdamm', email: 'bär@damm.com', officeHours: 'unknown', phone: '+5601432897'})
+        await ShelterStorage.add({name: 'Pet Stop', city: 'Düsseldog', number: 69, street: 'Am Catdog', email: 'pet@stop.com', officeHours: oh, phone: '+1234567890'})
+        await ShelterStorage.add({name: 'Pussy Willow', city: 'Catbus', number: 13, street: 'Dingsda', email: 'cat@bus.com', officeHours: oh, phone: '+0345617829'})
+        await ShelterStorage.add({name: 'Cerberus', city: 'Bärlin', number: 17, street: 'Kuhdamm', email: 'bär@damm.com', officeHours: oh, phone: '+5601432897'})
     } catch (e) {
         console.warn(`${e.constructor.name}: ${e.message}`);
     }

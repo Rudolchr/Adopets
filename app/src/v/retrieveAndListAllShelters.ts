@@ -1,6 +1,7 @@
 /**
  * @author Max Bergmann
  */
+import { createListFromList } from "../lib/newUtil.js";
 import {PetStorage} from "../m/PetStorage.js";
 import {ShelterStorage} from "../m/ShelterStorage.js";
 
@@ -20,6 +21,11 @@ for (let key of Object.keys(ShelterStorage.instances)) {
   row.insertCell().textContent = shelter.name;
   row.insertCell().textContent = shelter.address;
   row.insertCell().textContent = shelter.email;
-  row.insertCell().textContent = shelter.officeHours;
+  const timeList: HTMLUListElement = createListFromList(shelter.officeHours.toList())
+  if (timeList.childElementCount > 0) {
+    row.insertCell().appendChild(timeList);
+  } else {
+    row.insertCell().textContent = "Closed!";
+  }
   row.insertCell().textContent = shelter.description;
 }

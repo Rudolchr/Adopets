@@ -4,6 +4,7 @@
 import { Entity } from "../lib/Entity.js";
 import { catchValidation } from "../lib/newUtil.js";
 import { EmailAddress } from "../lib/valueObjects/composed/EmailAddress.js";
+import { OfficeHours } from "../lib/valueObjects/composed/OfficeHours.js";
 import { PhoneNumber } from "../lib/valueObjects/composed/PhoneNumber.js";
 import { NonEmptyString } from "../lib/valueObjects/NonEmptyString.js";
 import { OptionalString } from "../lib/valueObjects/OptionalString.js";
@@ -68,7 +69,7 @@ export class Shelter extends Entity {
         this._city = NonEmptyString.create(slots.city, CITY_CONSTRAINTS);
         this._phone = PhoneNumber.create(slots.phone, PHONE_CONSTRAINTS);
         this._email = EmailAddress.create(slots.email, EMAIL_CONSTRAINTS);
-        this._officeHours = NonEmptyString.create(slots.officeHours, OFFICEHOURS_CONSTRAINT);
+        this._officeHours = new OfficeHours(slots.officeHours);
         if (slots.description) {
             this._description = OptionalString.create(slots.description);
         }
@@ -114,19 +115,21 @@ export class Shelter extends Entity {
         }
         // update office hours
         if (!this._officeHours.equals(slots.officeHours)) {
-            this.officeHours = slots.officeHours;
+            this.officeHours.times = slots.officeHours;
             updateSlots.officeHours = slots.officeHours;
         }
         // update description (optional value)
         if (slots.description) {
-            if (this._description.value !== slots.description) {
+            if (this._description.equals(OptionalString.create(slots.description))) {
                 this.description = slots.description;
                 updateSlots.description = slots.description;
             }
         }
         else {
-            this.description = "";
-            updateSlots.description = "";
+            if (this.description !== "") {
+                this.description = "";
+                updateSlots.description = "";
+            }
         }
         // TODO update additional attributes
         return updateSlots;
@@ -266,11 +269,11 @@ export class Shelter extends Entity {
     //*** officeHours *********************************************************
     /** @returns office hours of this shelter */
     get officeHours() {
-        return this._officeHours.value;
+        return this._officeHours;
     }
     /** @param officeHours - officeHours of the shelter to set */
     set officeHours(officeHours) {
-        this._officeHours = NonEmptyString.create(officeHours, OFFICEHOURS_CONSTRAINT);
+        this._officeHours.times = officeHours.times;
     }
     /**
      * checks if the officeHours are given and matching the constraints
@@ -280,7 +283,7 @@ export class Shelter extends Entity {
      */
     static checkOfficeHours(officeHours) {
         try {
-            NonEmptyString.validate(officeHours, OFFICEHOURS_CONSTRAINT);
+            OfficeHours.checkTimes(officeHours);
             return "";
         }
         catch (error) {
@@ -319,11 +322,11 @@ export class Shelter extends Entity {
      * this function is invoked by `JSON.stringify()` and converts the inner `"_propertyKey"` to `"propertyKey"`
      */
     toJSON() {
-        return { id: this.id, name: this.name, street: this.street, number: this.number, city: this.city, email: this.email, officeHours: this.officeHours, phone: this.phone, description: this.description };
+        return { id: this.id, name: this.name, street: this.street, number: this.number, city: this.city, email: this.email, officeHours: this.officeHours.times, phone: this.phone, description: this.description };
     }
     /** @returns the stringified Pet */
     toString() {
-        return `Shelter{ id: ${this.id}, name: ${this.name}, address: {${this.street} ${this.number}, ${this.city}}, phone: ${this.phone}, email: ${this.email}, description: ${this.description}, officeHours: ${this.officeHours} }`;
+        return `Shelter{ id: ${this.id}, name: ${this.name}, address: {${this.street} ${this.number}, ${this.city}}, phone: ${this.phone}, email: ${this.email}, description: ${this.description}, officeHours: ${this.officeHours.toString()} }`;
     }
 }
 //# sourceMappingURL=Shelter.js.map

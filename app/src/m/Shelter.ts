@@ -3,8 +3,8 @@
  */
 import {Entity, EntitySlots} from "../lib/Entity.js";
 import {catchValidation} from "../lib/newUtil.js";
-import {Address, AddressSlots} from "../lib/valueObjects/composed/Address.js";
 import {EmailAddress} from "../lib/valueObjects/composed/EmailAddress.js";
+import { OfficeHours, OHSlots } from "../lib/valueObjects/composed/OfficeHours.js";
 import {PhoneNumber} from "../lib/valueObjects/composed/PhoneNumber.js";
 import {NonEmptyString, NonEmptyStringOptions} from "../lib/valueObjects/NonEmptyString.js";
 import { OptionalString, OptionalStringOptions } from "../lib/valueObjects/OptionalString.js";
@@ -18,7 +18,7 @@ export interface ShelterSlots extends EntitySlots {
     city: string;
     phone: string;
     email: string;
-    officeHours: string;
+    officeHours: OHSlots;
     description?: string;
 }
 
@@ -61,7 +61,7 @@ export class Shelter extends Entity<ShelterSlots> {
     /** the office hours of the shelter
      * TODO: requirement
      */
-    private _officeHours: NonEmptyString;
+    private _officeHours: OfficeHours;
     /**
      * optional description of the shelter (max. 500 letters)
      */
@@ -83,7 +83,7 @@ export class Shelter extends Entity<ShelterSlots> {
         this._city = NonEmptyString.create(slots.city, CITY_CONSTRAINTS);
         this._phone = PhoneNumber.create(slots.phone, PHONE_CONSTRAINTS);
         this._email = EmailAddress.create(slots.email, EMAIL_CONSTRAINTS);
-        this._officeHours = NonEmptyString.create(slots.officeHours, OFFICEHOURS_CONSTRAINT);
+        this._officeHours = new OfficeHours(slots.officeHours);
         if (slots.description) {
             this._description = OptionalString.create(slots.description);
         } else {
@@ -129,18 +129,20 @@ export class Shelter extends Entity<ShelterSlots> {
         }
         // update office hours
         if (!this._officeHours.equals(slots.officeHours)) {
-            this.officeHours = slots.officeHours;
+            this.officeHours.times = slots.officeHours;
             updateSlots.officeHours = slots.officeHours;
         }
         // update description (optional value)
         if (slots.description) {
-            if (this._description.value !== slots.description) {
+            if (this._description.equals(OptionalString.create(slots.description))) {
                 this.description = slots.description;
                 updateSlots.description = slots.description;
             }
         } else {
-            this.description = "";
-            updateSlots.description = "";
+            if (this.description !== "") {
+                this.description = "";
+                updateSlots.description = "";
+            }
         }
         // TODO update additional attributes
 
@@ -288,12 +290,12 @@ export class Shelter extends Entity<ShelterSlots> {
     }
     //*** officeHours *********************************************************
     /** @returns office hours of this shelter */
-    get officeHours(): string {
-        return this._officeHours.value;
+    get officeHours(): OfficeHours {
+        return this._officeHours;
     }
     /** @param officeHours - officeHours of the shelter to set */
-    set officeHours(officeHours: string) {
-        this._officeHours = NonEmptyString.create(officeHours, OFFICEHOURS_CONSTRAINT);
+    set officeHours(officeHours: OfficeHours) {
+        this._officeHours.times = officeHours.times;
     }
     /**
      * checks if the officeHours are given and matching the constraints
@@ -301,9 +303,9 @@ export class Shelter extends Entity<ShelterSlots> {
      * @returns ConstraintViolation
      * @public 
      */
-    static checkOfficeHours(officeHours: string) {
+    static checkOfficeHours(officeHours: OHSlots) {
         try {
-            NonEmptyString.validate(officeHours, OFFICEHOURS_CONSTRAINT);
+            OfficeHours.checkTimes(officeHours);
             return "";
         }
         catch (error) {
@@ -342,10 +344,10 @@ export class Shelter extends Entity<ShelterSlots> {
      * this function is invoked by `JSON.stringify()` and converts the inner `"_propertyKey"` to `"propertyKey"`
      */
     toJSON(): ShelterSlots {
-        return {id: this.id, name: this.name, street: this.street, number: this.number, city: this.city, email: this.email, officeHours: this.officeHours, phone: this.phone, description: this.description};
+        return {id: this.id, name: this.name, street: this.street, number: this.number, city: this.city, email: this.email, officeHours: this.officeHours.times, phone: this.phone, description: this.description};
     }
     /** @returns the stringified Pet */
     toString() {
-        return `Shelter{ id: ${this.id}, name: ${this.name}, address: {${this.street} ${this.number}, ${this.city}}, phone: ${this.phone}, email: ${this.email}, description: ${this.description}, officeHours: ${this.officeHours} }`;
+        return `Shelter{ id: ${this.id}, name: ${this.name}, address: {${this.street} ${this.number}, ${this.city}}, phone: ${this.phone}, email: ${this.email}, description: ${this.description}, officeHours: ${this.officeHours.toString()} }`;
     }
 }

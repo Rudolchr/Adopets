@@ -71,6 +71,7 @@
                     name="AddressNumber"
                     type="number"
                     required
+                    min=1
                     />
                   </label>
                 </li>
@@ -111,13 +112,99 @@
           </div>
           <div>
             <label>Office Hours:
-              <input
-                name="shelterOfficeHours"
-                type="text"
-                required
-                minlength="1"
-                maxlength="120"
-              />
+              <ul name="officeHours">
+                <li>
+                  <label>Monday:
+                    <input
+                    name="monF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="monT"
+                    type="time"
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label>Tuesday:
+                    <input
+                    name="tueF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="tueT"
+                    type="time"
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label>Wednesday:
+                    <input
+                    name="wedF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="wedT"
+                    type="time"
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label>Thursday:
+                    <input
+                    name="thuF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="thuT"
+                    type="time"
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label>Friday:
+                    <input
+                    name="friF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="friT"
+                    type="time"
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label>Saturday:
+                    <input
+                    name="satF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="satT"
+                    type="time"
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label>Sunday:
+                    <input
+                    name="sunF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="sunT"
+                    type="time"
+                    />
+                  </label>
+                </li>
+              </ul>
             </label>
           </div>
           <div>
