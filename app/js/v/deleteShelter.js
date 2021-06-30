@@ -19,9 +19,11 @@ fillSelectWithOptions(shelterSelection, ShelterStorage.instances, {
 deleteButton.addEventListener("click", () => {
     const id = shelterSelection.value;
     if (id) {
-        ShelterStorage.destroy(id);
-        // remove deleted shelter from selection
-        shelterSelection.remove(shelterSelection.selectedIndex);
+        if (confirm("Do you really want to delete this Movie?")) {
+            ShelterStorage.destroy(id);
+            // remove deleted shelter from selection
+            shelterSelection.remove(shelterSelection.selectedIndex);
+        }
     }
 });
 //# sourceMappingURL=deleteShelter.js.map

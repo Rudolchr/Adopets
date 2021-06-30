@@ -59,97 +59,19 @@ shelterEmailInput.addEventListener("input", () =>
 
 /** ### SHELTER_OFFICE_HOURS ----------------------------------------------- */
 const sheltermonFInput: HTMLInputElement = form["monF"];
-sheltermonFInput.addEventListener("input", () =>
-  sheltermonFInput.setCustomValidity(
-    OfficeHours.checkTime(sheltermonFInput.value)
-  )
-);
 const sheltermonTInput: HTMLInputElement = form["monT"];
-sheltermonTInput.addEventListener("input", () =>
-sheltermonTInput.setCustomValidity(
-    OfficeHours.checkTime(sheltermonTInput.value)
-  )
-);
-
 const sheltertueFInput: HTMLInputElement = form["tueF"];
-sheltertueFInput.addEventListener("input", () =>
-  sheltertueFInput.setCustomValidity(
-    OfficeHours.checkTime(sheltertueFInput.value)
-  )
-);
 const sheltertueTInput: HTMLInputElement = form["tueT"];
-sheltertueTInput.addEventListener("input", () =>
-sheltertueTInput.setCustomValidity(
-    OfficeHours.checkTime(sheltertueTInput.value)
-  )
-);
-
 const shelterwedFInput: HTMLInputElement = form["wedF"];
-shelterwedFInput.addEventListener("input", () =>
-  shelterwedFInput.setCustomValidity(
-    OfficeHours.checkTime(shelterwedFInput.value)
-  )
-);
 const shelterwedTInput: HTMLInputElement = form["wedT"];
-shelterwedTInput.addEventListener("input", () =>
-shelterwedTInput.setCustomValidity(
-    OfficeHours.checkTime(shelterwedTInput.value)
-  )
-);
-
 const shelterthuFInput: HTMLInputElement = form["thuF"];
-shelterthuFInput.addEventListener("input", () =>
-  shelterthuFInput.setCustomValidity(
-    OfficeHours.checkTime(shelterthuFInput.value)
-  )
-);
 const shelterthuTInput: HTMLInputElement = form["thuT"];
-shelterthuTInput.addEventListener("input", () =>
-shelterthuTInput.setCustomValidity(
-    OfficeHours.checkTime(shelterthuTInput.value)
-  )
-);
-
 const shelterfriFInput: HTMLInputElement = form["friF"];
-shelterfriFInput.addEventListener("input", () =>
-  shelterfriFInput.setCustomValidity(
-    OfficeHours.checkTime(shelterfriFInput.value)
-  )
-);
 const shelterfriTInput: HTMLInputElement = form["friT"];
-shelterfriTInput.addEventListener("input", () =>
-shelterfriTInput.setCustomValidity(
-    OfficeHours.checkTime(shelterfriTInput.value)
-  )
-);
-
 const sheltersatFInput: HTMLInputElement = form["satF"];
-sheltersatFInput.addEventListener("input", () =>
-  sheltersatFInput.setCustomValidity(
-    OfficeHours.checkTime(sheltersatFInput.value)
-  )
-);
 const sheltersatTInput: HTMLInputElement = form["satT"];
-sheltersatTInput.addEventListener("input", () =>
-sheltersatTInput.setCustomValidity(
-    OfficeHours.checkTime(sheltersatTInput.value)
-  )
-);
-
 const sheltersunFInput: HTMLInputElement = form["sunF"];
-sheltersunFInput.addEventListener("input", () =>
-  sheltersunFInput.setCustomValidity(
-    OfficeHours.checkTime(sheltersunFInput.value)
-  )
-);
 const sheltersunTInput: HTMLInputElement = form["sunT"];
-sheltersunTInput.addEventListener("input", () =>
-    checkHours(
-      sheltersunTInput.setCustomValidity(
-        OfficeHours.checkTime(sheltersunTInput.value)
-      )
-    )
-);
 
 /** ### SHELTER_DSCRIPTION ------------------------------------------------- */
 const shelterDescInput: HTMLInputElement = form["shelterDescription"];
@@ -158,24 +80,6 @@ shelterDescInput.addEventListener("input", () =>
     Shelter.checkDescription(shelterDescInput.value)
   )
 );
-
-function checkHours(validFunction: any) {
-  const oh: OHSlots = {
-    monday: [sheltermonFInput.value, sheltermonTInput.value],
-    tuesday: [sheltertueFInput.value, sheltertueTInput.value],
-    wednesday: [shelterwedFInput.value, shelterwedTInput.value],
-    thursday: [shelterthuFInput.value, shelterthuTInput.value],
-    friday: [shelterfriFInput.value, shelterfriTInput.value],
-    saturday: [sheltersatFInput.value, sheltersatTInput.value],
-    sunday: [sheltersunFInput.value, sheltersunTInput.value],
-  };
-
-  sheltermonFInput.setCustomValidity(
-    Shelter.checkOfficeHours(oh)
-  );
-
-  validFunction();
-}
 
 /** ### SAVE_BUTTON -------------------------------------------------------- */
 const saveButton: HTMLButtonElement = form["addButton"];
@@ -188,21 +92,19 @@ saveButton.addEventListener("click", () => {
   shelterAddressCityInput.setCustomValidity(Shelter.checkCity(shelterAddressCityInput.value));
   shelterPhoneInput.setCustomValidity(Shelter.checkPhone(shelterPhoneInput.value));
   shelterEmailInput.setCustomValidity(Shelter.checkEmail(shelterEmailInput.value));
-  sheltermonFInput.setCustomValidity(OfficeHours.checkTime(sheltermonFInput.value));
-  sheltermonTInput.setCustomValidity(OfficeHours.checkTime(sheltermonTInput.value));
-  sheltertueFInput.setCustomValidity(OfficeHours.checkTime(sheltertueFInput.value));
-  sheltertueTInput.setCustomValidity(OfficeHours.checkTime(sheltertueTInput.value));
-  shelterwedFInput.setCustomValidity(OfficeHours.checkTime(shelterwedFInput.value));
-  shelterwedTInput.setCustomValidity(OfficeHours.checkTime(shelterwedTInput.value));
-  shelterthuFInput.setCustomValidity(OfficeHours.checkTime(shelterthuFInput.value));
-  shelterthuTInput.setCustomValidity(OfficeHours.checkTime(shelterthuTInput.value));
-  shelterfriFInput.setCustomValidity(OfficeHours.checkTime(shelterfriFInput.value));
-  shelterfriTInput.setCustomValidity(OfficeHours.checkTime(shelterfriTInput.value));
-  sheltersatFInput.setCustomValidity(OfficeHours.checkTime(sheltersatFInput.value));
-  sheltersatTInput.setCustomValidity(OfficeHours.checkTime(sheltersatTInput.value));
-  sheltersunFInput.setCustomValidity(OfficeHours.checkTime(sheltersunFInput.value));
-  sheltersunTInput.setCustomValidity(OfficeHours.checkTime(sheltersunTInput.value));
   shelterDescInput.setCustomValidity(Shelter.checkDescription(shelterDescInput.value));
+
+  // check if for each given time also a opening/closing time is given
+  const oh: OHSlots = {
+    monday: [sheltermonFInput.value, sheltermonTInput.value],
+    tuesday: [sheltertueFInput.value, sheltertueTInput.value],
+    wednesday: [shelterwedFInput.value, shelterwedTInput.value],
+    thursday: [shelterthuFInput.value, shelterthuTInput.value],
+    friday: [shelterfriFInput.value, shelterfriTInput.value],
+    saturday: [sheltersatFInput.value, sheltersatTInput.value],
+    sunday: [sheltersunFInput.value, sheltersunTInput.value],
+  };
+  sheltermonFInput.setCustomValidity(Shelter.checkOfficeHours(oh));
 
   // show possible errors
   form.reportValidity();

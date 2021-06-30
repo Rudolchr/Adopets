@@ -12,27 +12,31 @@ export class OfficeHours {
     }
     static checkTimes(times) {
         try {
-            for (let time in times) {
-                if (typeof time[0] === "string" && typeof time[1] === "string") {
-                    if (time[0] === "") {
-                        if (time[1] !== "") {
-                            throw new RangeError("You need to give an opening and closing time!");
-                        }
-                    }
-                    else if (time[1] === "") {
-                        throw new RangeError("You need to give an opening and closing time!");
-                    }
-                }
-                else {
-                    throw new TypeError("Time needs to be a string!");
-                }
-            }
+            this.checkDay(times.monday);
+            this.checkDay(times.tuesday);
+            this.checkDay(times.wednesday);
+            this.checkDay(times.thursday);
+            this.checkDay(times.friday);
+            this.checkDay(times.saturday);
+            this.checkDay(times.sunday);
             return "";
         }
         catch (error) {
-            console.error(error);
-            return "The you need to give times correct!";
+            throw new RangeError("You need to give alle opening times correct!");
         }
+    }
+    static checkDay(dayTime) {
+        if (dayTime[0] === "") {
+            if (dayTime[1] !== "") {
+                throw new RangeError("You need to give a opening time when giving a closing time!");
+            }
+        }
+        else {
+            if (dayTime[1] === "") {
+                throw new RangeError("You need to give a closing time when giving a opening time!");
+            }
+        }
+        return dayTime;
     }
     static checkTime(time) {
         try {

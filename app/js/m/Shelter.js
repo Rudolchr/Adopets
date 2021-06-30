@@ -282,14 +282,7 @@ export class Shelter extends Entity {
      * @public
      */
     static checkOfficeHours(officeHours) {
-        try {
-            OfficeHours.checkTimes(officeHours);
-            return "";
-        }
-        catch (error) {
-            console.error(error);
-            return "The shelter's office hours are too long!";
-        }
+        return catchValidation(() => OfficeHours.checkTimes(officeHours), "You did not give every time opening and closing time together!");
     }
     // *** description *********************************************************
     /** @returns the description of this shelter */
