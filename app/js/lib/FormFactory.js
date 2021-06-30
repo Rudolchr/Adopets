@@ -76,6 +76,9 @@ export class FormFactory {
             if (typeof value === 'string') {
                 input.value = value;
             }
+            else if (typeof value === 'number') {
+                input.valueAsNumber = value;
+            }
             else {
                 input.valueAsDate = value;
             }

@@ -3,26 +3,38 @@
  */
 import { Entity } from "../lib/Entity.js";
 import { catchValidation } from "../lib/newUtil.js";
-import { Address } from "../lib/valueObjects/composed/Address.js";
 import { EmailAddress } from "../lib/valueObjects/composed/EmailAddress.js";
 import { PhoneNumber } from "../lib/valueObjects/composed/PhoneNumber.js";
 import { NonEmptyString } from "../lib/valueObjects/NonEmptyString.js";
 import { OptionalString } from "../lib/valueObjects/OptionalString.js";
+import { PositiveNumber } from "../lib/valueObjects/PositiveNumber.js";
 import { ShelterStorage } from "./ShelterStorage.js";
 const NAME_CONSTRAINTS = { name: "Shelter.name", max: 120 };
+const STREET_CONSTRAINTS = { name: "Shelter.street", max: 120 };
+const CITY_CONSTRAINTS = { name: "Shelter.city", max: 120 };
 const PHONE_CONSTRAINTS = { name: "Shelter.phone" };
 const EMAIL_CONSTRAINTS = { name: "Shelter.email" };
 const DESCRIPTION_CONSTRAINT = { name: "Shelter.description", max: 500 };
 const OFFICEHOURS_CONSTRAINT = { name: "Shelter.officeHours", max: 500 };
+const NUMBER_CONSTRAINTS = { name: "Address.number", max: 10000 };
 export class Shelter extends Entity {
     /** the name of the shelter
      * - requires NonEmptyString(120)
      */
     _name;
-    /** the address of the shelter
-     * - requires AddressFormat(street, number, city)
+    /** the street of the address
+     * - requires NonEmptyString(120)
      */
-    _address;
+    _street;
+    /** the number in the street
+      * - requires PositiveInteger
+      * TODO: probably change, due to possible numbers like 10a or equals --> regex
+      */
+    _number;
+    /** the city of address
+      * - requires NonEmptyString(120)
+      */
+    _city;
     /** the phone number of the shelter
      * - requires NonEmptyString(30)
      * - requires matching regex = /^\+(?:[0-9] ?){6,14}[0-9]$/
@@ -51,7 +63,9 @@ export class Shelter extends Entity {
     constructor(slots) {
         super(ShelterStorage, slots.id);
         this._name = NonEmptyString.create(slots.name, NAME_CONSTRAINTS);
-        this._address = new Address(slots.address);
+        this._street = NonEmptyString.create(slots.street, STREET_CONSTRAINTS);
+        this._number = PositiveNumber.create(slots.number);
+        this._city = NonEmptyString.create(slots.city, CITY_CONSTRAINTS);
         this._phone = PhoneNumber.create(slots.phone, PHONE_CONSTRAINTS);
         this._email = EmailAddress.create(slots.email, EMAIL_CONSTRAINTS);
         this._officeHours = NonEmptyString.create(slots.officeHours, OFFICEHOURS_CONSTRAINT);
@@ -76,17 +90,17 @@ export class Shelter extends Entity {
             updateSlots.name = slots.name;
         }
         // update address
-        if (this._address.city !== slots.address.city) {
-            this.address.city = slots.address.city;
-            updateSlots.address = slots.address;
+        if (!this._city.equals(slots.city)) {
+            this.city = slots.city;
+            updateSlots.city = slots.city;
         }
-        if (this._address.street !== slots.address.street) {
-            this.address.street = slots.address.street;
-            updateSlots.address = slots.address;
+        if (!this._street.equals(slots.street)) {
+            this.street = slots.street;
+            updateSlots.street = slots.street;
         }
-        if (this._address.number !== slots.address.number) {
-            this.address.number = slots.address.number;
-            updateSlots.address = slots.address;
+        if (!this._number.equals(PositiveNumber.create(slots.number))) {
+            this.number = slots.number;
+            updateSlots.number = slots.number;
         }
         // update phone
         if (!this._phone.equals(slots.phone)) {
@@ -117,6 +131,9 @@ export class Shelter extends Entity {
         // TODO update additional attributes
         return updateSlots;
     }
+    get address() {
+        return `Street: ${this.street}  ${this.number} in ${this.city}`;
+    }
     // *** name ****************************************************************
     /** @returns the name of the shelter */
     get name() {
@@ -135,27 +152,80 @@ export class Shelter extends Entity {
     static checkName(name) {
         return catchValidation(() => NonEmptyString.validate(name, NAME_CONSTRAINTS), "The shelter's name must not be empty or larger than 120 letters!");
     }
-    // *** address *************************************************************
-    /** @returns the address of the shelter */
-    get address() {
-        return this._address;
+    // *** street ****************************************************************
+    /** @returns the street of the address */
+    get street() {
+        return this._street.value;
     }
-    /** @param address - the address of the shelter to be set */
-    set address(address) {
-        this._address = new Address(address);
+    /** @param street - the street to be set */
+    set street(street) {
+        this._street = NonEmptyString.create(street, STREET_CONSTRAINTS);
     }
     /**
-     * checks if the given shelter address is given and consists of street, number and city
-     * @param address
+     * checks if the given street is not empty and not longer than 120 letters
+     * @param street
      * @returns ConstraintViolation
      * @public
      */
-    static checkAddress(address) {
-        return catchValidation(() => {
-            Address.checkStreet(address.street);
-            Address.checkCity(address.city);
-            Address.checkNumber(address.number);
-        }, "The shelters address is not in the given format!");
+    static checkStreet(street) {
+        try {
+            NonEmptyString.validate(street, STREET_CONSTRAINTS);
+            return "";
+        }
+        catch (error) {
+            console.error(error);
+            return "The address' street should not be empty or larger than 120 letters";
+        }
+    }
+    // *** number ****************************************************************
+    /** @returns number in the street */
+    get number() {
+        return this._number.value;
+    }
+    /** @param number - number in street to set */
+    set number(number) {
+        this._number = PositiveNumber.create(number, NUMBER_CONSTRAINTS);
+    }
+    /**
+     * checks if the given number is a positive integer (TODO: change when using regex)
+     * @param number
+     * @returns ConstraintViolation
+     * @public
+     */
+    static checkNumber(number) {
+        try {
+            if (typeof number === "number" || parseInt(number)) {
+                PositiveNumber.validate(+number, NUMBER_CONSTRAINTS);
+            }
+            return "";
+        }
+        catch (error) {
+            console.error(error);
+            return "The number of the street must be a positive value!";
+        }
+    }
+    // *** city ******************************************************************
+    get city() {
+        return this._city.value;
+    }
+    set city(city) {
+        this._city = NonEmptyString.create(city, CITY_CONSTRAINTS);
+    }
+    /**
+     * checks if the given city is not empty and not longer than 120 letters
+     * @param city
+     * @returns ConstraintViolation
+     * @public
+     */
+    static checkCity(city) {
+        try {
+            NonEmptyString.validate(city, CITY_CONSTRAINTS);
+            return "";
+        }
+        catch (error) {
+            console.error(error);
+            return "The address' city should not be empty or larger than 120 letters";
+        }
     }
     // *** phone ***************************************************************
     /** @returns phone number of this shelter */
@@ -249,11 +319,11 @@ export class Shelter extends Entity {
      * this function is invoked by `JSON.stringify()` and converts the inner `"_propertyKey"` to `"propertyKey"`
      */
     toJSON() {
-        return { id: this.id, name: this.name, address: this.address, email: this.email, officeHours: this.officeHours, phone: this.phone, description: this.description };
+        return { id: this.id, name: this.name, street: this.street, number: this.number, city: this.city, email: this.email, officeHours: this.officeHours, phone: this.phone, description: this.description };
     }
     /** @returns the stringified Pet */
     toString() {
-        return `Shelter{ id: ${this.id}, name: ${this.name}, address: ${this.address}, phone: ${this.phone}, email: ${this.email}, description: ${this.description}, officeHours: ${this.officeHours} }`;
+        return `Shelter{ id: ${this.id}, name: ${this.name}, address: {${this.street} ${this.number}, ${this.city}}, phone: ${this.phone}, email: ${this.email}, description: ${this.description}, officeHours: ${this.officeHours} }`;
     }
 }
 //# sourceMappingURL=Shelter.js.map

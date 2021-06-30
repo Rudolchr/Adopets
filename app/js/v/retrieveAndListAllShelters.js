@@ -14,9 +14,8 @@ console.log(JSON.stringify(PetStorage.instances));
 for (let key of Object.keys(ShelterStorage.instances)) {
     const row = tableBody.insertRow();
     const shelter = ShelterStorage.instances[key];
-    row.insertCell().textContent = shelter.id;
     row.insertCell().textContent = shelter.name;
-    row.insertCell().textContent = shelter.address.toString();
+    row.insertCell().textContent = shelter.address;
     row.insertCell().textContent = shelter.email;
     row.insertCell().textContent = shelter.officeHours;
     row.insertCell().textContent = shelter.description;
