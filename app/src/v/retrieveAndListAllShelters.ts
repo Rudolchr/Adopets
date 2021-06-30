@@ -19,7 +19,7 @@ for (let key of Object.keys(ShelterStorage.instances)) {
   const row = tableBody.insertRow();
   const shelter = ShelterStorage.instances[key];
   row.insertCell().textContent = shelter.name;
-  row.insertCell().textContent = shelter.address;
+  row.insertCell().textContent = shelter.address.toString();
   row.insertCell().textContent = shelter.email;
   const timeList: HTMLUListElement = createListFromList(shelter.officeHours.toList())
   if (timeList.childElementCount > 0) {
