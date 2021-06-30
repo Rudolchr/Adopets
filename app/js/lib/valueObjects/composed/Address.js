@@ -99,7 +99,7 @@ export class Address {
     }
     /** @returns the stringified address */
     toString() {
-        return `Street: ${this.street}  ${this.number}\nCity: ${this.city}`;
+        return `${this.street} No. ${this.number} in ${this.city}`;
     }
 }
 //# sourceMappingURL=Address.js.map

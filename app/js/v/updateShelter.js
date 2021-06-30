@@ -59,9 +59,9 @@ shelterSelection.addEventListener("change", () => {
         // fill inputs
         idOutput.value = shelterKey;
         shelterNameInput.value = shelter.name;
-        shelterAddressStreetInput.value = shelter.street;
-        shelterAddressNumberInput.value = String(shelter.number);
-        shelterAddressCityInput.value = shelter.city;
+        shelterAddressStreetInput.value = shelter.address.street;
+        shelterAddressNumberInput.value = String(shelter.address.number);
+        shelterAddressCityInput.value = shelter.address.city;
         shelterPhoneInput.value = shelter.phone;
         shelterEmailInput.value = shelter.email;
         sheltermonFInput.value = shelter.officeHours.times.monday[0];
@@ -114,9 +114,11 @@ saveButton.addEventListener("click", () => {
         ShelterStorage.update({
             id: shelterSelection.value,
             name: shelterNameInput.value,
-            street: shelterAddressStreetInput.value,
-            number: +shelterAddressNumberInput.value,
-            city: shelterAddressCityInput.value,
+            address: {
+                street: shelterAddressStreetInput.value,
+                number: +shelterAddressNumberInput.value,
+                city: shelterAddressCityInput.value,
+            },
             phone: shelterPhoneInput.value,
             email: shelterEmailInput.value,
             officeHours: {

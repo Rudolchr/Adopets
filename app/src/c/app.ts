@@ -9,20 +9,20 @@ import {ShelterStorage} from "../m/ShelterStorage.js";
  */
 export async function createTestData() {
     const oh: OHSlots = {
-        monday: ["", ""],
-        tuesday: ["", ""],
-        wednesday: ["", ""],
-        thursday: ["", ""],
-        friday: ["", ""],
+        monday: ["08:00", "20:00"],
+        tuesday: ["08:00", "20:00"],
+        wednesday: ["08:00", "20:00"],
+        thursday: ["08:00", "20:00"],
+        friday: ["08:00", "20:00"],
         saturday: ["", ""],
         sunday: ["", ""],
     }
 
     // create shelters
     try {
-        await ShelterStorage.add({name: 'Pet Stop', city: 'Düsseldog', number: 69, street: 'Am Catdog', email: 'pet@stop.com', officeHours: oh, phone: '+1234567890'})
-        await ShelterStorage.add({name: 'Pussy Willow', city: 'Catbus', number: 13, street: 'Dingsda', email: 'cat@bus.com', officeHours: oh, phone: '+0345617829'})
-        await ShelterStorage.add({name: 'Cerberus', city: 'Bärlin', number: 17, street: 'Kuhdamm', email: 'bär@damm.com', officeHours: oh, phone: '+5601432897'})
+        await ShelterStorage.add({name: 'Pet Stop', address: {city: 'Düsseldog', number: 69, street: 'Am Catdog'}, email: 'pet@stop.com', officeHours: oh, phone: '+1234567890'})
+        await ShelterStorage.add({name: 'Pussy Willow', address: {city: 'Catbus', number: 13, street: 'Dingsda'}, email: 'cat@bus.com', officeHours: oh, phone: '+0345617829'})
+        await ShelterStorage.add({name: 'Cerberus', address: {city: 'Bärlin', number: 17, street: 'Kuhdamm'}, email: 'bär@damm.com', officeHours: oh, phone: '+5601432897'})
     } catch (e) {
         console.warn(`${e.constructor.name}: ${e.message}`);
     }

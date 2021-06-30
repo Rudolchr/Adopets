@@ -25,19 +25,19 @@ shelterNameInput.addEventListener("input", () =>
 const shelterAddressStreetInput: HTMLInputElement = form["AddressStreet"];
 shelterAddressStreetInput.addEventListener("input", () =>
   shelterAddressStreetInput.setCustomValidity(
-    Shelter.checkStreet(shelterAddressStreetInput.value)
+    Address.checkStreet(shelterAddressStreetInput.value)
   )
 );
 const shelterAddressNumberInput: HTMLInputElement = form["AddressNumber"];
 shelterAddressNumberInput.addEventListener("input", () =>
   shelterAddressNumberInput.setCustomValidity(
-    Shelter.checkNumber(shelterAddressNumberInput.value)
+    Address.checkNumber(shelterAddressNumberInput.value)
   )
 );
-const shelterAddressCityInput: HTMLInputElement = form["AddressStreet"];
+const shelterAddressCityInput: HTMLInputElement = form["AddressCity"];
 shelterAddressCityInput.addEventListener("input", () =>
   shelterAddressCityInput.setCustomValidity(
-    Shelter.checkCity(shelterAddressCityInput.value)
+    Address.checkCity(shelterAddressCityInput.value)
   )
 );
 
@@ -87,9 +87,9 @@ saveButton.addEventListener("click", () => {
 
   // set error messages in case of constraint violations
   shelterNameInput.setCustomValidity(Shelter.checkName(shelterNameInput.value));
-  shelterAddressStreetInput.setCustomValidity(Shelter.checkStreet(shelterAddressStreetInput.value));
-  shelterAddressNumberInput.setCustomValidity(Shelter.checkNumber(shelterAddressNumberInput.value));
-  shelterAddressCityInput.setCustomValidity(Shelter.checkCity(shelterAddressCityInput.value));
+  shelterAddressStreetInput.setCustomValidity(Address.checkStreet(shelterAddressStreetInput.value));
+  shelterAddressNumberInput.setCustomValidity(Address.checkNumber(shelterAddressNumberInput.value));
+  shelterAddressCityInput.setCustomValidity(Address.checkCity(shelterAddressCityInput.value));
   shelterPhoneInput.setCustomValidity(Shelter.checkPhone(shelterPhoneInput.value));
   shelterEmailInput.setCustomValidity(Shelter.checkEmail(shelterEmailInput.value));
   shelterDescInput.setCustomValidity(Shelter.checkDescription(shelterDescInput.value));
@@ -112,9 +112,11 @@ saveButton.addEventListener("click", () => {
   // save the input data only if all of the form fields are valid
   form.checkValidity() && ShelterStorage.add({
     name: shelterNameInput.value,
-    street: shelterAddressStreetInput.value,
-    number: +shelterAddressNumberInput.value,
-    city: shelterAddressCityInput.value,
+    address: {
+      street: shelterAddressStreetInput.value,
+      number: +shelterAddressNumberInput.value,
+      city: shelterAddressCityInput.value,
+    },
     phone: shelterPhoneInput.value,
     email: shelterEmailInput.value,
     officeHours: {
