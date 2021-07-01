@@ -107,10 +107,10 @@ nav a {
 }
 nav a:hover,
 nav a:visited {
-    color: white;
+  color: white;
 }
 nav a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 header figure {
@@ -218,10 +218,21 @@ form > div > label > input[type="text"],
 form > div > label > textarea,
 form > div > label > input[type="checkbox"],
 form > div > label > input[type="date"],
+form > div > label > input[type="tel"],
+form > div > label > input[type="email"],
 form > div > label > select,
 form > div > label > div.MultiChoiceWidget,
 form > div > label > output {
   position: absolute;
+  left: 11em;
+}
+form > div > label > ul > li > label > label {
+  position: absolute;
+  left: 11em;
+}
+form > div > label > ul > li > label > input {
+  position: absolute;
+  left: 11em;
 }
 /* the height of multi-line elements must be limited */
 form > div.select-many {
