@@ -1,99 +1,112 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Adopets: Create</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" />
+<head>
+  <meta charset="UTF-8" />
+  <title>Adopets: Create</title>
 
-    <link rel="icon" href="assets/favicon.svg" />
-    <link rel="mask-icon" href="assets/mask-icon.svg" color="#000000" />
-    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-    <link rel="manifest" href="assets/manifest.json" />
-    <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/main.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
 
-    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
-    <script src="js/c/initialize.js"></script>
-    <script src="./js/v/createPet.js" type="module"></script>
-  </head>
+  <link rel="icon" href="assets/favicon.svg" />
+  <link rel="mask-icon" href="assets/mask-icon.svg" color="#000000" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="manifest" href="assets/manifest.json" />
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/main.css" />
 
-  <body>
-    <header>
-      <div class="wrapper clearfix">
-        <div class="title">
-          <h1>Create a new pet</h1>
-        </div>
-        <nav>
-          <ul>
-            <li><a href="createPet.html">C</a></li>
-            <li><a href="retrieveAndListAllPets.html">R</a></li>
-            <li><a href="updatePet.html">U</a></li>
-            <li><a href="deletePet.html">D</a></li>
-          </ul>
-        </nav>
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+  <script src="js/c/initialize.js"></script>
+  <script src="./js/v/createPet.js" type="module"></script>
+</head>
+
+<body>
+  <header>
+    <div class="wrapper clearfix">
+      <div class="title">
+        <h1>Create a new pet</h1>
       </div>
-    </header>
-    <main>
-      <div class="wrapper clearfix">
-        <form id="Pet">
-          <div>
-            <label
-              >Name:
-              <input
-                name="petName"
-                type="text"
-                required
-                minlength="1"
-                maxlength="120"
-              />
-            </label>
-          </div>
-          <div class="select-one">
-            <label
-              >Species:
-              <select name="species"></select
-            ></label>
-          </div>
-          <div>
-              <label
-                >Birth date:           
-                <!-- pattern is the fallback validation for the missing date input 
-                in safari (which uses the text type ) -->
-                <input
-                  name="birthDate"
-                  type="date"
-                  min="1895-12-28"
-                  pattern="\d{4}-\d{2}-\d{2}"
-                />
-            </label>
-          </div>
-            <div>
-            <label
-              >Shelter:
-              <select name="shelter"></select
-            ></label>
-          </div>
-          <div><button type="submit" name="addButton">Add</button></div>
-        </form>
-      </div>
-      </div>
-    </main>
-    <footer>
-      <div class="foot-content wrapper">
+      <nav>
         <ul>
-          <li><a href="index.html">Back to main menu</a></li>
-          <li><a href="petStart.html">Manage Pets</a></li>
-          <li><a href="shelterStart.html">Manage Shelters</a></li>
+          <li><a href="createPet.html">C</a></li>
+          <li><a href="retrieveAndListAllPets.html">R</a></li>
+          <li><a href="updatePet.html">U</a></li>
+          <li><a href="deletePet.html">D</a></li>
         </ul>
-      </div>
-      <div class="foot-content wrapper">
-        This is the assignment application built on the tutorial for the course
-        12431 Web Applications | SS 2021. Students: Christian Prinz - B.Sc
-        Informations- und Medientechnik and Max Bergmann B.Sc Computer Science
-      </div>
-    </footer>
-  </body>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrapper clearfix">
+      <form id="Pet">
+        <div>
+          <label>Name:
+            <input name="petName" type="text" required minlength="1" maxlength="120" />
+          </label>
+        </div>
+        <div class="select-one">
+          <label>Species:
+            <select name="species"></select></label>
+        </div>
+        <div class="select-one">
+          <label>Sex:
+            <select name="sex"></select></label>
+        </div>
+        <div class="select-one">
+          <label>Size:
+            <select name="size"></select></label>
+        </div>
+        <div>
+          <label>Birth date:
+            <!-- pattern is the fallback validation for the missing date input 
+                in safari (which uses the text type ) -->
+            <input name="birthDate" type="date" min="1895-12-28" pattern="\d{4}-\d{2}-\d{2}" />
+          </label>
+        </div>
+        <div>
+          <label>Vaccination status:
+            <input name="vaccinationStatus" type="text" required minlength="1" maxlength="500" />
+          </label>
+        </div>
+        <div class="select-one">
+          <label>Compatible with:
+            <select name="compatibleWith"></select></label>
+        </div>
+        <div class="select-one">
+          <label>Suitable with:
+            <select name="suitableWith"></select></label>
+        </div>
+        <div class="select-one">
+          <label>Housing:
+            <select name="housing"></select></label>
+        </div>
+        <div>
+          <label>Found a home: <output name="petId"></output></label>
+        </div>
+        <div>
+          <label>Shelter:
+            <select name="shelter"></select></label>
+        </div>
+        <div><button type="submit" name="addButton">Add</button></div>
+      </form>
+    </div>
+    </div>
+  </main>
+  <footer>
+    <div class="foot-content wrapper">
+      <ul>
+        <li><a href="index.html">Back to main menu</a></li>
+        <li><a href="petStart.html">Manage Pets</a></li>
+        <li><a href="shelterStart.html">Manage Shelters</a></li>
+      </ul>
+    </div>
+    <div class="foot-content wrapper">
+      This is the assignment application built on the tutorial for the course
+      12431 Web Applications | SS 2021. Students: Christian Prinz - B.Sc
+      Informations- und Medientechnik and Max Bergmann B.Sc Computer Science
+    </div>
+  </footer>
+</body>
+
 </html>

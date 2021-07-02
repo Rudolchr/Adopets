@@ -1,4 +1,4 @@
-import { CreationOptions, ValueObject } from './ValueObject.js';
+import {CreationOptions, ValueObject} from './ValueObject.js';
 
 /** a Date that is definitely a Date that can be created from either a Date or a string that
  * represents a Date or a number that represents the Time in ms */
@@ -27,7 +27,7 @@ export class SafeDate extends ValueObject<Date> {
         } else if (!(value instanceof Date)) {
             throw new TypeError(
                 this.pm(options?.name) +
-                    `SafeDate => the given (${value}: ${typeof value}) is whether a Date nor a string | number!`
+                `SafeDate => the given (${value}: ${typeof value}) is whether a Date nor a string | number!`
             );
         } else {
             safeDate = value;
@@ -36,18 +36,17 @@ export class SafeDate extends ValueObject<Date> {
         if (options) {
             // interval
             const safeMin =
-                options.min !== undefined ? this.validate(options.min, { name: options.name + '.min' }) : undefined;
+                options.min !== undefined ? this.validate(options.min, {name: options.name + '.min'}) : undefined;
             const safeMax =
-                options.max !== undefined ? this.validate(options.max, { name: options.name + '.max' }) : undefined;
+                options.max !== undefined ? this.validate(options.max, {name: options.name + '.max'}) : undefined;
             if (
                 (safeMin && safeDate.getTime() < safeMin.getTime()) ||
                 (safeMax && safeDate.getTime() > safeMax.getTime())
             ) {
                 throw new RangeError(
                     this.pm(options.name) +
-                        `SafeDate => the given Date (${safeDate}) must be in the interval [${safeMin ?? '*'}, ${
-                            safeMax ?? '*'
-                        }]!`
+                    `SafeDate => the given Date (${safeDate}) must be in the interval [${safeMin ?? '*'}, ${safeMax ?? '*'
+                    }]!`
                 );
             }
         }
@@ -81,12 +80,13 @@ export class SafeDate extends ValueObject<Date> {
         return values.map((pi) => pi.value);
     }
 
-    public equals(obj: SafeDate | Dateable){
-        if (obj instanceof SafeDate){
+    public equals(obj: SafeDate | Dateable) {
+
+        if (obj instanceof SafeDate) {
             return obj.value === this._value;
         } else {
             const comparable = SafeDate.create(obj, {name: 'SafeDate.equals'});
-            return comparable.value === this._value;
+            return comparable.value.toJSON() === this._value.toJSON();
         }
     }
 

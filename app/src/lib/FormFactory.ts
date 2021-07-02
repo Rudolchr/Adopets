@@ -1,18 +1,26 @@
 import {Entity, EntitySlots} from "./Entity.js";
-import {fillSelectWithEntities, fillSelectWithRange} from "./newUtil.js";
+import {createChoiceWidget, fillSelectWithEntities, fillSelectWithRange} from "./newUtil.js";
 
 interface FormElementBase {
-    get: () => string;
+    get: () => any;
     check: () => void;
     set: (value: any) => void;
 }
 
 interface IOFormElement extends FormElementBase {
+    get: () => string;
     set: (value: string | Date) => void;
 }
 
 interface SelectionFormElement extends FormElementBase {
+    get: () => string;
     set: (value: string) => void;
+}
+
+interface ChoiceFormElement extends FormElementBase {
+    get: () => string[];
+    set: (values: string[]) => void;
+    check: () => void;
 }
 
 
@@ -168,6 +176,37 @@ export class FormFactory {
 
         return {get, set, check};
     }
+
+    createChoiceWidget(
+        id: string,
+        validationFunction: (value: string[]) => string,
+        type: 'radio' | 'checkbox',
+        range: {[key: string]: string;} | string[],
+        selected: string[],
+        isMandatory: boolean = false
+    ): ChoiceFormElement {
+        const fieldSet: HTMLFieldSetElement = this._form.querySelector("fieldset[data-bind='" + id + "']")!
+        const fixRange: string[] = Array.isArray(range) ? range : Object.values(range);
+        createChoiceWidget(fieldSet, id, selected, type, fixRange, isMandatory);
+        function check() {
+            const message = isMandatory ? 'One of the options has to be chosen' : validationFunction(get());
+            fieldSet.setCustomValidity(message);
+        }
+        function get() {
+            const a = fieldSet.getAttribute("data-value") ?? "[]"
+            const b = JSON.parse(a);
+            
+            return JSON.parse(fieldSet.getAttribute("data-value") ?? "[]");
+        }
+        function set(values: string[]) {
+            createChoiceWidget(fieldSet, id, values, type, fixRange, isMandatory);
+        }
+        fieldSet.addEventListener("change", () => check());
+
+        return {get, set, check};
+    }
+
+    // controlling elements
 
     /**
      * creates a SelectionElement for an entity which will control other form elements

@@ -1,5 +1,5 @@
-import { OHSlots } from "../lib/valueObjects/composed/OfficeHours.js";
-import {SpeciesEnum} from "../m/Pet.js";
+import {OHSlots} from "../lib/valueObjects/composed/OfficeHours.js";
+import {HousingEnum, SexEnum, SizeEnum, SpeciesEnum, SuitableWithEnum} from "../m/Pet.js";
 import {PetStorage} from "../m/PetStorage.js";
 import {ShelterStorage} from "../m/ShelterStorage.js";
 
@@ -16,23 +16,67 @@ export async function createTestData() {
         friday: ["08:00", "20:00"],
         saturday: ["", ""],
         sunday: ["", ""],
-    }
+    };
 
     // create shelters
     try {
-        await ShelterStorage.add({name: 'Pet Stop', address: {city: 'Düsseldog', number: 69, street: 'Am Catdog'}, email: 'pet@stop.com', officeHours: oh, phone: '+1234567890'})
-        await ShelterStorage.add({name: 'Pussy Willow', address: {city: 'Catbus', number: 13, street: 'Dingsda'}, email: 'cat@bus.com', officeHours: oh, phone: '+0345617829'})
-        await ShelterStorage.add({name: 'Cerberus', address: {city: 'Bärlin', number: 17, street: 'Kuhdamm'}, email: 'bär@damm.com', officeHours: oh, phone: '+5601432897'})
+        await ShelterStorage.add({name: 'Pet Stop', address: {city: 'Düsseldog', number: 69, street: 'Am Catdog'}, email: 'pet@stop.com', officeHours: oh, phone: '+1234567890'});
+        await ShelterStorage.add({name: 'Pussy Willow', address: {city: 'Catbus', number: 13, street: 'Dingsda'}, email: 'cat@bus.com', officeHours: oh, phone: '+0345617829'});
+        await ShelterStorage.add({name: 'Cerberus', address: {city: 'Bärlin', number: 17, street: 'Kuhdamm'}, email: 'bär@damm.com', officeHours: oh, phone: '+5601432897'});
     } catch (e) {
         console.warn(`${e.constructor.name}: ${e.message}`);
     }
     // create pets
     const shelterId = Object.keys(ShelterStorage.instances)[0];
     try {
-        await PetStorage.add({name: "Wolfgang", species: SpeciesEnum.DOG, birthDate: "2020-05-09", shelterId});
-        await PetStorage.add({name: "Hundula", species: SpeciesEnum.DOG, birthDate: "2019-07-22", shelterId});
-        await PetStorage.add({name: "Katzarina", species: SpeciesEnum.CAT, birthDate: "2012-11-14", shelterId});
-        await PetStorage.add({name: "Vogeldemort", species: SpeciesEnum.BIRD, birthDate: "2001-06-08", shelterId});
+        await PetStorage.add({
+            name: "Wolfgang", 
+            species: SpeciesEnum.DOG, 
+            sex: SexEnum.MALE, 
+            size: SizeEnum.VERY_LARGE, 
+            birthDate: "2020-05-09", 
+            vaccinationStatus: 'immortal', 
+            compatibleWith: [], 
+            suitableWith: [], 
+            housing: HousingEnum.OUTDOOR_REQUIRED, 
+            isAdopted: false, 
+            shelterId});
+        await PetStorage.add({
+            name: "Hundula", 
+            species: SpeciesEnum.DOG, 
+            sex: SexEnum.FEMALE, 
+            size: SizeEnum.SMALL, 
+            birthDate: "2019-07-22", 
+            vaccinationStatus: 'full of vax', 
+            compatibleWith: [SpeciesEnum.BIRD,SpeciesEnum.CAT,SpeciesEnum.BIRD], 
+            suitableWith: [SuitableWithEnum.CHILDREN,SuitableWithEnum.SENIORS], 
+            housing: HousingEnum.IN_AND_OUT, 
+            isAdopted: false, 
+            shelterId});
+        await PetStorage.add({
+            name: "Katzarina", 
+            species: SpeciesEnum.CAT, 
+            sex: SexEnum.FEMALE, 
+            size: SizeEnum.MEDIUM, 
+            birthDate: "2012-11-14", 
+            vaccinationStatus: 'not necessary', 
+            compatibleWith: [SpeciesEnum.BIRD], 
+            suitableWith: [SuitableWithEnum.SENIORS], 
+            housing: HousingEnum.INDOOR_ONLY, 
+            isAdopted: false, 
+            shelterId});
+        await PetStorage.add({
+            name: "Vogeldemort", 
+            species: SpeciesEnum.BIRD, 
+            sex: SexEnum.UNKNOWN, 
+            size: SizeEnum.SMALL, 
+            birthDate: "2001-06-08", 
+            vaccinationStatus: 'what vaccinations?', 
+            compatibleWith: [SpeciesEnum.BIRD], 
+            suitableWith: [SuitableWithEnum.CHILDREN], 
+            housing: HousingEnum.INDOOR_ONLY, 
+            isAdopted: false, 
+            shelterId});
     } catch (e) {
         console.warn(`${e.constructor.name}: ${e.message}`);
     }

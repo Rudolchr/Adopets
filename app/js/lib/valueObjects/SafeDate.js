@@ -70,7 +70,7 @@ export class SafeDate extends ValueObject {
         }
         else {
             const comparable = SafeDate.create(obj, { name: 'SafeDate.equals' });
-            return comparable.value === this._value;
+            return comparable.value.toJSON() === this._value.toJSON();
         }
     }
     /* @ts-ignore */

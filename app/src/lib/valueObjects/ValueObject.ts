@@ -65,3 +65,37 @@ export interface IntervalCreationOptions extends CreationOptions {
      */
     max?: number;
 }
+
+/**
+ * compares 2 Lists of ValueObjects / values on equality
+ * @param a the list of ValueObjects to compare with
+ * @param b a list of ValueObjects / values for comparison
+ * @returns 
+ */
+export function listEquals<T>(a: ValueObject<T>[], b: ValueObject<T>[] | T[]) {
+    // lengths
+    if (a.length === 0 && b.length === 0) {
+        return true;
+    }
+    if (a.length !== b.length) {
+        return false;
+    }
+
+    // elements
+    for (let i = 0; i < a.length; i++) {
+        const ai = a[i];
+        const bi = b[i];
+        // types
+        if (bi instanceof ValueObject && ai.constructor.name !== bi.constructor.name) {
+            return false;
+        }
+        if (!(bi instanceof ValueObject) && typeof ai.value !== typeof bi) {
+            return false;
+        }
+        if (!ai.equals(bi)) {
+            return false;
+        }
+    }
+
+    return true;
+}

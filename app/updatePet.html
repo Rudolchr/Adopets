@@ -69,6 +69,18 @@
               <select name="species"></select
             ></label>
           </div>
+          <div class="select-one">
+            <label
+              >Sex:
+              <select name="sex"></select
+            ></label>
+          </div>
+          <div class="select-one">
+            <label
+              >Size:
+              <select name="size"></select
+            ></label>
+          </div>
           <div>
             <label
               >Birth date:
@@ -81,6 +93,33 @@
                 pattern="\d{4}-\d{2}-\d{2}"
               />
             </label>
+          </div>
+          <div>
+            <label
+              >Vaccination status:
+              <input
+                name="vaccinationStatus"
+                type="text"
+                required
+                minlength="1"
+                maxlength="500"
+              />
+            </label>
+          </div>
+          <fieldset data-bind="compatibleWith">
+            <legend>Compatible with</legend>
+          </fieldset>
+          <fieldset data-bind="suitableWith">
+            <legend>Suitable with</legend>
+          </fieldset>
+          <div class="select-one">
+            <label
+              >Housing:
+              <select name="housing"></select
+            ></label>
+          </div>
+          <div>
+            <label>Found a home: <output name="isAdopted"></output></label>
           </div>
           <div>
             <label

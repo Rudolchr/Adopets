@@ -1,4 +1,4 @@
-import { fillSelectWithEntities, fillSelectWithRange } from "./newUtil.js";
+import { createChoiceWidget, fillSelectWithEntities, fillSelectWithRange } from "./newUtil.js";
 export class FormFactory {
     _form;
     /**
@@ -133,6 +133,26 @@ export class FormFactory {
         selection.addEventListener("change", () => check());
         return { get, set, check };
     }
+    createChoiceWidget(id, validationFunction, type, range, selected, isMandatory = false) {
+        const fieldSet = this._form.querySelector("fieldset[data-bind='" + id + "']");
+        const fixRange = Array.isArray(range) ? range : Object.values(range);
+        createChoiceWidget(fieldSet, id, selected, type, fixRange, isMandatory);
+        function check() {
+            const message = isMandatory ? 'One of the options has to be chosen' : validationFunction(get());
+            fieldSet.setCustomValidity(message);
+        }
+        function get() {
+            const a = fieldSet.getAttribute("data-value") ?? "[]";
+            const b = JSON.parse(a);
+            return JSON.parse(fieldSet.getAttribute("data-value") ?? "[]");
+        }
+        function set(values) {
+            createChoiceWidget(fieldSet, id, values, type, fixRange, isMandatory);
+        }
+        fieldSet.addEventListener("change", () => check());
+        return { get, set, check };
+    }
+    // controlling elements
     /**
      * creates a SelectionElement for an entity which will control other form elements
      * @param id of the HTMLSelectElement

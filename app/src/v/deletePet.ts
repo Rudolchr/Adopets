@@ -25,4 +25,3 @@ deleteButton.addEventListener("click", () => {
     petSelection.remove(petSelection.selectedIndex);
   }
 });
-

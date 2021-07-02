@@ -13,8 +13,6 @@ await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
 
 // for each pet, create a table row with a cell for each attribute
-console.log(JSON.stringify(ShelterStorage.instances));
-console.log(JSON.stringify(PetStorage.instances));
 for (let key of Object.keys(ShelterStorage.instances)) {  
   const row = tableBody.insertRow();
   const shelter = ShelterStorage.instances[key];

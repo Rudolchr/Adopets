@@ -138,7 +138,7 @@ export class AbstractStorage {
                 // restore object to its state before updating
                 this._instances[id] = instance;
                 console.info(`Destroy corrupted entity (${id}). `);
-                this.destroy(id);
+                // this.destroy(id);
             }
             catch (error) {
                 console.error(`while restoring entity (${id}) after failed update:\n` + error);
