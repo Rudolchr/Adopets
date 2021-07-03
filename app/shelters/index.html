@@ -2,24 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Adopets</title>
+    <title>Adopets | Shelters</title>
     <meta name="description" content="Adopets" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#ffffff" />
 
-    <link rel="icon" href="./assets/favicon.svg" />
-    <link rel="mask-icon" href="./assets/mask-icon.svg" color="#000000" />
-    <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
-    <link rel="manifest" href="./assets/manifest.json" />
+    <link rel="icon" href="../assets/favicon.svg" />
+    <link rel="mask-icon" href="../assets/mask-icon.svg" color="#000000" />
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+    <link rel="manifest" href="../assets/manifest.json" />
 
-    <link rel="stylesheet" href="./css/normalize.css" />
-    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="../css/normalize.css" />
+    <link rel="stylesheet" href="../css/main.css" />
 
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
-    <script src="./js/initialize.js"></script>
+    <script src="../js/initialize.js"></script>
     <script type="module">
-      import { createTestData, clear } from "./js/app.js";
+      import { createTestData, clear } from "../js/app.js";
       const clearButton = document.getElementById("clearData");
       const createTestDataButton = document.getElementById("createTestData");
 
@@ -38,20 +38,24 @@
         </div>
         <nav>
           <ul>
-            <li><a href="pets/index.html">Pets</a></li>
-            <li><a href="shelters/index.html">Shelters</a></li>
+            <li><a href="./create.html">C</a></li>
+            <li><a href="./retrieveAndListAll.html">R</a></li>
+            <li><a href="./update.html">U</a></li>
+            <li><a href="./delete.html">D</a></li>
           </ul>
         </nav>
       </div>
     </header>
     <main>
       <div class="wrapper clearfix">
-        <h3>Main Menu</h3>
-        <p>This app supports organising the following two types:</p>
+        <h3>Shelter Organisation</h3>
+        <p>This app supports the following operations:</p>
         <div class="two-col-menu">
           <menu class="crud">
-            <li><a href="pets/index.html">Organising Pets</a></li>
-            <li><a href="shelters/index.html">Organising Shelters</a></li>
+            <li><a href="./create.html">Add a new Shelter</a></li>
+            <li><a href="./retrieveAndListAll.html">List all Shelters</a></li>
+            <li><a href="./update.html">Update a Shelter</a></li>
+            <li><a href="./delete.html">Delete a Shelter</a></li>
           </menu>
           <menu>
             <li>
@@ -67,6 +71,13 @@
       </div>
     </main>
     <footer>
+      <div class="foot-content wrapper">
+        <ul>
+          <li><a href="../index.html">Back to main menu</a></li>
+          <li><a href="../pets/index.html">Manage Pets</a></li>
+          <li><a href="./index.html">Manage Shelters</a></li>
+        </ul>
+      </div>
       <div class="foot-content wrapper">
         This is the assignment application built on the tutorial for the course
         12431 Web Applications | SS 2021. Students: Christian Prinz - B.Sc

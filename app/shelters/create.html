@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Adopets: Create Shelter</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <link rel="icon" href="../assets/favicon.svg" />
+    <link rel="mask-icon" href="../assets/mask-icon.svg" color="#000000" />
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+    <link rel="manifest" href="../assets/manifest.json" />
+    <link rel="stylesheet" href="../css/normalize.css" />
+    <link rel="stylesheet" href="../css/main.css" />
+  
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="../js/initialize.js"></script>
+    <script src="../js/shelters/controller/createShelter.js" type="module"></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrapper clearfix">
+        <div class="title">
+          <h1>Create a new Shelter</h1>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="./create.html">C</a></li>
+            <li><a href="./retrieveAndListAll.html">R</a></li>
+            <li><a href="./update.html">U</a></li>
+            <li><a href="./delete.html">D</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper clearfix">
+        <form id="Shelter">
+          <div>
+            <label
+              >Name:
+              <input
+                name="shelterName"
+                type="text"
+                required
+                minlength="1"
+                maxlength="120"
+              />
+            </label>
+          </div>
+          <div>
+            <label>Address:
+              <ul>
+                <li>
+                  <label>Street:
+                    <input
+                    name="AddressStreet"
+                    type="text"
+                    required
+                    minlength="1"
+                    maxlength="120"
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label>Number:
+                    <input
+                    name="AddressNumber"
+                    type="number"
+                    required
+                    min=1
+                    />
+                  </label>
+                </li>
+                <li>
+                  <label>City:
+                    <input
+                    name="AddressCity"
+                    type="text"
+                    required
+                    minlength="1"
+                    maxlength="120"
+                    />
+                  </label>
+                </li>
+              </ul>
+            </label>
+          </div>
+          <div>
+            <label>Phone Number:
+              <input
+                name="shelterPhone"
+                type="tel"
+                required
+                placeholder="+012 345 6789"
+              />
+            </label>
+          </div>
+          <div>
+            <label>E-Mail Address:
+              <input
+                name="shelterEmail"
+                type="email"
+                required
+                minlength="5"
+                maxlength="120"
+                placeholder="max@mustermann.de"
+              />
+            </label>
+          </div>
+          <div>
+            <label id="OfficeHours">Office Hours:
+              <ul>
+                <li>
+                  <label>Monday:<label>
+                    <input
+                    name="monF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="monT"
+                    type="time"
+                    />
+                  </label></label>
+                </li>
+                <li>
+                  <label>Tuesday:<label>
+                    <input
+                    name="tueF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="tueT"
+                    type="time"
+                    />
+                  </label></label>
+                </li>
+                <li>
+                  <label>Wednesday:<label>
+                    <input
+                    name="wedF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="wedT"
+                    type="time"
+                    />
+                  </label></label>
+                </li>
+                <li>
+                  <label>Thursday:<label>
+                    <input
+                    name="thuF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="thuT"
+                    type="time"
+                    />
+                  </label></label>
+                </li>
+                <li>
+                  <label>Friday:<label>
+                    <input
+                    name="friF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="friT"
+                    type="time"
+                    />
+                  </label></label>
+                </li>
+                <li>
+                  <label>Saturday:<label>
+                    <input
+                    name="satF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="satT"
+                    type="time"
+                    />
+                  </label></label>
+                </li>
+                <li>
+                  <label>Sunday:<label>
+                    <input
+                    name="sunF"
+                    type="time"
+                    />
+                    -
+                    <input
+                    name="sunT"
+                    type="time"
+                    />
+                  </label></label>
+                </li>
+              </ul>
+            </label>
+          </div>
+          <div>
+            <label>Shelter Description (Optional):
+              <input
+                name="shelterDescription"
+                type="text"
+                maxlength="120"
+              />
+            </label>
+          </div>
+          <div><button type="submit" name="addButton">Add</button></div>
+        </form>
+      </div>
+      </div>
+    </main>
+    <footer>
+      <div class="foot-content wrapper">
+        <ul>
+          <li><a href="../index.html">Back to main menu</a></li>
+          <li><a href="../pets/index.html">Manage Pets</a></li>
+          <li><a href="./index.html">Manage Shelters</a></li>
+        </ul>
+      </div>
+      <div class="foot-content wrapper">
+        This is the assignment application built on the tutorial for the course
+        12431 Web Applications | SS 2021. Students: Christian Prinz - B.Sc
+        Informations- und Medientechnik and Max Bergmann B.Sc Computer Science
+      </div>
+    </footer>
+  </body>
+</html>
