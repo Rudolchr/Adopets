@@ -69,20 +69,18 @@
             <input name="vaccinationStatus" type="text" required minlength="1" maxlength="500" />
           </label>
         </div>
-        <div class="select-one">
-          <label>Compatible with:
-            <select name="compatibleWith"></select></label>
-        </div>
-        <div class="select-one">
-          <label>Suitable with:
-            <select name="suitableWith"></select></label>
-        </div>
+          <fieldset data-bind="compatibleWith">
+            <legend>Compatible with</legend>
+          </fieldset>
+          <fieldset data-bind="suitableWith">
+            <legend>Suitable with</legend>
+          </fieldset>
         <div class="select-one">
           <label>Housing:
             <select name="housing"></select></label>
         </div>
-        <div>
-          <label>Found a home: <output name="petId"></output></label>
+        <div class="select-one">
+          <label>Is adopted:<input type="checkbox" id="isAdopted" name="isAdopted"></label>
         </div>
         <div>
           <label>Shelter:

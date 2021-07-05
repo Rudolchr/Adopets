@@ -13,6 +13,8 @@ await PetStorage.retrieveAll();
 // we use the factory to create the view logic for the Form
 const formFactory = new FormFactory("Pet");
 
+enum AdoptedEnum { true = 'yes', false = 'no'}
+
 // which elements should be manipulated with this Form
 const formElements = {
   name: formFactory.createInput("petName", Pet.checkName),
@@ -24,7 +26,7 @@ const formElements = {
   compatibleWith: formFactory.createChoiceWidget('compatibleWith', Pet.checkCompatibleWith, 'checkbox', SpeciesEnum, []),
   suitableWith: formFactory.createChoiceWidget('suitableWith', Pet.checkSuitableWith, 'checkbox', SuitableWithEnum, []),
   housing: formFactory.createRangeSelection("housing", Pet.checkHousing, HousingEnum),
-  isAdopted: formFactory.createOutput('isAdopted'),
+  isAdopted: formFactory.createSingleCheckbox('isAdopted'),
   shelterId: formFactory.createReferenceSelection("shelter", Pet.checkShelterId, ShelterStorage.instances, 'name'),
 };
 

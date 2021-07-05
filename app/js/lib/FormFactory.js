@@ -142,14 +142,24 @@ export class FormFactory {
             fieldSet.setCustomValidity(message);
         }
         function get() {
-            const a = fieldSet.getAttribute("data-value") ?? "[]";
-            const b = JSON.parse(a);
             return JSON.parse(fieldSet.getAttribute("data-value") ?? "[]");
         }
         function set(values) {
             createChoiceWidget(fieldSet, id, values, type, fixRange, isMandatory);
         }
         fieldSet.addEventListener("change", () => check());
+        return { get, set, check };
+    }
+    createSingleCheckbox(id, selected = false) {
+        const input = this._form[id];
+        input.checked = selected;
+        function check() { }
+        function get() {
+            return input.checked;
+        }
+        function set(value) {
+            input.checked = value;
+        }
         return { get, set, check };
     }
     // controlling elements
@@ -170,9 +180,9 @@ export class FormFactory {
             // fill the form with the pet's data
             if (entityId) {
                 const entity = entities[entityId];
-                Object.entries(formElements).forEach(entry => {
-                    entry[1].set(entity[entry[0]]);
-                });
+                for (const [elementId, element] of Object.entries(formElements)) {
+                    element.set(entity[elementId]);
+                }
             }
             else {
                 this.form.reset();
@@ -200,13 +210,13 @@ export class FormFactory {
             const slots = {};
             let nextProperty;
             // set error messages in case of constraint violations
-            Object.entries(formElements).forEach(entry => {
-                entry[1].check();
-                slots[entry[0]] = entry[1].get();
-                if (entityDisplayProp !== undefined && entry[0] === entityDisplayProp) {
-                    nextProperty = entry[1].get();
+            for (const [elementId, element] of Object.entries(formElements)) {
+                element.check();
+                slots[elementId] = element.get();
+                if (entityDisplayProp !== undefined && elementId === entityDisplayProp) {
+                    nextProperty = element.get();
                 }
-            });
+            }
             // show possible errors
             this.form.reportValidity();
             // save the input date only if all of the form fields are valid

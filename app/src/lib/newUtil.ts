@@ -65,7 +65,11 @@ export function fillSelectWithEntities<E extends Entity<any>>(selection: HTMLSel
   }
 }
 
-export function fillSelectWithRange(selection: HTMLSelectElement, range: {[key: string]: string;} | string[], selected?: string[]){
+export function fillSelectWithRange(
+  selection: HTMLSelectElement, 
+  range: {[key: string]: string;} | string[], 
+  selected?: string[]
+){
   // delete old contents
   selection.innerHTML = "";
 

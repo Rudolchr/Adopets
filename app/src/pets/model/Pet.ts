@@ -318,7 +318,7 @@ export class Pet extends Entity<PetSlots> {
   get isAdopted(): boolean {
     return this._isAdopted.value;
   }
-  static checkIsAdopted(isAdopted: boolean) {
+  static checkIsAdopted(isAdopted: boolean | string) {
     return catchValidation(() =>
       SafeBoolean.validate(isAdopted, IS_ADOPTED_CONSTRAINTS),
       "The pet's isAdopted must be true or false!"

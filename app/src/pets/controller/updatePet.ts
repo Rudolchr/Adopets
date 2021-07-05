@@ -24,7 +24,7 @@ const formElements = {
   compatibleWith: formFactory.createChoiceWidget('compatibleWith', Pet.checkCompatibleWith, 'checkbox', SpeciesEnum, []),
   suitableWith: formFactory.createChoiceWidget('suitableWith', Pet.checkSuitableWith, 'checkbox', SuitableWithEnum, []),
   housing: formFactory.createRangeSelection("housing", Pet.checkHousing, HousingEnum),
-  isAdopted: formFactory.createOutput('isAdopted'),
+  isAdopted: formFactory.createSingleCheckbox('isAdopted'),
   shelterId: formFactory.createReferenceSelection("shelter", Pet.checkShelterId, ShelterStorage.instances, 'name'),
 };
 
