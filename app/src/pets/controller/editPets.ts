@@ -25,44 +25,71 @@ const formElements = {
     suitableWith: formFactory.createChoiceWidget('suitableWith', Pet.checkSuitableWith, 'checkbox', SuitableWithEnum, []),
     housing: formFactory.createRangeSelection("housing", Pet.checkHousing, HousingEnum),
     isAdopted: formFactory.createSingleCheckbox('isAdopted'),
-    shelterId: formFactory.createReferenceSelection("shelter", Pet.checkShelterId, ShelterStorage.instances, 'name'),
+    shelterId: formFactory.createReferenceSelection("shelter", Pet.checkShelterId, ShelterStorage.instances, 'name'), // TODO filter to accounts shelters only
 };
 
-const entitySelection = formFactory.createEntitySelection<PetSlots, Pet>(
-    'petSelection',
-    PetStorage.instances,
-    'name',
-    formElements,
-);
+// selection
+let entitySelection = createSelection();
 
-formFactory.createSubmitButton<PetSlots, Pet>(
-    'saveButton',
-    formElements,
-    (slots) => PetStorage.update(slots),
-    entitySelection,
-    'name',
-);
-
-// Delete Button
+function createSelection() {
+    return formFactory.createEntitySelection<PetSlots, Pet>(
+        'petSelection',
+        PetStorage.instances, // TODO filter to accounts shelters only
+        'name',
+        formElements,
+        {value: '', text: '--- create a new pet ---'}
+    );
+}
 entitySelection.addEventListener('change', e => {
     const id = entitySelection.value;
     console.log(id + ": " + typeof id);
 
     if (id !== undefined && id.length > 0) {
-        deleteButton.disabled = false;
+        deleteButton.hidden = false;
+        submitButton.textContent = 'Update pet';
     } else {
-        deleteButton.disabled = true;
+        deleteButton.hidden = true;
+        submitButton.textContent = 'Create pet';
     }
 });
+
+// submit button
+const submitButton = formFactory.createSubmitButton<PetSlots, Pet>(
+    'submitButton',
+    formElements,
+    onSubmit,
+    entitySelection,
+    'name',
+);
+
+async function onSubmit(slots: PetSlots) {
+    console.log(slots);
+
+    if (deleteButton.hidden) {
+        // create a new pet
+        const {id, ...addSlots} = slots;
+        await PetStorage.add(addSlots);
+        // add new pet to selection
+        entitySelection = createSelection();
+    } else {
+        // update existing pet
+        PetStorage.update(slots);
+    }
+}
+
+// delete Button
 const deleteButton: HTMLButtonElement = formFactory.form['deleteButton'];
-deleteButton.disabled = true;
-deleteButton.addEventListener("click", () => {
+deleteButton.hidden = true;
+deleteButton.addEventListener("click", async () => {
     const id = entitySelection.value;
     if (id) {
         if (confirm("Do you really want to remove this pet?")) {
-            PetStorage.destroy(id);
+            await PetStorage.destroy(id);
         }
-        // remove deleted pet from selection
-        entitySelection.remove(entitySelection.selectedIndex);
+        // update the form
+        entitySelection = createSelection();
+        formFactory.form.reset();
+        deleteButton.hidden = true;
+        submitButton.textContent = 'Create pet';
     }
 });

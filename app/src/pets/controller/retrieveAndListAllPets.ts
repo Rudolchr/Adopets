@@ -29,3 +29,6 @@ for (let key of Object.keys(PetStorage.instances)) {
   row.insertCell().textContent = pet.isAdopted ? 'yes' : 'no';
   row.insertCell().textContent = ShelterStorage.instances[pet.shelterId].name;
 }
+
+// TODO filters
+// TODO hide stuff that requires account (eg. Manage Pets button)
