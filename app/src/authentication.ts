@@ -1,0 +1,184 @@
+/**
+ * leads to the authentification side if user needs to login for given page
+ */
+export function setupUiByUserStatus () {
+    const page: string = window.location.pathname;
+    const allowedPages: string[] = ["/","/index.html", "/authentication.html", "/404.html", "/shelters/retrieveAndListAll.html", "/pets/retrieveAndListAll.html"];
+    const loginMngEls: NodeListOf<HTMLElement> = document.querySelectorAll("header > div#login-management > small");
+    // reset (hide) all login management elements: [0]sign in/up , [1]sign out
+    if (page !== "/authentication.html") {
+        loginMngEls[0].hidden = loginMngEls[1].hidden = true;
+    }
+
+    //evaluate user authentication status
+    auth.onAuthStateChanged( async function (user) {
+        // if status is 'anonymous' or 'registered'
+        if (user) {
+            if (user.isAnonymous) { // if user is 'anonymous'
+                if (!allowedPages.includes( page)) {
+                    // redirect to authentication page
+                    window.location.pathname = "/authentication.html";
+                }
+                loginMngEls[0].hidden = false; // show 'sign in/up'
+                console.log("Authenticated as 'anonymous'");
+            } else { // if user is 'registered'
+                const spanEl: HTMLSpanElement = document.createElement("span");
+                // handle without verified email
+                if (!user.emailVerified) {
+                    spanEl.textContent = `Check your email '${user.email}' for instructions to verify your account before using any operation `;
+                } else {
+                    spanEl.textContent = `${user.email} `;
+                }
+                loginMngEls[1].prepend( spanEl);
+                loginMngEls[1].hidden = false; // show 'sign out'
+
+                // if current page is not allowed & email is not verified
+                if (!allowedPages.includes( page) && !user.emailVerified) { // if current page is not allowed
+                    alert (`Check your email ${user.email} for instructions to verify your account before using this operation`);
+                    window.location.pathname = "/index.html";
+                } else if (page === "/" || page === "/index.html") {
+                    // enable UI elements on home page
+                    const linkEls: NodeListOf<HTMLElement> = document.querySelectorAll(".disabled");
+                    for (const el of linkEls) {
+                        el.classList.remove("disabled");
+                    }
+                    const clearDataButton: HTMLButtonElement | HTMLElement | null = document.getElementById("clearData");
+                    if (clearDataButton && clearDataButton instanceof HTMLButtonElement) {
+                        clearDataButton.disabled = false;
+                    }
+                    const generateDataButtons: NodeListOf<HTMLElement> =
+                        document.querySelectorAll(".createTestData");
+                    for (const btn of generateDataButtons) {
+                        if (btn instanceof HTMLButtonElement) {
+                            btn.disabled = false;
+                        }
+                    }
+                }
+
+
+                // set and event handler for 'sign out' button
+                const signOutButton: HTMLButtonElement | null = loginMngEls[1].querySelector("button");
+                if (signOutButton) {
+                    signOutButton.addEventListener("click", handleLogOut);
+                }
+                console.log(`Authenticated as 'registered with ${user.emailVerified ? '' : 'NO '}verified account' (${user.email})`);
+            }
+        } else { // if user is not 'registered' nor 'anonymous' (null)  
+            // sign in user as 'anonymous' 
+            auth.signInAnonymously();
+        }
+    });
+}
+
+export function setupSignInAndSignUp () {
+    const form: HTMLFormElement = document.forms.namedItem("User")!;
+    const btnSignIn: HTMLButtonElement = form.signin;
+    const btnSignUp: HTMLButtonElement = form.signup;
+
+    // manage sign up event
+    btnSignUp.addEventListener("click", handleSignUpButton);
+    // manage sign in event
+    btnSignIn.addEventListener("click", handleSignInButton);
+    // neutralize the submit event
+    form.addEventListener( "submit", function (e) {
+        e.preventDefault();
+    });
+
+
+    async function handleSignUpButton () {
+        const formEl: HTMLFormElement = document.forms.namedItem("User")!;
+        const email: any | string = formEl.email.value;
+        const password: any | string  = formEl.password.value;
+        if (email && password) {
+            try {
+                // get 'anonymous user' user data from IndexedDB
+                const userRef: firebase.User | null = await auth.currentUser;
+                // create credential with email and password
+                const credential: firebase.auth.AuthCredential = firebase.auth.EmailAuthProvider.credential( email, password);
+                if (userRef) {
+                    // create a 'registered' user merging credential with 'anonymous' user data
+                    await userRef.linkWithCredential( credential);
+                    // send verification email
+                    await userRef.sendEmailVerification();
+                }
+                console.log(`User ${email} became 'Registered'`);
+                alert (`Account created ${email}.\n\nCheck your email for instructions to verify this account.`);
+                window.location.pathname = "/index.html";
+            } catch (e) {
+                const divEl: HTMLElement | null = document.getElementById("error");
+                if (divEl) {
+                    const smallEl: HTMLElement | null = divEl.querySelector("small");
+                    if (smallEl) {
+                        smallEl.textContent = e.message;
+                    }
+                    divEl.hidden = false;
+                }
+            }
+        }
+    }
+
+    async function handleSignInButton () {
+        const formEl: HTMLFormElement = document.forms.namedItem("User")!;
+        const email: any | string = formEl.email.value;
+        const password: any | string  = formEl.password.value;
+        if (email && password) {
+            try {
+            const signIn: firebase.auth.UserCredential = await auth.signInWithEmailAndPassword( email, password);
+            if (signIn.user) {
+                if (signIn.user.emailVerified) {
+                    console.log(`Granted access to user ${email}`);
+                }
+            }
+            window.location.pathname = "/index.html";
+            } catch (e) {
+                const divEl: HTMLDivElement | HTMLElement | null = document.getElementById("error");
+                if (divEl) {
+                    const smallEl: HTMLDivElement | HTMLElement | null = divEl.querySelector("small");
+                    if (smallEl) {
+                        smallEl.textContent = e.message;
+                    }
+                    divEl.hidden = false;
+                }
+            }
+        }
+    }
+}
+
+export async function handleVerifyEmail () {
+    const urlParams: URLSearchParams = new URLSearchParams( location.search);
+    const verificationCode: string | null = urlParams.get( "oobCode"); // get verification code from URL
+    const h1El: HTMLHeadingElement | null = document.querySelector("main > h1");
+    const pEl: HTMLParagraphElement | null = document.querySelector("main > p");
+    const linkEl: HTMLLinkElement | null = document.querySelector("footer > a");
+    try { // if email can be verified
+        if (verificationCode && h1El && pEl && linkEl ) {
+            // apply the email verification code
+            await auth.applyActionCode( verificationCode);
+            // if success, manipulate HTML elements: message, instructions and link
+            h1El.textContent = "Your email has been verified.";
+            pEl.textContent = "You can use now any operation on the Minimal App.";
+            let textNodeEl = document.createTextNode("« Go to Minimal App");
+            linkEl.appendChild( textNodeEl);
+            linkEl.href = "index.html";
+        }
+    } catch (e) { // if email has been already verified
+        if (verificationCode && h1El && pEl && linkEl ) {
+            // if error, manipulate HTML elements: message, instructions and link
+            h1El.textContent = "Your validation link has been already used.";
+            pEl.textContent = "You can now Sign In the JS + Firebase Minimal App with Auth.";
+            let textNodeEl = document.createTextNode("« Go to the Sign in page");
+            linkEl.appendChild( textNodeEl);
+            linkEl.href = "authenticateUser.html";
+            console.error( e.message);
+        }
+    }
+}
+
+export function handleLogOut () {
+    try {
+        auth.signOut();
+        window.location.pathname = "/index.html";
+    } catch (e) {
+        console.error( e.message);
+    }
+}

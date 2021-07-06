@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta charset="UTF-8" />
     <title>Adopets: Update Shelter</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" />
-
-    <link rel="icon" href="/assets/favicon.svg" />
-    <link rel="mask-icon" href="/assets/mask-icon.svg" color="#000000" />
-    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
-    <link rel="manifest" href="/assets/manifest.json" />
-    <link rel="stylesheet" href="/css/normalize.css" />
-    <link rel="stylesheet" href="/css/main.css" />
-
+    <script src="/js/lib/load_essentials.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
-    <script
-      src="/js/shelters/controller/updateShelter.js"
-      type="module"
-    ></script>
+    <script src="/js/shelters/controller/updateShelter.js" type="module"></script>
+    <script src="/js/authentication.js" type="module"></script>
+    <script type="module">
+      import {setupUiByUserStatus} from "./js/authentication.js";
+      window.addEventListener("load", setupUiByUserStatus);
+    </script>
   </head>
 
   <body>
@@ -38,6 +31,10 @@
             <li><a href="/messages/index.html">Messages</a></li>
           </ul>
         </nav>
+      </div>
+      <div id="login-management">
+        <small hidden="hidden"><a href="authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><button type="button">Sign out</button></small>
       </div>
     </header>
     <main>

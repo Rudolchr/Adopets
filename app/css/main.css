@@ -44,6 +44,14 @@ textarea {
   resize: vertical;
 }
 
+button {
+  background-color: var(--darker-bg-color);
+  color: white;
+  border-style: none;
+  border-radius: 0;
+}
+
+
 /* ===== Initializr Styles ==================================================
    Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
    ========================================================================== */
@@ -65,6 +73,7 @@ body {
   --light-bg-color: #7b6; /*  #f16529 */
   --dark-bg-color: #372; /*  #e44d26 */
   --dark-bg-hovered: #261; /*  #e44d26 */
+  --darker-bg-color: #113608; /*  #e44d26 */
   --dark-bg-disabled: #483; /*  #f16529 */
   --text-disabled: #ffffff99
   /* --light-bg-color: forestgreen;
@@ -120,6 +129,33 @@ nav a:hover {
 header figure {
   display: none;
 }
+
+#login-management {
+  align-items: center;
+  align-content: center;
+  background: var(--dark-bg-disabled);
+  margin: 0 5%;
+}
+
+#login-management a {
+  color: white;
+  text-decoration: none;
+  font-weight: bolder;
+  margin-left: 2%;
+}
+
+#login-management span {
+  color: white;
+  text-decoration: none;
+  font-weight: bolder;
+  margin-left: 2%;
+}
+
+#login-management small {
+  color: #ccc;
+  font-weight: bold;
+}
+
 /* ==============
     MOBILE: Main
    ============== */

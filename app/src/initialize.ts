@@ -7,3 +7,6 @@ if (!firebase.apps.length) {
 } else {  // if already initialized
   firebase.app();
 }
+
+// initialize Firebase user authentication interface
+const auth = firebase.auth();

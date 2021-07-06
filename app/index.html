@@ -3,29 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <title>Adopets</title>
-    <meta name="description" content="Adopets" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" />
-
-    <link rel="icon" href="./assets/favicon.svg" />
-    <link rel="mask-icon" href="./assets/mask-icon.svg" color="#000000" />
-    <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
-    <link rel="manifest" href="./assets/manifest.json" />
-
-    <link rel="stylesheet" href="./css/normalize.css" />
-    <link rel="stylesheet" href="./css/main.css" />
+    <script src="/js/lib/load_essentials.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
+    <script src="/js/authentication.js" type="module"></script>
     <script type="module">
-      import { createTestData, clear } from "/js/app.js";
-      const clearButton = document.getElementById("clearData");
-      const createTestDataButton = document.getElementById("createTestData");
-
-      // set event handlers for the buttons
-      clearButton.addEventListener("click", clear);
-      createTestDataButton.addEventListener("click", createTestData);
+      import {setupUiByUserStatus} from "./js/authentication.js";
+      window.addEventListener("load", setupUiByUserStatus);
     </script>
   </head>
 
@@ -39,12 +26,16 @@
         <nav>
           <ul>
             <li><a href="/index.html" class="disabled">Home</a></li>
-            <li><a href="/pets/index.html">Pets</a></li>
-            <li><a href="/shelters/index.html">Shelters</a></li>
-            <li><a href="/adopted/index.html">Adopted</a></li>
-            <li><a href="/messages/index.html">Messages</a></li>
+            <li><a href="/pets/index.html" class="disabled">Pets</a></li>
+            <li><a href="/shelters/index.html" class="disabled">Shelters</a></li>
+            <li><a href="/adopted/index.html" class="disabled">Adopted</a></li>
+            <li><a href="/messages/index.html" class="disabled">Messages</a></li>
           </ul>
         </nav>
+      </div>
+      <div id="login-management">
+        <small hidden="hidden"><a href="authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><button type="button">Sign out</button></small>
       </div>
     </header>
     <main>
@@ -52,20 +43,14 @@
         <h3>Main Menu</h3>
         <p>This app supports organising the following two types:</p>
         <div class="two-col-menu">
-          <menu class="crud">
-            <li><a href="/pets/index.html">Organising Pets</a></li>
-            <li><a href="/shelters/index.html">Organising Shelters</a></li>
-          </menu>
-          <menu>
-            <li>
-              <button type="button" id="clearData">Clear database</button>
-            </li>
-            <li>
-              <button type="button" id="createTestData">
-                Create test data
-              </button>
-            </li>
-          </menu>
+          <ul role="menubar">
+            <li role="menuitem"><a href="/pets/retrieveAndListAll.html">Show all Pets</a></li>
+            <li role="menuitem"><a href="/shelters/retrieveAndListAll.html">Show all Shelters</a></li>
+          </ul>
+          <ul role="menubar">
+            <li role="menuitem"><a href="/pets/index.html" class="disabled">Organising Pets</a></li>
+            <li role="menuitem"><a href="/shelters/index.html" class="disabled">Organising Shelters</a></li>
+          </ul>
         </div>
       </div>
     </main>
