@@ -5,18 +5,13 @@ import { FormFactory } from "../../lib/forms/FormFactory.js";
 import { ShelterStorage } from "../../shelters/model/ShelterStorage.js";
 import { HousingEnum, Pet, SexEnum, SizeEnum, SpeciesEnum, SuitableWithEnum } from "../model/Pet.js";
 import { PetStorage } from "../model/PetStorage.js";
-// load all pets
 await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
 // we use the factory to create the view logic for the Form
 const formFactory = new FormFactory("Pet");
-var AdoptedEnum;
-(function (AdoptedEnum) {
-    AdoptedEnum["true"] = "yes";
-    AdoptedEnum["false"] = "no";
-})(AdoptedEnum || (AdoptedEnum = {}));
 // which elements should be manipulated with this Form
 const formElements = {
+    id: formFactory.createOutput("petId"),
     name: formFactory.createInput("petName", Pet.checkName),
     species: formFactory.createRangeSelection("species", Pet.checkSpecies, SpeciesEnum),
     sex: formFactory.createRangeSelection("sex", Pet.checkSex, SexEnum),
@@ -29,5 +24,29 @@ const formElements = {
     isAdopted: formFactory.createSingleCheckbox('isAdopted'),
     shelterId: formFactory.createReferenceSelection("shelter", Pet.checkShelterId, ShelterStorage.instances, 'name'),
 };
-formFactory.createSubmitButton('addButton', formElements, (slots) => PetStorage.add(slots));
-//# sourceMappingURL=createPet.js.map
+const entitySelection = formFactory.createEntitySelection('petSelection', PetStorage.instances, 'name', formElements);
+formFactory.createSubmitButton('saveButton', formElements, (slots) => PetStorage.update(slots), entitySelection, 'name');
+// Delete Button
+entitySelection.addEventListener('change', e => {
+    const id = entitySelection.value;
+    console.log(id + ": " + typeof id);
+    if (id !== undefined && id.length > 0) {
+        deleteButton.disabled = false;
+    }
+    else {
+        deleteButton.disabled = true;
+    }
+});
+const deleteButton = formFactory.form['deleteButton'];
+deleteButton.disabled = true;
+deleteButton.addEventListener("click", () => {
+    const id = entitySelection.value;
+    if (id) {
+        if (confirm("Do you really want to remove this pet?")) {
+            PetStorage.destroy(id);
+        }
+        // remove deleted pet from selection
+        entitySelection.remove(entitySelection.selectedIndex);
+    }
+});
+//# sourceMappingURL=editPets.js.map

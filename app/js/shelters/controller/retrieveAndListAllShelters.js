@@ -1,7 +1,7 @@
 /**
  * @author Max Bergmann
  */
-import { createListFromList } from "../../lib/newUtil.js";
+import { createListFromList } from "../../lib/forms/FormUtil.js";
 import { PetStorage } from "../../pets/model/PetStorage.js";
 import { ShelterStorage } from "../model/ShelterStorage.js";
 // this makes my ESLint type this const correctly as "HTMLTableSectionElement"

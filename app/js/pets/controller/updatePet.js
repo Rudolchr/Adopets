@@ -1,7 +1,7 @@
 /**
  * @author Christian Prinz
  */
-import { FormFactory } from "../../lib/FormFactory.js";
+import { FormFactory } from "../../lib/forms/FormFactory.js";
 import { ShelterStorage } from "../../shelters/model/ShelterStorage.js";
 import { HousingEnum, Pet, SexEnum, SizeEnum, SpeciesEnum, SuitableWithEnum } from "../model/Pet.js";
 import { PetStorage } from "../model/PetStorage.js";

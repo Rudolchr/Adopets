@@ -1,7 +1,7 @@
 /**
  * @author Max Bergmann
  */
-import {fillSelectWithEntities} from "../../lib/newUtil.js";
+import {fillSelectWithEntities} from "../../lib/forms/FormUtil.js";
 import {Address} from "../../lib/valueObjects/composed/Address.js";
 import {OHSlots} from "../../lib/valueObjects/composed/OfficeHours.js";
 import {PetStorage} from "../../pets/model/PetStorage.js";

@@ -7,19 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#ffffff" />
 
-    <link rel="icon" href="../assets/favicon.svg" />
-    <link rel="mask-icon" href="../assets/mask-icon.svg" color="#000000" />
-    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
-    <link rel="manifest" href="../assets/manifest.json" />
+    <link rel="icon" href="/assets/favicon.svg" />
+    <link rel="mask-icon" href="/assets/mask-icon.svg" color="#000000" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/assets/manifest.json" />
 
-    <link rel="stylesheet" href="../css/normalize.css" />
-    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="/css/normalize.css" />
+    <link rel="stylesheet" href="/css/main.css" />
 
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
-    <script src="../js/initialize.js"></script>
+    <script src="/js/initialize.js"></script>
+    <script src="/js/pets/controller/retrieveAndListAllPets.js" type="module"></script>
     <script type="module">
-      import { createTestData, clear } from "../js/app.js";
+      import { createTestData, clear } from "/js/app.js";
       const clearButton = document.getElementById("clearData");
       const createTestDataButton = document.getElementById("createTestData");
 
@@ -38,44 +39,48 @@
         </div>
         <nav>
           <ul>
-            <li><a href="./create.html">C</a></li>
-            <li><a href="./retrieveAndListAll.html">R</a></li>
-            <li><a href="./update.html">U</a></li>
-            <li><a href="./delete.html">D</a></li>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/pets/index.html" class="disabled">Pets</a></li>
+            <li><a href="/shelters/index.html">Shelters</a></li>
+            <li><a href="/adopted/index.html">Adopted</a></li>
+            <li><a href="/messages/index.html">Messages</a></li>
           </ul>
         </nav>
       </div>
     </header>
     <main>
       <div class="wrapper clearfix">
-        <h3>Pet Organisation</h3>
-        <p>This app supports the following operations for pets:</p>
-        <div class="two-col-menu">
-          <menu class="crud">
-            <li><a href="./create.html">Add a new pet</a></li>
-            <li><a href="./retrieveAndListAll.html">List all pets</a></li>
-            <li><a href="./update.html">Update a pet</a></li>
-            <li><a href="./delete.html">Delete a pet</a></li>
-          </menu>
-          <menu>
-            <li>
-              <button type="button" id="clearData">Clear database</button>
-            </li>
-            <li>
-              <button type="button" id="createTestData">
-                Create test data
-              </button>
-            </li>
-          </menu>
-        </div>
+        <figure>
+          <figcaption>Filter:</figcaption>
+          <div><button type="button" name="expand">expand</button></div>
+          <figcaption>All pets in this database:</figcaption>
+          <table id="pets">
+            <thead>
+              <tr>
+                <th id="petId">ID</th>
+                <th id="petName">Name</th>
+                <th id="species">Species</th>
+                <th id="sex">Sex</th>
+                <th id="size">Size</th>
+                <th id="birthDate">Birth date</th>
+                <th id="vaccinationStatus">Vaccination status</th>
+                <th id="compatibleWith">Compatible with</th>
+                <th id="suitableWith">SuitableWith</th>
+                <th id="housing">Housing</th>
+                <th id="isAdopted">isAdopted</th>
+                <th id="shelter">Shelter</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </figure>
       </div>
     </main>
     <footer>
       <div class="foot-content wrapper">
         <ul>
-          <li><a href="../index.html">Back to main menu</a></li>
-          <li><a href="./index.html">Manage Pets</a></li>
-          <li><a href="../shelters/index.html">Manage Shelters</a></li>
+          <li><a href="/index.html" class="disabled">Login</a></li>
+          <li><a href="/pets/edit.html" >Manage my Pets</a></li>
         </ul>
       </div>
       <div class="foot-content wrapper">

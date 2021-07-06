@@ -62,15 +62,18 @@ body {
    =================== */
 :root {
   /* pseudo-class used for variable definitions */
-  --light-bg-color: goldenrod; /*  #f16529 */
-  --dark-bg-color: darkgoldenrod; /*  #e44d26 */
+  --light-bg-color: #7b6; /*  #f16529 */
+  --dark-bg-color: #372; /*  #e44d26 */
+  --dark-bg-hovered: #261; /*  #e44d26 */
+  --dark-bg-disabled: #483; /*  #f16529 */
+  --text-disabled: #ffffff99
   /* --light-bg-color: forestgreen;
     --dark-bg-color: darkgreen;
   */
 }
 
 header {
-  border-bottom: 20px solid var(--dark-bg-color);
+  border-bottom: 10px solid var(--dark-bg-color);
 }
 
 footer {
@@ -111,6 +114,7 @@ nav a:visited {
 }
 nav a:hover {
   text-decoration: underline;
+  background: var(--dark-bg-hovered);
 }
 
 header figure {
@@ -135,13 +139,23 @@ footer div.foot-content {
   /* margin: 2em auto; */
 }
 footer div.foot-content li {
+  margin-bottom: 10px;
+  padding: 15px 0;
+  text-align: center;
+  text-decoration: none;
   display:inline-block;
   background-color:var(--dark-bg-color);
   list-style-type:none;
   padding:1em;
 }
+footer div.foot-content li:hover {
+  background:  var(--dark-bg-hovered);
+  color: white;
+  text-decoration: underline;
+}
 footer div.foot-content a {
-  color: black;
+  color: white;
+  text-decoration: none;
 }
 table {
   border-collapse: collapse;
@@ -327,12 +341,12 @@ form div.MultiChoiceWidget > ul > li.added {
     width: 70px;
   }
   header .title {
-    width: 57%;
+    width: 170pt;
     float: left;
   }
   nav {
     float: right;
-    width: 38%;
+    width: 67%;
   }
   /* ============
    WIDE: Main
@@ -381,6 +395,18 @@ form div.MultiChoiceWidget > ul > li.added {
   overflow: visible;
   position: static;
   width: auto;
+}
+
+.disabled {
+  pointer-events: none;
+  color: #ffffff99;
+  background: var(--dark-bg-disabled)
+}
+
+.disabled:hover {
+  text-decoration: none;
+  color: #ffffff99;
+  background: var(--dark-bg-disabled)
 }
 
 .invisible {

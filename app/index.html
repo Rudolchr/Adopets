@@ -17,9 +17,9 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
-    <script src="./js/initialize.js"></script>
+    <script src="/js/initialize.js"></script>
     <script type="module">
-      import { createTestData, clear } from "./js/app.js";
+      import { createTestData, clear } from "/js/app.js";
       const clearButton = document.getElementById("clearData");
       const createTestDataButton = document.getElementById("createTestData");
 
@@ -38,8 +38,11 @@
         </div>
         <nav>
           <ul>
-            <li><a href="pets/index.html">Pets</a></li>
-            <li><a href="shelters/index.html">Shelters</a></li>
+            <li><a href="/index.html" class="disabled">Home</a></li>
+            <li><a href="/pets/index.html">Pets</a></li>
+            <li><a href="/shelters/index.html">Shelters</a></li>
+            <li><a href="/adopted/index.html">Adopted</a></li>
+            <li><a href="/messages/index.html">Messages</a></li>
           </ul>
         </nav>
       </div>
@@ -50,8 +53,8 @@
         <p>This app supports organising the following two types:</p>
         <div class="two-col-menu">
           <menu class="crud">
-            <li><a href="pets/index.html">Organising Pets</a></li>
-            <li><a href="shelters/index.html">Organising Shelters</a></li>
+            <li><a href="/pets/index.html">Organising Pets</a></li>
+            <li><a href="/shelters/index.html">Organising Shelters</a></li>
           </menu>
           <menu>
             <li>

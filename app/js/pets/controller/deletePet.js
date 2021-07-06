@@ -1,7 +1,7 @@
 /**
  * @author Christian Prinz
  */
-import { fillSelectWithEntities } from "../../lib/newUtil.js";
+import { fillSelectWithEntities } from "../../lib/forms/FormUtil.js";
 import { PetStorage } from "../model/PetStorage.js";
 const form = document.forms.namedItem("Pet");
 const petSelection = form['petSelection'];

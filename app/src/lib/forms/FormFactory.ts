@@ -1,5 +1,5 @@
-import {Entity, EntitySlots} from "./Entity.js";
-import {createChoiceWidget, fillSelectWithEntities, fillSelectWithRange} from "./newUtil.js";
+import {Entity, EntitySlots} from "../Entity.js";
+import {createChoiceWidget, fillSelectWithEntities, fillSelectWithRange} from "./FormUtil.js";
 
 interface FormElementBase {
   get: () => any;
@@ -152,7 +152,7 @@ export class FormFactory {
    * @param id of the HTMLSelectElement
    * @param validationFunction which checks if the value is correct
    * @param range an `enum` or `string[]` with the possible values
-   * @param selected [optional] the entity / entities that are previously selected
+   * @param selected [optional] the values that are previously selected
    * @returns `get()`, `set(value: string)` and a `check()` that validates the current value
    */
   createRangeSelection(
@@ -177,6 +177,16 @@ export class FormFactory {
     return {get, set, check};
   }
 
+  /**
+   * creates a FieldSetElement for enumerations with radioButtons or checkBoxed and returns accessing functions
+   * @param id of the HTMLFieldSetElement
+   * @param validationFunction which checks if the values are correct
+   * @param type `'radio'` for single, and `'checkbox'` for multiple choices
+   * @param range an `enum` or `string[]` with the possible values
+   * @param selected [optional] the choices that are previously selected
+   * @param isMandatory is it required to choose at least one value
+   * @returns `get()`, `set(value: string)` and a `check()` that validates the current value
+   */
   createChoiceWidget(
     id: string,
     validationFunction: (value: string[]) => string,
@@ -203,6 +213,12 @@ export class FormFactory {
     return {get, set, check};
   }
 
+  /**
+   * creates a single checkbox that handles a simple boolean value
+   * @param id of the HTMLSelectElement
+   * @param selected is the checkbox checked initially
+   * @returns `get()`, `set(value: string)` and a *disabled* `check()`
+   */
   createSingleCheckbox(id: string, selected: boolean = false) {
     const input: HTMLInputElement = this._form[id];
     input.checked = selected;

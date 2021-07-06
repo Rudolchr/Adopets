@@ -7,19 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#ffffff" />
 
-    <link rel="icon" href="../assets/favicon.svg" />
-    <link rel="mask-icon" href="../assets/mask-icon.svg" color="#000000" />
-    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
-    <link rel="manifest" href="../assets/manifest.json" />
+    <link rel="icon" href="/assets/favicon.svg" />
+    <link rel="mask-icon" href="/assets/mask-icon.svg" color="#000000" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/assets/manifest.json" />
 
-    <link rel="stylesheet" href="../css/normalize.css" />
-    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="/css/normalize.css" />
+    <link rel="stylesheet" href="/css/main.css" />
 
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
-    <script src="../js/initialize.js"></script>
+    <script src="/js/initialize.js"></script>
     <script type="module">
-      import { createTestData, clear } from "../js/app.js";
+      import { createTestData, clear } from "/js/app.js";
       const clearButton = document.getElementById("clearData");
       const createTestDataButton = document.getElementById("createTestData");
 
@@ -38,10 +38,11 @@
         </div>
         <nav>
           <ul>
-            <li><a href="./create.html">C</a></li>
-            <li><a href="./retrieveAndListAll.html">R</a></li>
-            <li><a href="./update.html">U</a></li>
-            <li><a href="./delete.html">D</a></li>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/pets/index.html">Pets</a></li>
+            <li><a href="/shelters/index.html" class="disabled">Shelters</a></li>
+            <li><a href="/adopted/index.html">Adopted</a></li>
+            <li><a href="/messages/index.html">Messages</a></li>
           </ul>
         </nav>
       </div>
@@ -73,9 +74,8 @@
     <footer>
       <div class="foot-content wrapper">
         <ul>
-          <li><a href="../index.html">Back to main menu</a></li>
-          <li><a href="../pets/index.html">Manage Pets</a></li>
-          <li><a href="./index.html">Manage Shelters</a></li>
+          <li><a href="/index.html" class="disabled">Login</a></li>
+          <li><a href="/index.html" class="disabled">Manage my Shelters</a></li>
         </ul>
       </div>
       <div class="foot-content wrapper">

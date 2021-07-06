@@ -1,7 +1,7 @@
 /**
  * @author Max Bergmann
  */
-import {createListFromList} from "../../lib/newUtil.js";
+import {createListFromList} from "../../lib/forms/FormUtil.js";
 import {PetStorage} from "../../pets/model/PetStorage.js";
 import {ShelterStorage} from "../model/ShelterStorage.js";
 
@@ -13,13 +13,13 @@ await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
 
 // for each pet, create a table row with a cell for each attribute
-for (let key of Object.keys(ShelterStorage.instances)) {  
+for (let key of Object.keys(ShelterStorage.instances)) {
   const row = tableBody.insertRow();
   const shelter = ShelterStorage.instances[key];
   row.insertCell().textContent = shelter.name;
   row.insertCell().textContent = shelter.address.toString();
   row.insertCell().textContent = shelter.email;
-  const timeList: HTMLUListElement = createListFromList(shelter.officeHours.toList())
+  const timeList: HTMLUListElement = createListFromList(shelter.officeHours.toList());
   if (timeList.childElementCount > 0) {
     row.insertCell().appendChild(timeList);
   } else {

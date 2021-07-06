@@ -9,6 +9,7 @@
         "firefox-devtools.vscode-firefox-debug",
         "esbenp.prettier-vscode",
         "dominicvonk.parameter-hints",
-        "toba.vsfire"
+        "toba.vsfire",
+        "msjsdiag.debugger-for-edge"
     ]
 }
