@@ -53,19 +53,12 @@ fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name');
 shelterSelection.addEventListener("change", () => {
     const shelterKey = shelterSelection.value;
     if (shelterKey !== undefined && shelterKey.length > 0) {
-        deleteButton.disabled = false;
-        createButton.disabled = true;
-        saveButton.disabled = false;
-    }
-    else if (shelterKey === undefined) {
-        createButton.disabled = false;
-        deleteButton.disabled = true;
-        saveButton.disabled = true;
+        deleteButton.hidden = false;
+        submitButton.textContent = 'Update shelter';
     }
     else {
-        deleteButton.disabled = true;
-        saveButton.disabled = true;
-        createButton.disabled = false;
+        deleteButton.hidden = true;
+        submitButton.textContent = 'Create shelter';
     }
     // fill the form with the shelter's data
     if (shelterKey) {
@@ -101,73 +94,21 @@ shelterSelection.addEventListener("change", () => {
 });
 /** ### BUTTONS ------------------------------------------------------------------------ */
 const deleteButton = form["deleteButton"];
-deleteButton.disabled = true;
-const createButton = form["createButton"];
-createButton.disabled = false;
-const saveButton = form["saveButton"];
-saveButton.disabled = true;
-// handle the click on create and therefore adding of a shelter
-createButton.addEventListener("click", () => {
-    // set error messages in case of constraint violations
-    shelterNameInput.setCustomValidity(Shelter.checkName(shelterNameInput.value));
-    shelterAddressStreetInput.setCustomValidity(Address.checkStreet(shelterAddressStreetInput.value));
-    shelterAddressNumberInput.setCustomValidity(Address.checkNumber(shelterAddressNumberInput.value));
-    shelterAddressCityInput.setCustomValidity(Address.checkCity(shelterAddressCityInput.value));
-    shelterPhoneInput.setCustomValidity(Shelter.checkPhone(shelterPhoneInput.value));
-    shelterEmailInput.setCustomValidity(Shelter.checkEmail(shelterEmailInput.value));
-    shelterDescInput.setCustomValidity(Shelter.checkDescription(shelterDescInput.value));
-    // check if for each given time also a opening/closing time is given
-    const oh = {
-        monday: [sheltermonFInput.value, sheltermonTInput.value],
-        tuesday: [sheltertueFInput.value, sheltertueTInput.value],
-        wednesday: [shelterwedFInput.value, shelterwedTInput.value],
-        thursday: [shelterthuFInput.value, shelterthuTInput.value],
-        friday: [shelterfriFInput.value, shelterfriTInput.value],
-        saturday: [sheltersatFInput.value, sheltersatTInput.value],
-        sunday: [sheltersunFInput.value, sheltersunTInput.value],
-    };
-    sheltermonFInput.setCustomValidity(Shelter.checkOfficeHours(oh));
-    // show possible errors
-    form.reportValidity();
-    // save the input data only if all of the form fields are valid
-    form.checkValidity() && ShelterStorage.add({
-        name: shelterNameInput.value,
-        address: {
-            street: shelterAddressStreetInput.value,
-            number: +shelterAddressNumberInput.value,
-            city: shelterAddressCityInput.value,
-        },
-        phone: shelterPhoneInput.value,
-        email: shelterEmailInput.value,
-        officeHours: {
-            monday: [sheltermonFInput.value, sheltermonTInput.value],
-            tuesday: [sheltertueFInput.value, sheltertueTInput.value],
-            wednesday: [shelterwedFInput.value, shelterwedTInput.value],
-            thursday: [shelterthuFInput.value, shelterthuTInput.value],
-            friday: [shelterfriFInput.value, shelterfriTInput.value],
-            saturday: [sheltersatFInput.value, sheltersatTInput.value],
-            sunday: [sheltersunFInput.value, sheltersunTInput.value],
-        },
-        description: shelterDescInput.value,
-    });
-    // TODO: handle that created shelter can be selected in Selection Element --> needs created ID oder reload
-});
+const submitButton = form["submitButton"];
 // handle when clicking on delete
-deleteButton.addEventListener("click", () => {
+deleteButton.addEventListener("click", async () => {
     const id = shelterSelection.value;
     if (id) {
         if (confirm("Do you really want to delete this Shelter?")) {
-            ShelterStorage.destroy(id);
-            // remove deleted shelter from selection
-            shelterSelection.remove(shelterSelection.selectedIndex);
-            createButton.disabled = false;
-            deleteButton.disabled = true;
-            saveButton.disabled = true;
+            await ShelterStorage.destroy(id);
+            fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name');
+            deleteButton.hidden = true;
+            submitButton.textContent = 'Create shelter';
         }
     }
 });
 // event handler for save button and therefore updating the selected shelter
-saveButton.addEventListener("click", () => {
+submitButton.addEventListener("click", async () => {
     // set error messages in case of constraint violations
     shelterNameInput.setCustomValidity(Shelter.checkName(shelterNameInput.value));
     shelterAddressStreetInput.setCustomValidity(Address.checkStreet(shelterAddressStreetInput.value));
@@ -191,7 +132,7 @@ saveButton.addEventListener("click", () => {
     form.reportValidity();
     // save the input date only if all of the form fields are valid
     if (form.checkValidity()) {
-        ShelterStorage.update({
+        const slots = {
             id: shelterSelection.value,
             name: shelterNameInput.value,
             address: {
@@ -211,9 +152,18 @@ saveButton.addEventListener("click", () => {
                 sunday: [sheltersunFInput.value, sheltersunTInput.value],
             },
             description: shelterDescInput.value,
-        });
-        // update the selection list option element
-        shelterSelection.options[shelterSelection.selectedIndex].text = shelterNameInput.value;
+        };
+        if (deleteButton.hidden) {
+            // create a new pet
+            const { id, ...addSlots } = slots;
+            await ShelterStorage.add(addSlots);
+            // update the selection list option element
+            fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name');
+        }
+        else {
+            // update existing pet
+            ShelterStorage.update(slots);
+        }
     }
 });
 // neutralize the submit event

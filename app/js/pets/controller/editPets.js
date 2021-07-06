@@ -32,7 +32,6 @@ function createSelection() {
 }
 entitySelection.addEventListener('change', e => {
     const id = entitySelection.value;
-    console.log(id + ": " + typeof id);
     if (id !== undefined && id.length > 0) {
         deleteButton.hidden = false;
         submitButton.textContent = 'Update pet';
@@ -45,7 +44,6 @@ entitySelection.addEventListener('change', e => {
 // submit button
 const submitButton = formFactory.createSubmitButton('submitButton', formElements, onSubmit, entitySelection, 'name');
 async function onSubmit(slots) {
-    console.log(slots);
     if (deleteButton.hidden) {
         // create a new pet
         const { id, ...addSlots } = slots;
@@ -66,12 +64,11 @@ deleteButton.addEventListener("click", async () => {
     if (id) {
         if (confirm("Do you really want to remove this pet?")) {
             await PetStorage.destroy(id);
+            // update the form
+            entitySelection = createSelection();
+            deleteButton.hidden = true;
+            submitButton.textContent = 'Create pet';
         }
-        // update the form
-        entitySelection = createSelection();
-        formFactory.form.reset();
-        deleteButton.hidden = true;
-        submitButton.textContent = 'Create pet';
     }
 });
 //# sourceMappingURL=editPets.js.map
