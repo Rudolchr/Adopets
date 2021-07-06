@@ -36,7 +36,7 @@ export function fillSelectWithRange(selection, range, selected) {
  *
  * @return an `"option"` document element
  */
-function createOption(val, txt, classValues) {
+export function createOption(val, txt, classValues) {
     var el = document.createElement("option");
     el.value = val;
     el.text = txt ?? val;

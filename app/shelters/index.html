@@ -8,7 +8,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
-    <script src="/js/shelters/controller/updateShelter.js" type="module"></script>
+    <script src="/js/shelters/controller/retrieveAndListAllShelters.js" type="module"></script>
     <script src="/js/authentication.js" type="module"></script>
     <script type="module">
       import {setupUiByUserStatus} from "./js/authentication.js";
@@ -21,7 +21,7 @@
       <div class="wrapper clearfix">
         <div class="title">
           <h1>Adopets</h1>
-          <h2>Bin richtig</h2>
+          <h2>Give home to pets</h2>
         </div>
         <nav>
           <ul>
@@ -61,8 +61,7 @@
     <footer>
       <div class="foot-content wrapper">
         <ul>
-          <li><a href="/index.html" class="disabled">Login</a></li>
-          <li><a href="/index.html" class="disabled">Manage my Shelters</a></li>
+          <li><a href="/shelters/edit.html">Manage my Shelters</a></li>
         </ul>
       </div>
       <div class="foot-content wrapper">

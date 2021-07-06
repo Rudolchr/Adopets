@@ -51,6 +51,13 @@ button {
   border-radius: 0;
 }
 
+button:disabled {
+  background-color: var(--darker-bg-disabled);
+  color: var(--darker-bg-disabled-text);
+  border-style: none;
+  border-radius: 0;
+}
+
 
 /* ===== Initializr Styles ==================================================
    Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
@@ -74,6 +81,8 @@ body {
   --dark-bg-color: #372; /*  #e44d26 */
   --dark-bg-hovered: #261; /*  #e44d26 */
   --darker-bg-color: #113608; /*  #e44d26 */
+  --darker-bg-disabled: #c7c7c76c; /*  #e44d26 */
+  --darker-bg-disabled-text: #5f5f5f; /*  #e44d26 */
   --dark-bg-disabled: #483; /*  #f16529 */
   --text-disabled: #ffffff99
   /* --light-bg-color: forestgreen;
