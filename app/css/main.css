@@ -422,6 +422,19 @@ form div.MultiChoiceWidget > ul > li.added {
   clear: both;
 }
 
+.deleteButton {
+  color: white;
+  background-color: #881900;
+}
+.deleteButton:hover {
+  color: white;
+  background-color: #88190088;
+}
+.deleteButton:disabled {
+  color: #ffffffaa;
+  background-color: #88190033;
+}
+
 /* ==========================================================================
    Print styles
    ========================================================================== */

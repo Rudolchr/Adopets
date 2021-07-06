@@ -227,7 +227,7 @@ export class FormFactory {
       return input.checked;
     }
     function set(value: boolean) {
-        input.checked = value;
+      input.checked = value;
     }
     return {get, set, check};
   }
@@ -247,9 +247,10 @@ export class FormFactory {
     entities: {[key: string]: E;},
     entityDisplayProp: keyof E,
     formElements: Record<keyof S, FormElementBase>,
+    emptyOption: {value: string; text: string} = {value: '', text: ' --- '},
   ) {
     const selection: HTMLSelectElement = this.form[id];
-    fillSelectWithEntities(selection, entities, entityDisplayProp);
+    fillSelectWithEntities(selection, entities, entityDisplayProp, [], emptyOption);
 
     // when a pet is selected, populate the form with its data
     selection.addEventListener("change", () => {
@@ -290,8 +291,8 @@ export class FormFactory {
     entitySelection?: HTMLSelectElement,
     entityDisplayProp?: keyof E,
   ) {
-    const saveButton: HTMLButtonElement = this.form[id];
-    saveButton.addEventListener("click", () => {
+    const submitButton: HTMLButtonElement = this.form[id];
+    submitButton.addEventListener("click", () => {
       const slots: any = {};
       let nextProperty: string | undefined;
       // set error messages in case of constraint violations
@@ -316,5 +317,7 @@ export class FormFactory {
         }
       }
     });
+
+    return submitButton;
   }
 }

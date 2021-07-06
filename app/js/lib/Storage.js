@@ -22,7 +22,7 @@ export class AbstractStorage {
         try {
             const collectionRef = this.DB.collection(this.STORAGE_KEY);
             const newEntity = await collectionRef.add(slots);
-            entity = new EntityConstructor({ id: newEntity.id, ...slots });
+            entity = new EntityConstructor({ ...slots, id: newEntity.id });
         }
         catch (e) {
             console.warn(`${e.constructor.name}: ${e.message}`);

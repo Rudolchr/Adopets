@@ -1,13 +1,19 @@
 import {Entity} from "../Entity.js";
 
 
-export function fillSelectWithEntities<E extends Entity<any>>(selection: HTMLSelectElement, entities: {[key: string]: E;}, property: keyof E, selected?: string[]) {
+export function fillSelectWithEntities<E extends Entity<any>>(
+  selection: HTMLSelectElement,
+  entities: {[key: string]: E;},
+  property: keyof E,
+  selected?: string[],
+  emptyOption: {value: string; text: string;} = {value: '', text: ' --- '},
+) {
   // delete old contents
   selection.innerHTML = "";
 
   // create "no selection yet" entry
   if (!selection.multiple) {
-    selection.add(createOption("", " --- "));
+    selection.add(createOption(emptyOption.value, emptyOption.text));
   }
   for (const entity of Object.values(entities)) {
     const key = entity.id;

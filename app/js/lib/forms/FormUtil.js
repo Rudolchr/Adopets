@@ -1,9 +1,9 @@
-export function fillSelectWithEntities(selection, entities, property, selected) {
+export function fillSelectWithEntities(selection, entities, property, selected, emptyOption = { value: '', text: ' --- ' }) {
     // delete old contents
     selection.innerHTML = "";
     // create "no selection yet" entry
     if (!selection.multiple) {
-        selection.add(createOption("", " --- "));
+        selection.add(createOption(emptyOption.value, emptyOption.text));
     }
     for (const entity of Object.values(entities)) {
         const key = entity.id;

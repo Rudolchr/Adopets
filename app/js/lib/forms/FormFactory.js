@@ -187,9 +187,9 @@ export class FormFactory {
      * @param formElements the form elements (combined with the corresponding slots of the entity as keys)
      * @returns the HTMLSelectElement itself
      */
-    createEntitySelection(id, entities, entityDisplayProp, formElements) {
+    createEntitySelection(id, entities, entityDisplayProp, formElements, emptyOption = { value: '', text: ' --- ' }) {
         const selection = this.form[id];
-        fillSelectWithEntities(selection, entities, entityDisplayProp);
+        fillSelectWithEntities(selection, entities, entityDisplayProp, [], emptyOption);
         // when a pet is selected, populate the form with its data
         selection.addEventListener("change", () => {
             const entityId = selection.value;
@@ -221,8 +221,8 @@ export class FormFactory {
      * @returns `get()`, `set(value: string)` and a `check()` that validates the current value
      */
     createSubmitButton(id, formElements, onConfirm, entitySelection, entityDisplayProp) {
-        const saveButton = this.form[id];
-        saveButton.addEventListener("click", () => {
+        const submitButton = this.form[id];
+        submitButton.addEventListener("click", () => {
             const slots = {};
             let nextProperty;
             // set error messages in case of constraint violations
@@ -244,6 +244,7 @@ export class FormFactory {
                 }
             }
         });
+        return submitButton;
     }
 }
 //# sourceMappingURL=FormFactory.js.map

@@ -33,7 +33,7 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
     try {
       const collectionRef = this.DB.collection(this.STORAGE_KEY);
       const newEntity = await collectionRef.add(slots);
-      entity = new EntityConstructor({id: newEntity.id, ...slots} as unknown as S);
+      entity = new EntityConstructor({...slots, id: newEntity.id} as unknown as S);
     } catch (e) {
       console.warn(`${e.constructor.name}: ${e.message}`);
       entity = null;
