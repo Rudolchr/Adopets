@@ -360,11 +360,10 @@ export class Pet extends Entity<PetSlots> {
    * @override the inherited toJSON()
    */
   toJSON(): PetSlots {
-    const result = {
+    return {
       ...this,
       birthDate: this.birthDate.toJSON(),
     };
-    return result;
   }
 
   /** @returns the stringified Pet */

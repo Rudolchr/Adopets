@@ -19,15 +19,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
-    <script type="module">
-      import { createTestData, clear } from "/js/app.js";
-      const clearButton = document.getElementById("clearData");
-      const createTestDataButton = document.getElementById("createTestData");
-
-      // set event handlers for the buttons
-      clearButton.addEventListener("click", clear);
-      createTestDataButton.addEventListener("click", createTestData);
-    </script>
+    <script src="/js/messages/controller/readMessages.js" type="module"></script>
   </head>
 
   <body>
@@ -50,7 +42,21 @@
     </header>
     <main>
       <div class="wrapper clearfix">
-        <h3>Your messages</h3>
+        <figure>
+          <figcaption>Your Messages:</figcaption>
+          <table id="shelters">
+            <thead>
+              <tr>
+                <th id="shelter">Shelter</th>
+                <th id="pet">Regarding pet</th>
+                <th id="message">Message</th>
+                <th id="senderEmail">Sender e-mail</th>
+                <th id="senderPhoneNo">Sender phone number</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </figure>
       </div>
     </main>
     <footer>

@@ -294,11 +294,10 @@ export class Pet extends Entity {
      * @override the inherited toJSON()
      */
     toJSON() {
-        const result = {
+        return {
             ...this,
             birthDate: this.birthDate.toJSON(),
         };
-        return result;
     }
     /** @returns the stringified Pet */
     toString() {

@@ -26,11 +26,14 @@ for (let pet of Object.values(PetStorage.instances).filter(pet => !pet.isAdopted
   row.insertCell().textContent = pet.suitableWith.join(', ');
   row.insertCell().textContent = pet.housing;
   const shelter = row.insertCell();
-  shelter.textContent = ShelterStorage.instances[pet.shelterId].name;
+  console.log(ShelterStorage.instances);
+  
+  shelter.textContent = ShelterStorage.instances[pet.shelterId]?.name;
   const messageButton = document.createElement('button');
   messageButton.textContent = "contact";
-  messageButton.addEventListener('click', (event) => {
-    location.href = `/messages/write.html?petId=${pet.id}`;
+  messageButton.className = 'submitButton'
+  messageButton.addEventListener('click', () => {
+    location.href = `/messages/write.html?shelterId=${pet.shelterId}&petId=${pet.id}`;
   });
   shelter.appendChild(messageButton);
 }
