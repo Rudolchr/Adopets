@@ -14,23 +14,6 @@ const form = document.forms.namedItem("Shelter")!;
 await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
 
-// const uid = auth.currentUser?.uid;
-// const mail = auth.currentUser?.email;
-
-// if (uid && mail) {
-//   const storageId = UserStorage.getUserFromMail(mail);
-//   if (storageId === "") {
-//     console.warn("user not in storage");
-//     UserStorage.add({
-//       email: mail,
-//       shelters: [],
-//       pets: []
-//     })
-//   }
-// }
-
-
-
 /** ### SHELTER_ID --------------------------------------------------------- */
 const idOutput: HTMLOutputElement = form["shelterId"];
 /** ### SHELTER_NAME ------------------------------------------------------- */

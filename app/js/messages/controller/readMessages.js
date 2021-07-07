@@ -10,8 +10,13 @@ const tableBody = document.querySelector("table").querySelector("tbody");
 await MessageStorage.retrieveAll();
 await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
+let userSpecificStorage = [];
+if (auth.currentUser?.uid) {
+    userSpecificStorage = ShelterStorage.retrieveAllIdsFromUser(auth.currentUser?.uid);
+}
+MessageStorage.retrieveAllFromUser(userSpecificStorage);
 // for each pet, create a table row with a cell for each attribute
-for (let message of Object.values(MessageStorage.instances)) {
+for (let message of Object.values(MessageStorage.retrieveAllFromUser(userSpecificStorage))) {
     // TODO filter out messages that regard to shelters that have the accounts userId
     const row = tableBody.insertRow();
     row.insertCell().textContent = ShelterStorage.instances[message.shelterId].name;

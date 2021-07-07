@@ -1,6 +1,3 @@
-import { PetStorage } from "./pets/model/PetStorage";
-import { UserStorage } from "./user/model/UserStorage";
-
 /**
  * leads to the authentification side if user needs to login for given page
  */
@@ -56,12 +53,23 @@ export function setupUiByUserStatus () {
                             btn.disabled = false;
                         }
                     }
-
-                    // load known registered and verified users
-                    // include user to UserStorage if not already stored
-                    // console.log(UserStorage.instances[user.uid]);
                 }
 
+                if (page === "/messages/write.html" && user.emailVerified) {
+                    const form = document.forms.namedItem("Message")!;
+                    const emailInput = form["senderEmail"];
+                    if (emailInput) {
+                        emailInput.value = user.email;
+                    }
+                }
+
+                if (page === "/shelters/edit.html" && user.emailVerified) {
+                    const form = document.forms.namedItem("Shelter")!;
+                    const emailInput = form["shelterEmail"];
+                    if (emailInput) {
+                        emailInput.value = user.email;
+                    }
+                }
 
                 // set and event handler for 'sign out' button
                 const signOutButton: HTMLButtonElement | null = loginMngEls[1].querySelector("button");

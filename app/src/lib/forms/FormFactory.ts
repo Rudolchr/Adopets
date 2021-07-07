@@ -1,3 +1,4 @@
+import { ShelterStorage } from "../../shelters/model/ShelterStorage.js";
 import {Entity, EntitySlots} from "../Entity.js";
 import {createChoiceWidget, fillSelectWithEntities, fillSelectWithRange} from "./FormUtil.js";
 

@@ -20,6 +20,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
     <script src="/js/messages/controller/readMessages.js" type="module"></script>
+    <script src="/js/authentication.js" type="module"></script>
+    <script type="module">
+      import {setupUiByUserStatus} from "/js/authentication.js";
+      window.addEventListener("load", setupUiByUserStatus);
+    </script>
   </head>
 
   <body>
@@ -38,6 +43,10 @@
             <li><a href="/messages/index.html" class="disabled">Messages</a></li>
           </ul>
         </nav>
+      </div>
+      <div id="login-management">
+        <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><button type="button" class="submitButton">Sign out</button></small>
       </div>
     </header>
     <main>

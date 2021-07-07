@@ -15,11 +15,16 @@
     <link rel="stylesheet" href="/css/normalize.css" />
     <link rel="stylesheet" href="/css/main.css" />
 
+    <script src="/js/authentication.js" type="module"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
     <script src="/js/messages/controller/writeMessage.js" type="module"></script>
+    <script type="module">
+      import {setupUiByUserStatus} from "/js/authentication.js";
+      window.addEventListener("load", setupUiByUserStatus);
+    </script>
   </head>
 
   <body>
@@ -39,6 +44,10 @@
           </ul>
         </nav>
       </div>
+      <div id="login-management">
+        <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><button type="button" class="submitButton">Sign out</button></small>
+      </div>
     </header>
     <main>
       <div class="wrapper clearfix">
@@ -57,6 +66,9 @@
             <label>Shelter: <output name="shelterId"></output></label>
           </div>
           <div>
+            <label>Shelter Creator: <output name="receiverId"></output></label>
+          </div>
+          <div>
             <label>Pet: <output name="petId"></output></label>
           </div>
           <div>
@@ -64,6 +76,7 @@
               >E-Mail Address:
               <input
                 name="senderEmail"
+                id="senderEmail"
                 type="text"
                 minlength="5"
                 maxlength="120"

@@ -1,3 +1,4 @@
+import { MessageStorage } from "./messages/model/MessageStorage.js";
 import { HousingEnum, SexEnum, SizeEnum, SpeciesEnum, SuitableWithEnum } from "./pets/model/Pet.js";
 import { PetStorage } from "./pets/model/PetStorage.js";
 import { ShelterStorage } from "./shelters/model/ShelterStorage.js";
@@ -88,18 +89,8 @@ export async function createTestData() {
     catch (e) {
         console.warn(`${e.constructor.name}: ${e.message}`);
     }
-    try {
-        await UserStorage.add({
-            email: "test@test.test",
-            shelters: [],
-            pets: []
-        });
-    }
-    catch (e) {
-        console.warn(`${e.constructor.name}: ${e.message}`);
-    }
 }
 export async function clear() {
-    await Promise.all([PetStorage.clear(), ShelterStorage.clear(), UserStorage.clear()]);
+    await Promise.all([PetStorage.clear(), ShelterStorage.clear(), UserStorage.clear(), MessageStorage.clear()]);
 }
 //# sourceMappingURL=app.js.map

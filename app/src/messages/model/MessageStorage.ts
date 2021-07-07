@@ -8,6 +8,20 @@ class MessageStorageClass extends AbstractStorage<Message, MessageSlots> {
   /** key for the `firestore.collection` for the `this.instances` */
   STORAGE_KEY = "messages";
 
+  retrieveAllFromUser(shelterIds: string[]) {
+    let return_instances: {[id: string]: Message} = {};
+
+    for(const message of Object.values(this._instances)) {
+      for (let id of shelterIds) {
+        if (id === message.shelterId) {
+          return_instances[message.id] = message;
+        }
+      }
+    }
+
+    return return_instances;
+  }
+
   /**
    * adds a new Message created from the given `slots` to the collection of `Message`s
    * if the slots fulfil their constraints. Does nothing otherwise

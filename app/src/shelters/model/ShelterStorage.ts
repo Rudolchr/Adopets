@@ -19,6 +19,18 @@ class ShelterStorageClass extends AbstractStorage<Shelter, ShelterSlots> {
         return return_instances;
     }
 
+    retrieveAllIdsFromUser(creatorId: string) {
+        let return_ids: string[] = [];
+
+        for(const shelter of Object.values(this._instances)) {
+            if (shelter.creatorId === creatorId) {
+                return_ids.push(shelter.id);
+            }
+        }
+
+        return return_ids;
+    }
+
     /**
      * adds a new Shelter created from the given `slots` to the collection of `Shelters`s
      * if the slots fulfil their constraints. Does nothing otherwise
