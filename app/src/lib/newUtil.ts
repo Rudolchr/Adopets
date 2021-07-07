@@ -33,3 +33,14 @@ export function catchValidations<T>(values: T[], validationFunction: (value: T) 
     return errorMessage;
   }
 }
+
+export function GetURLParameter(sParam: string) {
+  var sPageURL = window.location.search.substring(1);
+  var sURLVariables = sPageURL.split('&');
+  for (const sParamName of sURLVariables) {
+    var sParameterName = sParamName.split('=');
+    if (sParameterName[0] == sParam) {
+      return sParameterName[1];
+    }
+  }
+}

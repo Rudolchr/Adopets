@@ -19,15 +19,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
-    <script type="module">
-      import { createTestData, clear } from "/js/app.js";
-      const clearButton = document.getElementById("clearData");
-      const createTestDataButton = document.getElementById("createTestData");
-
-      // set event handlers for the buttons
-      clearButton.addEventListener("click", clear);
-      createTestDataButton.addEventListener("click", createTestData);
-    </script>
+    <script src="/js/messages/controller/writeMessage.js" type="module"></script>
   </head>
 
   <body>
@@ -35,7 +27,7 @@
       <div class="wrapper clearfix">
         <div class="title">
           <h1>Adopets</h1>
-          <h3>Give home to pets</h3>
+          <h2>Give home to pets</h2>
         </div>
         <nav>
           <ul>
@@ -51,6 +43,49 @@
     <main>
       <div class="wrapper clearfix">
         <h3>Contact the Shelter</h3>
+        <form id="Message">
+          <div>
+            <label>Message:</label>
+            <textarea
+              name="message"
+              required
+              minlength="1"
+              maxlength="500"
+            ></textarea>
+          </div>
+          <div>
+            <label>Shelter: <output name="shelterId"></output></label>
+          </div>
+          <div>
+            <label>Pet: <output name="petId"></output></label>
+          </div>
+          <div>
+            <label
+              >E-Mail Address:
+              <input
+                name="senderEmail"
+                type="text"
+                minlength="5"
+                maxlength="120"
+              />
+            </label>
+          </div>
+          <div>
+            <label
+              >Phone Number:
+              <input
+                name="senderPhoneNo"
+                type="text"
+                minlength="8"
+                maxlength="30"
+              />
+            </label>
+          </div>
+          <div>
+            <button type="submit" class="submitButton" name="sendButton">Send message</button>
+            <button onclick="history.back()">cancel</button>
+          </div>
+        </form>
       </div>
     </main>
     <footer>

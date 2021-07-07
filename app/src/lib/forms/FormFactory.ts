@@ -1,7 +1,7 @@
 import {Entity, EntitySlots} from "../Entity.js";
 import {createChoiceWidget, fillSelectWithEntities, fillSelectWithRange} from "./FormUtil.js";
 
-interface FormElementBase {
+export interface FormElementBase {
   get: () => any;
   check: () => void;
   set: (value: any) => void;

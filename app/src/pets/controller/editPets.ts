@@ -1,7 +1,7 @@
 /**
  * @author Christian Prinz
  */
-import {FormFactory} from "../../lib/forms/FormFactory.js";
+import {FormElementBase, FormFactory} from "../../lib/forms/FormFactory.js";
 import {ShelterStorage} from "../../shelters/model/ShelterStorage.js";
 import {HousingEnum, Pet, PetSlots, SexEnum, SizeEnum, SpeciesEnum, SuitableWithEnum} from "../model/Pet.js";
 import {PetStorage} from "../model/PetStorage.js";
@@ -18,7 +18,7 @@ if (auth.currentUser?.uid) {
 }
 
 // which elements should be manipulated with this Form
-const formElements = {
+const formElements: Record<keyof PetSlots, FormElementBase>  = {
   id: formFactory.createOutput("petId"),
   creatorId: formFactory.createOutput("creatorId"),
   name: formFactory.createInput("petName", Pet.checkName),

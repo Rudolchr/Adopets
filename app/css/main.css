@@ -45,37 +45,60 @@ textarea {
 }
 
 button {
-  background-color: var(--darker-bg-color);
-  color: white;
   border-style: none;
   padding: 4pt;
   padding-left: 8pt;
   padding-right: 8pt;
   box-shadow: 0 1px 3px #888;
-  /* border-radius: 4pt; */
 }
 
 button:hover {
-  background-color: var(--light-bg-color);
-  color: white;
   border-style: none;
   box-shadow: 0 3px 5px #aaa;
-  /* border-radius: 8pt; */
 }
 
 button:active {
-  background-color: var(--dark-bg-color);
-  color: white;
   border-style: none;
   box-shadow: 0 0px 2px #666;
-  /* border-radius: 8pt; */
 }
 
 button:disabled {
+  border-style: none;
+  box-shadow: 0 0px 0px #ffffff00;
+}
+
+.deleteButton {
+  background-color: #881900;
+  color: white;
+}
+.deleteButton:hover {
+  background-color: #881900aa;
+  color: white;
+}
+.deleteButton:active {
+  background-color: #881900ee;
+  color: white;
+}
+.deleteButton:disabled {
+  background-color: #88190033;
+  color: #ffffffaa;
+}
+
+.submitButton {
+  background-color: var(--darker-bg-color);
+  color: white;
+}
+.submitButton:hover {
+  background-color: var(--light-bg-color);
+  color: white;
+}
+.submitButton:active {
+  background-color: var(--dark-bg-color);
+  color: white;
+}
+.submitButton:disabled {
   background-color: var(--darker-bg-disabled);
   color: var(--darker-bg-disabled-text);
-  border-style: none;
-  border-radius: 0;
 }
 
 
@@ -485,28 +508,6 @@ form div.MultiChoiceWidget > ul > li.added {
 }
 .clearfix:after {
   clear: both;
-}
-
-.deleteButton {
-  color: white;
-  background-color: #881900;
-  box-shadow: 0 1px 3px #666;
-}
-.deleteButton:hover {
-  color: white;
-  background-color: #881900aa;
-  box-shadow: 0 3px 5px #666;
-}
-.deleteButton:active {
-  background-color: #881900ee;
-  color: white;
-  border-style: none;
-  box-shadow: 0 0px 2px #666;
-  /* border-radius: 8pt; */
-}
-.deleteButton:disabled {
-  color: #ffffffaa;
-  background-color: #88190033;
 }
 
 /* ==========================================================================
