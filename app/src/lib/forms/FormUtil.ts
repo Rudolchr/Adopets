@@ -6,7 +6,7 @@ export function fillSelectWithEntities<E extends Entity<any>>(
   entities: {[key: string]: E;},
   property: keyof E,
   selected?: string[],
-  emptyOption: {value: string; text: string;} = {value: '', text: ' --- '},
+  emptyOption: {value: string; text: string;} = {value: '', text: ' -- create -- '},
 ) {
   // delete old contents
   selection.innerHTML = "";

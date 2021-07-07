@@ -5,14 +5,20 @@ import {fillSelectWithEntities} from "../../lib/forms/FormUtil.js";
 import {Address} from "../../lib/valueObjects/composed/Address.js";
 import {OHSlots} from "../../lib/valueObjects/composed/OfficeHours.js";
 import {PetStorage} from "../../pets/model/PetStorage.js";
+import {UserStorage} from "../../user/model/UserStorage.js";
 import {Shelter, ShelterSlots} from "../model/Shelter.js";
 import {ShelterStorage} from "../model/ShelterStorage.js";
 
 const form = document.forms.namedItem("Shelter")!;
 
-// load all pets
 await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
+// await UserStorage.retrieveAll();
+
+const uid = auth.currentUser?.uid;
+console.log("Hallo");
+console.log(uid);
+
 
 /** ### SHELTER_ID --------------------------------------------------------- */
 const idOutput: HTMLOutputElement = form["shelterId"];

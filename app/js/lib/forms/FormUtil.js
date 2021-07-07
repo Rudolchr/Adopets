@@ -1,4 +1,4 @@
-export function fillSelectWithEntities(selection, entities, property, selected, emptyOption = { value: '', text: ' --- ' }) {
+export function fillSelectWithEntities(selection, entities, property, selected, emptyOption = { value: '', text: ' -- create -- ' }) {
     // delete old contents
     selection.innerHTML = "";
     // create "no selection yet" entry

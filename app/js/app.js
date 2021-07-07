@@ -1,6 +1,7 @@
 import { HousingEnum, SexEnum, SizeEnum, SpeciesEnum, SuitableWithEnum } from "./pets/model/Pet.js";
 import { PetStorage } from "./pets/model/PetStorage.js";
 import { ShelterStorage } from "./shelters/model/ShelterStorage.js";
+import { UserStorage } from "./user/model/UserStorage.js";
 /**
  * creates a set of 4 `Pet`s and stores it in the first 4 slots of the `this.instances`
  * - TODO: upgrade to always push new pets (requires ID automation)
@@ -83,8 +84,18 @@ export async function createTestData() {
     catch (e) {
         console.warn(`${e.constructor.name}: ${e.message}`);
     }
+    try {
+        await UserStorage.add({
+            email: "test@test.test",
+            shelters: [],
+            pets: []
+        });
+    }
+    catch (e) {
+        console.warn(`${e.constructor.name}: ${e.message}`);
+    }
 }
 export async function clear() {
-    await Promise.all([PetStorage.clear(), ShelterStorage.clear()]);
+    await Promise.all([PetStorage.clear(), ShelterStorage.clear(), UserStorage.clear()]);
 }
 //# sourceMappingURL=app.js.map

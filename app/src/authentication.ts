@@ -1,3 +1,6 @@
+import { PetStorage } from "./pets/model/PetStorage";
+import { UserStorage } from "./user/model/UserStorage";
+
 /**
  * leads to the authentification side if user needs to login for given page
  */
@@ -36,7 +39,7 @@ export function setupUiByUserStatus () {
                 if (!allowedPages.includes( page) && !user.emailVerified) { // if current page is not allowed
                     alert (`Check your email ${user.email} for instructions to verify your account before using this operation`);
                     window.location.pathname = "/index.html";
-                } else if (page === "/" || page === "/index.html" || page === "/shelters/index.html" || page === "/pets/index.html") {
+                } else if ((page === "/" || page === "/index.html" || page === "/shelters/index.html" || page === "/pets/index.html") && user.emailVerified) {
                     // enable UI elements on home page
                     const linkEls: NodeListOf<HTMLElement> = document.querySelectorAll(".disabled");
                     for (const el of linkEls) {
@@ -53,6 +56,10 @@ export function setupUiByUserStatus () {
                             btn.disabled = false;
                         }
                     }
+
+                    // load known registered and verified users
+                    // include user to UserStorage if not already stored
+                    // console.log(UserStorage.instances[user.uid]);
                 }
 
 
@@ -83,8 +90,6 @@ export function setupSignInAndSignUp () {
     form.addEventListener( "submit", function (e) {
         e.preventDefault();
     });
-
-    // console.log(document.referrer.split("/"));
 
     const path = document.referrer.split("/");
     var backPage = "/index.html";

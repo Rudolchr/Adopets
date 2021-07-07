@@ -289,7 +289,6 @@ export class Pet extends Entity<PetSlots> {
       NonEmptyString.validate(value, SUITABLE_WITH_CONSTRAINTS),
       "The pet can only be compatible with existing species"
     );
-
   }
   set suitableWith(suitableWith: string[]) {
     this._suitableWith = NonEmptyString.fromList(suitableWith, SUITABLE_WITH_CONSTRAINTS);

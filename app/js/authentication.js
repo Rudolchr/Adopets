@@ -37,7 +37,7 @@ export function setupUiByUserStatus() {
                     alert(`Check your email ${user.email} for instructions to verify your account before using this operation`);
                     window.location.pathname = "/index.html";
                 }
-                else if (page === "/" || page === "/index.html" || page === "/shelters/index.html" || page === "/pets/index.html") {
+                else if ((page === "/" || page === "/index.html" || page === "/shelters/index.html" || page === "/pets/index.html") && user.emailVerified) {
                     // enable UI elements on home page
                     const linkEls = document.querySelectorAll(".disabled");
                     for (const el of linkEls) {
@@ -53,6 +53,9 @@ export function setupUiByUserStatus() {
                             btn.disabled = false;
                         }
                     }
+                    // load known registered and verified users
+                    // include user to UserStorage if not already stored
+                    // console.log(UserStorage.instances[user.uid]);
                 }
                 // set and event handler for 'sign out' button
                 const signOutButton = loginMngEls[1].querySelector("button");
@@ -80,7 +83,6 @@ export function setupSignInAndSignUp() {
     form.addEventListener("submit", function (e) {
         e.preventDefault();
     });
-    // console.log(document.referrer.split("/"));
     const path = document.referrer.split("/");
     var backPage = "/index.html";
     if (document.referrer.includes("/shelters/") || document.referrer.includes("/pets/")) {

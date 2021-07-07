@@ -7,9 +7,12 @@ import { PetStorage } from "../../pets/model/PetStorage.js";
 import { Shelter } from "../model/Shelter.js";
 import { ShelterStorage } from "../model/ShelterStorage.js";
 const form = document.forms.namedItem("Shelter");
-// load all pets
 await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
+// await UserStorage.retrieveAll();
+const uid = auth.currentUser?.uid;
+console.log("Hallo");
+console.log(uid);
 /** ### SHELTER_ID --------------------------------------------------------- */
 const idOutput = form["shelterId"];
 /** ### SHELTER_NAME ------------------------------------------------------- */
