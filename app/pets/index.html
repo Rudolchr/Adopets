@@ -8,10 +8,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
-    <script src="/js/pets/controller/retrieveAndListAllPets.js" type="module"></script>
     <script src="/js/authentication.js" type="module"></script>
+    <script src="/js/pets/controller/retrieveAndListAllPets.js" type="module"></script>
     <script type="module">
-      import {setupUiByUserStatus} from "./js/authentication.js";
+      import {setupUiByUserStatus} from "../js/authentication.js";
       window.addEventListener("load", setupUiByUserStatus);
     </script>
   </head>
@@ -29,12 +29,12 @@
             <li><a href="/pets/index.html" class="disabled">Pets</a></li>
             <li><a href="/shelters/index.html">Shelters</a></li>
             <li><a href="/adopted/index.html">Adopted</a></li>
-            <li><a href="/messages/index.html">Messages</a></li>
+            <li><a href="/messages/index.html" class="disabled">Messages</a></li>
           </ul>
         </nav>
       </div>
       <div id="login-management">
-        <small hidden="hidden"><a href="authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><a href="../authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
         <small hidden="hidden"><button type="button">Sign out</button></small>
       </div>
     </header>
@@ -69,8 +69,7 @@
     <footer>
       <div class="foot-content wrapper">
         <ul>
-          <li><a href="/index.html" class="disabled">Login</a></li>
-          <li><a href="/pets/edit.html" >Manage my Pets</a></li>
+          <li><a href="/pets/edit.html" class="disabled">Manage my Pets</a></li>
         </ul>
       </div>
       <div class="foot-content wrapper">

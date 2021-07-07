@@ -17,16 +17,8 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
-    <script type="module">
-      import { createTestData, clear } from "/js/app.js";
-      const clearButton = document.getElementById("clearData");
-      const createTestDataButton = document.getElementById("createTestData");
-
-      // set event handlers for the buttons
-      clearButton.addEventListener("click", clear);
-      createTestDataButton.addEventListener("click", createTestData);
-    </script>
   </head>
 
   <body>

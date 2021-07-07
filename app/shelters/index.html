@@ -11,7 +11,7 @@
     <script src="/js/shelters/controller/retrieveAndListAllShelters.js" type="module"></script>
     <script src="/js/authentication.js" type="module"></script>
     <script type="module">
-      import {setupUiByUserStatus} from "./js/authentication.js";
+      import {setupUiByUserStatus} from "../js/authentication.js";
       window.addEventListener("load", setupUiByUserStatus);
     </script>
   </head>
@@ -27,14 +27,14 @@
           <ul>
             <li><a href="/index.html">Home</a></li>
             <li><a href="/pets/index.html">Pets</a></li>
-            <li><a href="/shelters/index.html" class="disabled">Shelters</a></li>
+            <li><a href="/shelters/index.html">Shelters</a></li>
             <li><a href="/adopted/index.html">Adopted</a></li>
-            <li><a href="/messages/index.html">Messages</a></li>
+            <li><a href="/messages/index.html" class="disabled">Messages</a></li>
           </ul>
         </nav>
       </div>
       <div id="login-management">
-        <small hidden="hidden"><a href="authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><a href="../authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
         <small hidden="hidden"><button type="button">Sign out</button></small>
       </div>
     </header>
@@ -61,7 +61,7 @@
     <footer>
       <div class="foot-content wrapper">
         <ul>
-          <li><a href="/shelters/edit.html">Manage my Shelters</a></li>
+          <li><a href="/shelters/edit.html" class="disabled">Manage my Shelters</a></li>
         </ul>
       </div>
       <div class="foot-content wrapper">

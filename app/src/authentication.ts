@@ -3,7 +3,7 @@
  */
 export function setupUiByUserStatus () {
     const page: string = window.location.pathname;
-    const allowedPages: string[] = ["/","/index.html", "/authentication.html", "/404.html", "/shelters/retrieveAndListAll.html", "/pets/retrieveAndListAll.html"];
+    const allowedPages: string[] = ["/","/index.html", "/authentication.html", "/404.html", "/shelters/index.html", "/pets/index.html"];
     const loginMngEls: NodeListOf<HTMLElement> = document.querySelectorAll("header > div#login-management > small");
     // reset (hide) all login management elements: [0]sign in/up , [1]sign out
     if (page !== "/authentication.html") {
@@ -36,7 +36,7 @@ export function setupUiByUserStatus () {
                 if (!allowedPages.includes( page) && !user.emailVerified) { // if current page is not allowed
                     alert (`Check your email ${user.email} for instructions to verify your account before using this operation`);
                     window.location.pathname = "/index.html";
-                } else if (page === "/" || page === "/index.html") {
+                } else if (page === "/" || page === "/index.html" || page === "/shelters/index.html" || page === "/pets/index.html") {
                     // enable UI elements on home page
                     const linkEls: NodeListOf<HTMLElement> = document.querySelectorAll(".disabled");
                     for (const el of linkEls) {
@@ -84,6 +84,16 @@ export function setupSignInAndSignUp () {
         e.preventDefault();
     });
 
+    // console.log(document.referrer.split("/"));
+
+    const path = document.referrer.split("/");
+    var backPage = "/index.html";
+    if (document.referrer.includes("/shelters/") || document.referrer.includes("/pets/")) {
+        backPage = "/" + path[path.length-2] + "/" + path[path.length-1];
+    } else {
+        backPage = "/" + path[path.length-1];
+    }
+
 
     async function handleSignUpButton () {
         const formEl: HTMLFormElement = document.forms.namedItem("User")!;
@@ -103,7 +113,7 @@ export function setupSignInAndSignUp () {
                 }
                 console.log(`User ${email} became 'Registered'`);
                 alert (`Account created ${email}.\n\nCheck your email for instructions to verify this account.`);
-                window.location.pathname = "/index.html";
+                window.location.pathname = backPage;
             } catch (e) {
                 const divEl: HTMLElement | null = document.getElementById("error");
                 if (divEl) {
@@ -129,7 +139,7 @@ export function setupSignInAndSignUp () {
                     console.log(`Granted access to user ${email}`);
                 }
             }
-            window.location.pathname = "/index.html";
+            window.location.pathname = backPage;
             } catch (e) {
                 const divEl: HTMLDivElement | HTMLElement | null = document.getElementById("error");
                 if (divEl) {
