@@ -24,6 +24,7 @@ export interface PetSlots extends EntitySlots {
   housing: string;
   isAdopted: string | boolean;
   shelterId: string;
+  creatorId: string;
 }
 const NAME_CONSTRAINTS: NonEmptyStringOptions = {name: 'Pet.name', max: 120};
 export enum SpeciesEnum {CAT = 'Cat', DOG = 'Dog', BIRD = 'Bird'}
@@ -58,6 +59,7 @@ export class Pet extends Entity<PetSlots> {
   private _housing: NonEmptyString;
   private _isAdopted: SafeBoolean;
   private _shelterId: IdReference<Shelter>;
+  private _creatorId: NonEmptyString;
 
   constructor(slots: PetSlots) {
     super(PetStorage, slots.id);
@@ -72,6 +74,7 @@ export class Pet extends Entity<PetSlots> {
     this._housing = NonEmptyString.create(slots.housing, HOUSING_CONSTRAINTS);
     this._isAdopted = SafeBoolean.create(slots.isAdopted, IS_ADOPTED_CONSTRAINTS);
     this._shelterId = IdReference.create(slots.shelterId, SHELTER_ID_CONSTRAINTS);
+    this._creatorId = NonEmptyString.create(slots.creatorId);
   }
 
   /**
@@ -350,6 +353,14 @@ export class Pet extends Entity<PetSlots> {
   /** @param shelterId - the new shelterId to set */
   set shelterId(shelterId: string) {
     this._shelterId = IdReference.create(shelterId, SHELTER_ID_CONSTRAINTS);
+  }
+
+  // *** creatorId ***********************************************************
+  get creatorId(): string {
+    return this._creatorId.value;
+  }
+  set creatorId(creatorId: string) {
+      this._creatorId = NonEmptyString.create(creatorId);
   }
 
   // *** serialization ********************************************************

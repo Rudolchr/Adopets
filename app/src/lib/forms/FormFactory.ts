@@ -298,7 +298,11 @@ export class FormFactory {
       // set error messages in case of constraint violations
       for (const [elementId, element] of Object.entries(formElements)) {
         element.check();
-        slots[elementId] = element.get();
+        if (elementId === "creatorId") {
+          slots[elementId] = auth.currentUser?.uid;
+        } else {
+          slots[elementId] = element.get();
+        }
         if (entityDisplayProp !== undefined && elementId === entityDisplayProp) {
           nextProperty = element.get();
         }

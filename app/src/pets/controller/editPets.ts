@@ -12,9 +12,15 @@ await PetStorage.retrieveAll();
 // we use the factory to create the view logic for the Form
 const formFactory = new FormFactory("Pet");
 
+let userSpecificStorage = PetStorage.instances;
+if (auth.currentUser?.uid) {
+  userSpecificStorage = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
+}
+
 // which elements should be manipulated with this Form
 const formElements = {
   id: formFactory.createOutput("petId"),
+  creatorId: formFactory.createOutput("creatorId"),
   name: formFactory.createInput("petName", Pet.checkName),
   species: formFactory.createRangeSelection("species", Pet.checkSpecies, SpeciesEnum),
   sex: formFactory.createRangeSelection("sex", Pet.checkSex, SexEnum),
@@ -34,7 +40,7 @@ let entitySelection = createSelection();
 function createSelection() {
   return formFactory.createEntitySelection<PetSlots, Pet>(
     'petSelection',
-    PetStorage.instances, // TODO filter to accounts shelters only
+    userSpecificStorage, // TODO filter to accounts shelters only
     'name',
     formElements,
     {value: '', text: '--- create a new pet ---'}
@@ -65,6 +71,11 @@ async function onSubmit(slots: PetSlots) {
     // create a new pet
     const {id, ...addSlots} = slots;
     await PetStorage.add(addSlots);
+    // TODO
+    userSpecificStorage = PetStorage.instances;
+    if (auth.currentUser?.uid) {
+      userSpecificStorage = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
+    }
     // add new pet to selection
     entitySelection = createSelection();
   } else {
@@ -81,6 +92,10 @@ deleteButton.addEventListener("click", async () => {
   if (id) {
     if (confirm("Do you really want to remove this pet?")) {
       await PetStorage.destroy(id);
+      userSpecificStorage = PetStorage.instances;
+      if (auth.currentUser?.uid) {
+        userSpecificStorage = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
+      }
       // update the form
       entitySelection = createSelection();
       deleteButton.hidden = true;

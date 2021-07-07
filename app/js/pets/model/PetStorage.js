@@ -6,6 +6,15 @@ import { Pet } from "./Pet.js";
 class PetStorageClass extends AbstractStorage {
     /** key for the `firestore.collection` for the `this.instances` */
     STORAGE_KEY = "pets";
+    retrieveAllFromUser(creatorId) {
+        let return_instances = {};
+        for (const shelter of Object.values(this._instances)) {
+            if (shelter.creatorId === creatorId) {
+                return_instances[shelter.id] = shelter;
+            }
+        }
+        return return_instances;
+    }
     /**
      * adds a new Pet created from the given `slots` to the collection of `Pet`s
      * if the slots fulfil their constraints. Does nothing otherwise

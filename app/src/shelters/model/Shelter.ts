@@ -19,6 +19,7 @@ export interface ShelterSlots extends EntitySlots {
     email: string;
     officeHours: OHSlots;
     description?: string;
+    creatorId: string
 }
 
 const NAME_CONSTRAINTS: NonEmptyStringOptions = {name: "Shelter.name", max: 120};
@@ -56,6 +57,8 @@ export class Shelter extends Entity<ShelterSlots> {
      * optional description of the shelter (max. 500 letters)
      */
     private _description: OptionalString;
+
+    private _creatorId: NonEmptyString;
     /** 
      * list of pett IDs of pets assigned to this shelter
      */
@@ -77,6 +80,7 @@ export class Shelter extends Entity<ShelterSlots> {
         } else {
             this._description = OptionalString.create("-", DESCRIPTION_CONSTRAINT);
         }
+        this._creatorId = NonEmptyString.create(slots.creatorId);
     }
 
     /**
@@ -137,6 +141,15 @@ export class Shelter extends Entity<ShelterSlots> {
 
         return updateSlots;
     }
+
+    // *** creatorId ***********************************************************
+    get creatorId(): string {
+        return this._creatorId.value;
+    }
+    set creatorId(creatorId: string) {
+        this._creatorId = NonEmptyString.create(creatorId);
+    }
+
 
     // *** name ****************************************************************
     /** @returns the name of the shelter */
@@ -275,10 +288,10 @@ export class Shelter extends Entity<ShelterSlots> {
      * this function is invoked by `JSON.stringify()` and converts the inner `"_propertyKey"` to `"propertyKey"`
      */
     toJSON(): ShelterSlots {
-        return {id: this.id, name: this.name, address: this.address, email: this.email, officeHours: this.officeHours.times, phone: this.phone, description: this.description};
+        return {id: this.id, name: this.name, address: this.address, email: this.email, officeHours: this.officeHours.times, phone: this.phone, description: this.description, creatorId: this.creatorId};
     }
     /** @returns the stringified Pet */
     toString() {
-        return `Shelter{ id: ${this.id}, name: ${this.name}, address: {${this.address.toString()}}, phone: ${this.phone}, email: ${this.email}, description: ${this.description}, officeHours: ${this.officeHours.toString()} }`;
+        return `Shelter{ id: ${this.id}, name: ${this.name}, address: {${this.address.toString()}}, phone: ${this.phone}, email: ${this.email}, description: ${this.description}, officeHours: ${this.officeHours.toString()}, creatorId: ${this.creatorId} }`;
     }
 }

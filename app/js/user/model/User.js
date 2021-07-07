@@ -1,11 +1,11 @@
-import { Entity } from "../../lib/Entity";
-import { catchValidation, catchValidations } from "../../lib/newUtil";
-import { EmailAddress } from "../../lib/valueObjects/composed/EmailAddress";
-import { IdReference } from "../../lib/valueObjects/composed/IdReference";
-import { listEquals } from "../../lib/valueObjects/ValueObject";
-import { PetStorage } from "../../pets/model/PetStorage";
-import { ShelterStorage } from "../../shelters/model/ShelterStorage";
-import { UserStorage } from "./UserStorage";
+import { Entity } from "../../lib/Entity.js";
+import { catchValidation, catchValidations } from "../../lib/newUtil.js";
+import { EmailAddress } from "../../lib/valueObjects/composed/EmailAddress.js";
+import { IdReference } from "../../lib/valueObjects/composed/IdReference.js";
+import { listEquals } from "../../lib/valueObjects/ValueObject.js";
+import { PetStorage } from "../../pets/model/PetStorage.js";
+import { ShelterStorage } from "../../shelters/model/ShelterStorage.js";
+import { UserStorage } from "./UserStorage.js";
 const EMAIL_CONSTRAINTS = { name: "User.email" };
 const SHELTERS_CONSTRAINTS = { name: "User.shelters", foreignStorage: ShelterStorage };
 const PETS_CONSTRAINTS = { name: "User.pets", foreignStorage: PetStorage };
@@ -65,6 +65,30 @@ export class User extends Entity {
     /** @param shelters - the list of shelters to set for user */
     set shelters(shelters) {
         this._shelters = IdReference.fromList(shelters, SHELTERS_CONSTRAINTS);
+    }
+    addShelter(shelterId) {
+        try {
+            IdReference.validate(shelterId, SHELTERS_CONSTRAINTS);
+            let key = String(shelterId);
+            this._shelters.push(IdReference.create(ShelterStorage.instances[key].id, SHELTERS_CONSTRAINTS));
+        }
+        catch (e) {
+            console.error(e);
+        }
+        console.log("dhfsöfdhjn");
+    }
+    removeShelter(shelterId) {
+        try {
+            IdReference.validate(shelterId, SHELTERS_CONSTRAINTS);
+            for (var i = 0; i < this._shelters.length; i++) {
+                if (this._shelters[i].equals(IdReference.create(shelterId, SHELTERS_CONSTRAINTS))) {
+                    this._shelters.splice(i, 1);
+                }
+            }
+        }
+        catch (e) {
+            console.error(e);
+        }
     }
     /**
      * checks if all shelter ID Refs in list are legit

@@ -13,11 +13,22 @@ const form = document.forms.namedItem("Shelter")!;
 
 await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
-// await UserStorage.retrieveAll();
 
-const uid = auth.currentUser?.uid;
-console.log("Hallo");
-console.log(uid);
+// const uid = auth.currentUser?.uid;
+// const mail = auth.currentUser?.email;
+
+// if (uid && mail) {
+//   const storageId = UserStorage.getUserFromMail(mail);
+//   if (storageId === "") {
+//     console.warn("user not in storage");
+//     UserStorage.add({
+//       email: mail,
+//       shelters: [],
+//       pets: []
+//     })
+//   }
+// }
+
 
 
 /** ### SHELTER_ID --------------------------------------------------------- */
@@ -89,7 +100,12 @@ shelterDescInput.addEventListener("input", () =>
 
 /** ### SHELTER_SELECTION -------------------------------------------------- */
 const shelterSelection: HTMLSelectElement = form['shelterSelection'];
-fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name', [], {value: '', text: '--- create a new shelter ---'});
+let userSpecificStorage = ShelterStorage.instances;
+if (auth.currentUser?.uid) {
+  userSpecificStorage = ShelterStorage.retrieveAllFromUser(auth.currentUser?.uid);
+}
+
+fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], {value: '', text: '--- create a new shelter ---'});
 
 // when a pet is selected, populate the form with its data
 shelterSelection.addEventListener("change", () => {
@@ -145,8 +161,12 @@ deleteButton.addEventListener("click", async () => {
   const id = shelterSelection.value;
   if (id) {
     if (confirm("Do you really want to delete this Shelter?")) {
+      if (auth.currentUser?.email) {
+        console.info("Removed delted shelter from user!");
+        UserStorage.instances[UserStorage.getUserFromMail(auth.currentUser?.email)].removeShelter(id);
+      }
       await ShelterStorage.destroy(id);
-      fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name', [], {value: '', text: '--- create a new shelter ---'});
+      fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], {value: '', text: '--- create a new shelter ---'});
       deleteButton.hidden = true;
       submitButton.textContent = 'Create shelter';
     }
@@ -181,38 +201,46 @@ submitButton.addEventListener("click", async () => {
 
   // save the input date only if all of the form fields are valid
   if (form.checkValidity()) {
-    const slots: ShelterSlots = {
-      id: shelterSelection.value,
-      name: shelterNameInput.value,
-      address: {
-        street: shelterAddressStreetInput.value,
-        number: +shelterAddressNumberInput.value,
-        city: shelterAddressCityInput.value,
-      },
-      phone: shelterPhoneInput.value,
-      email: shelterEmailInput.value,
-      officeHours: {
-        monday: [sheltermonFInput.value, sheltermonTInput.value],
-        tuesday: [sheltertueFInput.value, sheltertueTInput.value],
-        wednesday: [shelterwedFInput.value, shelterwedTInput.value],
-        thursday: [shelterthuFInput.value, shelterthuTInput.value],
-        friday: [shelterfriFInput.value, shelterfriTInput.value],
-        saturday: [sheltersatFInput.value, sheltersatTInput.value],
-        sunday: [sheltersunFInput.value, sheltersunTInput.value],
-      },
-      description: shelterDescInput.value,
-    };
-    if (deleteButton.hidden) {
-      // create a new pet
-      const {id, ...addSlots} = slots;
-      await ShelterStorage.add(addSlots);
-      // update the selection list option element
-      fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name', [], {value: '', text: '--- create a new shelter ---'});
-    } else {
-      // update existing pet
-      ShelterStorage.update(slots);
-    }
+    let creatorId = "unknown";
+    if (auth.currentUser?.email) {
+      creatorId = auth.currentUser.uid;
 
+      const slots: ShelterSlots = {
+        id: shelterSelection.value,
+        name: shelterNameInput.value,
+        address: {
+          street: shelterAddressStreetInput.value,
+          number: +shelterAddressNumberInput.value,
+          city: shelterAddressCityInput.value,
+        },
+        phone: shelterPhoneInput.value,
+        email: shelterEmailInput.value,
+        officeHours: {
+          monday: [sheltermonFInput.value, sheltermonTInput.value],
+          tuesday: [sheltertueFInput.value, sheltertueTInput.value],
+          wednesday: [shelterwedFInput.value, shelterwedTInput.value],
+          thursday: [shelterthuFInput.value, shelterthuTInput.value],
+          friday: [shelterfriFInput.value, shelterfriTInput.value],
+          saturday: [sheltersatFInput.value, sheltersatTInput.value],
+          sunday: [sheltersunFInput.value, sheltersunTInput.value],
+        },
+        description: shelterDescInput.value,
+        creatorId: creatorId,
+      };
+      if (deleteButton.hidden) {
+        // create a new pet
+        const {id, ...addSlots} = slots;
+        await ShelterStorage.add(addSlots);
+        
+        // update the selection list option element
+        fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], {value: '', text: '--- create a new shelter ---'});
+      } else {
+        // update existing pet
+        ShelterStorage.update(slots);
+      }
+    } else {
+      console.error("Could not create the shelter due to unknown account!");
+    }
   }
 });
 

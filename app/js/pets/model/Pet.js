@@ -66,6 +66,7 @@ export class Pet extends Entity {
     _housing;
     _isAdopted;
     _shelterId;
+    _creatorId;
     constructor(slots) {
         super(PetStorage, slots.id);
         this._name = NonEmptyString.create(slots.name, NAME_CONSTRAINTS);
@@ -79,6 +80,7 @@ export class Pet extends Entity {
         this._housing = NonEmptyString.create(slots.housing, HOUSING_CONSTRAINTS);
         this._isAdopted = SafeBoolean.create(slots.isAdopted, IS_ADOPTED_CONSTRAINTS);
         this._shelterId = IdReference.create(slots.shelterId, SHELTER_ID_CONSTRAINTS);
+        this._creatorId = NonEmptyString.create(slots.creatorId);
     }
     /**
      * updates the matching properties for the given slots, if the are different. Afterwards the
@@ -287,6 +289,13 @@ export class Pet extends Entity {
     /** @param shelterId - the new shelterId to set */
     set shelterId(shelterId) {
         this._shelterId = IdReference.create(shelterId, SHELTER_ID_CONSTRAINTS);
+    }
+    // *** creatorId ***********************************************************
+    get creatorId() {
+        return this._creatorId.value;
+    }
+    set creatorId(creatorId) {
+        this._creatorId = NonEmptyString.create(creatorId);
     }
     // *** serialization ********************************************************
     /**

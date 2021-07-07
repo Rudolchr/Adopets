@@ -8,6 +8,15 @@ class UserStorageClass extends AbstractStorage<User, UserSlots> {
   /** key for the `firestore.collection` for the `this.instances` */
   STORAGE_KEY = "users";
 
+  getUserFromMail(email: string): string {
+    for (const user of Object.values(this._instances)) {
+      if (user.email === email) {
+        return user.id;
+      }
+    }
+    return "";
+  }
+
   /**
    * adds a new Pet created from the given `slots` to the collection of `Pet`s
    * if the slots fulfil their constraints. Does nothing otherwise

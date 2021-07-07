@@ -18,9 +18,9 @@ export async function createTestData() {
     };
     // create shelters
     try {
-        await ShelterStorage.add({ name: 'Pet Stop', address: { city: 'Düsseldog', number: 69, street: 'Am Catdog' }, email: 'pet@stop.com', officeHours: oh, phone: '+1234567890' });
-        await ShelterStorage.add({ name: 'Pussy Willow', address: { city: 'Catbus', number: 13, street: 'Dingsda' }, email: 'cat@bus.com', officeHours: oh, phone: '+0345617829' });
-        await ShelterStorage.add({ name: 'Cerberus', address: { city: 'Bärlin', number: 17, street: 'Kuhdamm' }, email: 'bär@damm.com', officeHours: oh, phone: '+5601432897' });
+        await ShelterStorage.add({ name: 'Pet Stop', address: { city: 'Düsseldog', number: 69, street: 'Am Catdog' }, email: 'pet@stop.com', officeHours: oh, phone: '+1234567890', creatorId: "XmdTK2Ad7ScBDviC0KKE2nvVBma2" });
+        await ShelterStorage.add({ name: 'Pussy Willow', address: { city: 'Catbus', number: 13, street: 'Dingsda' }, email: 'cat@bus.com', officeHours: oh, phone: '+0345617829', creatorId: "XmdTK2Ad7ScBDviC0KKE2nvVBma2" });
+        await ShelterStorage.add({ name: 'Cerberus', address: { city: 'Bärlin', number: 17, street: 'Kuhdamm' }, email: 'bär@damm.com', officeHours: oh, phone: '+5601432897', creatorId: "XmdTK2Ad7ScBDviC0KKE2nvVBma2" });
     }
     catch (e) {
         console.warn(`${e.constructor.name}: ${e.message}`);
@@ -39,7 +39,8 @@ export async function createTestData() {
             suitableWith: [],
             housing: HousingEnum.OUTDOOR_REQUIRED,
             isAdopted: false,
-            shelterId
+            shelterId,
+            creatorId: "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
         });
         await PetStorage.add({
             name: "Hundula",
@@ -52,7 +53,8 @@ export async function createTestData() {
             suitableWith: [SuitableWithEnum.CHILDREN, SuitableWithEnum.SENIORS],
             housing: HousingEnum.IN_AND_OUT,
             isAdopted: false,
-            shelterId
+            shelterId,
+            creatorId: "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
         });
         await PetStorage.add({
             name: "Katzarina",
@@ -65,7 +67,8 @@ export async function createTestData() {
             suitableWith: [SuitableWithEnum.SENIORS],
             housing: HousingEnum.INDOOR_ONLY,
             isAdopted: false,
-            shelterId
+            shelterId,
+            creatorId: "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
         });
         await PetStorage.add({
             name: "Vogeldemort",
@@ -78,7 +81,8 @@ export async function createTestData() {
             suitableWith: [SuitableWithEnum.CHILDREN],
             housing: HousingEnum.INDOOR_ONLY,
             isAdopted: false,
-            shelterId
+            shelterId,
+            creatorId: "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
         });
     }
     catch (e) {
