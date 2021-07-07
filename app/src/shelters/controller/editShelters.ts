@@ -5,7 +5,6 @@ import {fillSelectWithEntities} from "../../lib/forms/FormUtil.js";
 import {Address} from "../../lib/valueObjects/composed/Address.js";
 import {OHSlots} from "../../lib/valueObjects/composed/OfficeHours.js";
 import {PetStorage} from "../../pets/model/PetStorage.js";
-import {UserStorage} from "../../user/model/UserStorage.js";
 import {Shelter, ShelterSlots} from "../model/Shelter.js";
 import {ShelterStorage} from "../model/ShelterStorage.js";
 
@@ -146,9 +145,13 @@ deleteButton.addEventListener("click", async () => {
     if (confirm("Do you really want to delete this Shelter?")) {
       if (auth.currentUser?.email) {
         console.info("Removed delted shelter from user!");
-        UserStorage.instances[UserStorage.getUserFromMail(auth.currentUser?.email)].removeShelter(id);
       }
       await ShelterStorage.destroy(id);
+      userSpecificStorage = ShelterStorage.instances;
+      if (auth.currentUser?.uid) {
+        userSpecificStorage = ShelterStorage.retrieveAllFromUser(auth.currentUser?.uid);
+      }
+
       fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], {value: '', text: '--- create a new shelter ---'});
       deleteButton.hidden = true;
       submitButton.textContent = 'Create shelter';
@@ -214,6 +217,11 @@ submitButton.addEventListener("click", async () => {
         // create a new pet
         const {id, ...addSlots} = slots;
         await ShelterStorage.add(addSlots);
+
+        userSpecificStorage = ShelterStorage.instances;
+        if (auth.currentUser?.uid) {
+          userSpecificStorage = ShelterStorage.retrieveAllFromUser(auth.currentUser?.uid);
+        }
         
         // update the selection list option element
         fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], {value: '', text: '--- create a new shelter ---'});
