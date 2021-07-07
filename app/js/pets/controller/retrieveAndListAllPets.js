@@ -9,9 +9,8 @@ const tableBody = document.querySelector("table").querySelector("tbody");
 await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
 // for each pet, create a table row with a cell for each attribute
-for (let key of Object.keys(PetStorage.instances)) {
+for (let pet of Object.values(PetStorage.instances).filter(pet => !pet.isAdopted)) {
     const row = tableBody.insertRow();
-    const pet = PetStorage.instances[key];
     row.insertCell().textContent = pet.id;
     row.insertCell().textContent = pet.name;
     row.insertCell().textContent = pet.species;
@@ -22,8 +21,14 @@ for (let key of Object.keys(PetStorage.instances)) {
     row.insertCell().textContent = pet.compatibleWith.join(', ');
     row.insertCell().textContent = pet.suitableWith.join(', ');
     row.insertCell().textContent = pet.housing;
-    row.insertCell().textContent = pet.isAdopted ? 'yes' : 'no';
-    row.insertCell().textContent = ShelterStorage.instances[pet.shelterId].name;
+    const shelter = row.insertCell();
+    shelter.textContent = ShelterStorage.instances[pet.shelterId].name;
+    const messageButton = document.createElement('button');
+    messageButton.textContent = "contact";
+    messageButton.addEventListener('click', (event) => {
+        location.href = `/messages/write.html?petId=${pet.id}`;
+    });
+    shelter.appendChild(messageButton);
 }
 // TODO filters
 // TODO hide stuff that requires account (eg. Manage Pets button)

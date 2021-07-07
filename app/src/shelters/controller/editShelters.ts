@@ -89,7 +89,7 @@ shelterDescInput.addEventListener("input", () =>
 
 /** ### SHELTER_SELECTION -------------------------------------------------- */
 const shelterSelection: HTMLSelectElement = form['shelterSelection'];
-fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name');
+fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name', [], {value: '', text: '--- create a new shelter ---'});
 
 // when a pet is selected, populate the form with its data
 shelterSelection.addEventListener("change", () => {
@@ -146,7 +146,7 @@ deleteButton.addEventListener("click", async () => {
   if (id) {
     if (confirm("Do you really want to delete this Shelter?")) {
       await ShelterStorage.destroy(id);
-      fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name');
+      fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name', [], {value: '', text: '--- create a new shelter ---'});
       deleteButton.hidden = true;
       submitButton.textContent = 'Create shelter';
     }
@@ -207,7 +207,7 @@ submitButton.addEventListener("click", async () => {
       const {id, ...addSlots} = slots;
       await ShelterStorage.add(addSlots);
       // update the selection list option element
-      fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name');
+      fillSelectWithEntities(shelterSelection, ShelterStorage.instances, 'name', [], {value: '', text: '--- create a new shelter ---'});
     } else {
       // update existing pet
       ShelterStorage.update(slots);

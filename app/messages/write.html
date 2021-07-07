@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <title>Adopets: Retrieve Shelters</title>
+    <meta charset="UTF-8" />
+    <title>Adopets | Messages</title>
+    <meta name="description" content="Adopets" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
 
-    <script src="/js/lib/load_essentials.js"></script>
+    <link rel="icon" href="/assets/favicon.svg" />
+    <link rel="mask-icon" href="/assets/mask-icon.svg" color="#000000" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/assets/manifest.json" />
+
+    <link rel="stylesheet" href="/css/normalize.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
-    <script src="/js/shelters/controller/retrieveAndListAllShelters.js" type="module"></script>
-    <script src="/js/authentication.js" type="module"></script>
     <script type="module">
-      import {setupUiByUserStatus} from "/js/authentication.js";
-      window.addEventListener("load", setupUiByUserStatus);
+      import { createTestData, clear } from "/js/app.js";
+      const clearButton = document.getElementById("clearData");
+      const createTestDataButton = document.getElementById("createTestData");
+
+      // set event handlers for the buttons
+      clearButton.addEventListener("click", clear);
+      createTestDataButton.addEventListener("click", createTestData);
     </script>
   </head>
 
@@ -20,7 +34,8 @@
     <header>
       <div class="wrapper clearfix">
         <div class="title">
-          <h1>List of all Shelters</h1>
+          <h1>Adopets</h1>
+          <h3>Give home to pets</h3>
         </div>
         <nav>
           <ul>
@@ -32,36 +47,16 @@
           </ul>
         </nav>
       </div>
-      <div id="login-management">
-        <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
-        <small hidden="hidden"><button type="button">Sign out</button></small>
-      </div>
     </header>
     <main>
       <div class="wrapper clearfix">
-        <h3>All shelters in this database:</h3>
-        <figure>
-          <figcaption>Database:</figcaption>
-          <table id="shelters">
-            <thead>
-              <tr>
-                <th id="shelterName">Name</th>
-                <th id="shelterAddress">Address</th>
-                <th id="shelterEmail">E-Mail</th>
-                <th id="shelterOfficeHours">Office Hours</th>
-                <th id="shelterDescription">Desription</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </figure>
+        <h3>Contact the Shelter</h3>
       </div>
     </main>
     <footer>
       <div class="foot-content wrapper">
         <ul>
           <li><a href="/index.html">Back to main menu</a></li>
-          <li><a href="/shelters/index.html">Back to all Shelters</a></li>
         </ul>
       </div>
       <div class="foot-content wrapper">

@@ -10,7 +10,16 @@
     <script src="/js/initialize.js"></script>
     <script src="/js/authentication.js" type="module"></script>
     <script type="module">
-      import {setupUiByUserStatus} from "./js/authentication.js";
+      import {setupUiByUserStatus} from "/js/authentication.js";      
+      import { createTestData, clear } from "/js/app.js";
+
+      const clearButton = document.getElementById("clearData");
+      const createTestDataButton = document.getElementById("createTestData");
+
+      // set event handlers for the buttons
+      clearButton.addEventListener("click", clear);
+      createTestDataButton.addEventListener("click", createTestData);
+
       window.addEventListener("load", setupUiByUserStatus);
     </script>
   </head>
@@ -33,7 +42,7 @@
         </nav>
       </div>
       <div id="login-management">
-        <small hidden="hidden"><a href="authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
         <small hidden="hidden"><button type="button">Sign out</button></small>
       </div>
     </header>
@@ -50,6 +59,16 @@
             <li role="menuitem"><a href="/pets/edit.html" class="disabled">Organising Pets</a></li>
             <li role="menuitem"><a href="/shelters/edit.html" class="disabled">Organising Shelters</a></li>
           </ul>
+          <menu>
+            <li>
+              <button type="button" id="clearData">Clear database</button>
+            </li>
+            <li>
+              <button type="button" id="createTestData">
+                Create test data
+              </button>
+            </li>
+          </menu>
         </div>
       </div>
     </main>
