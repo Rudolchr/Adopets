@@ -11,7 +11,7 @@
     <script src="/js/shelters/controller/createShelter.js" type="module"></script>
     <script src="/js/authentication.js" type="module"></script>
     <script type="module">
-      import {setupUiByUserStatus} from "./js/authentication.js";
+      import {setupUiByUserStatus} from "/js/authentication.js";
       window.addEventListener("load", setupUiByUserStatus);
     </script>
   </head>
@@ -33,7 +33,7 @@
         </nav>
       </div>
       <div id="login-management">
-        <small hidden="hidden"><a href="authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
         <small hidden="hidden"><button type="button">Sign out</button></small>
       </div>
     </header>
