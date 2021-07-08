@@ -12,13 +12,17 @@ await PetStorage.retrieveAll();
 // we use the factory to create the view logic for the Form
 const formFactory = new FormFactory("Pet");
 
-let userSpecificStorage = PetStorage.instances;
+let userPets = PetStorage.instances;
 if (auth.currentUser?.uid) {
-  userSpecificStorage = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
+  userPets = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
+}
+let userShelters = ShelterStorage.instances;
+if (auth.currentUser?.uid) {
+  userShelters = ShelterStorage.retrieveAllFromUser(auth.currentUser?.uid);
 }
 
 // which elements should be manipulated with this Form
-const formElements: Record<keyof PetSlots, FormElementBase>  = {
+const formElements: Record<keyof PetSlots, FormElementBase> = {
   id: formFactory.createOutput("petId"),
   creatorId: formFactory.createOutput("creatorId"),
   name: formFactory.createInput("petName", Pet.checkName),
@@ -31,7 +35,7 @@ const formElements: Record<keyof PetSlots, FormElementBase>  = {
   suitableWith: formFactory.createChoiceWidget('suitableWith', Pet.checkSuitableWith, 'checkbox', SuitableWithEnum, []),
   housing: formFactory.createRangeSelection("housing", Pet.checkHousing, HousingEnum),
   isAdopted: formFactory.createSingleCheckbox('isAdopted'),
-  shelterId: formFactory.createReferenceSelection("shelter", Pet.checkShelterId, ShelterStorage.instances, 'name'), // TODO filter to accounts shelters only
+  shelterId: formFactory.createReferenceSelection("shelter", Pet.checkShelterId, userShelters, 'name'),
 };
 
 // selection
@@ -40,7 +44,7 @@ let entitySelection = createSelection();
 function createSelection() {
   return formFactory.createEntitySelection<PetSlots, Pet>(
     'petSelection',
-    userSpecificStorage, // TODO filter to accounts shelters only
+    userPets,
     'name',
     formElements,
     {value: '', text: '--- create a new pet ---'}
@@ -72,9 +76,9 @@ async function onSubmit(slots: PetSlots) {
     const {id, ...addSlots} = slots;
     await PetStorage.add(addSlots);
     // TODO
-    userSpecificStorage = PetStorage.instances;
+    userPets = PetStorage.instances;
     if (auth.currentUser?.uid) {
-      userSpecificStorage = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
+      userPets = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
     }
     // add new pet to selection
     entitySelection = createSelection();
@@ -92,9 +96,9 @@ deleteButton.addEventListener("click", async () => {
   if (id) {
     if (confirm("Do you really want to remove this pet?")) {
       await PetStorage.destroy(id);
-      userSpecificStorage = PetStorage.instances;
+      userPets = PetStorage.instances;
       if (auth.currentUser?.uid) {
-        userSpecificStorage = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
+        userPets = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
       }
       // update the form
       entitySelection = createSelection();
