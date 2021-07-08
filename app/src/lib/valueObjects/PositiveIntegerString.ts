@@ -13,7 +13,7 @@ export class PositiveIntegerString extends ValueObject<number> {
      * @throws {@link TypeError} if not a positive number
      * @throws {@link RangeError} if the value is not inside the interval
      */
-    public static validate(value: number | string, options?: IntervalCreationOptions) {
+    public static validate(value: number | string, options?: PositiveIntegerStringOptions) {
         let transformed: number;
 
         // string
@@ -39,7 +39,7 @@ export class PositiveIntegerString extends ValueObject<number> {
      * @param options for the creation
      * @returns the created ValueObject
      */
-    public static create(value: number | string, options?: IntervalCreationOptions) {
+    public static create(value: number | string, options?: PositiveIntegerStringOptions) {
         return new PositiveIntegerString(this.validate(value, options));
     }
 
@@ -48,7 +48,7 @@ export class PositiveIntegerString extends ValueObject<number> {
      * @param options for the **individual** creation
      * @returns the array of ValueObjects
      */
-    public static fromList(values: string[], options?: IntervalCreationOptions) {
+    public static fromList(values: string[], options?: PositiveIntegerStringOptions) {
         return values.map((val) => this.create(val, options));
     }
 
@@ -59,4 +59,10 @@ export class PositiveIntegerString extends ValueObject<number> {
     public static toList(values: PositiveIntegerString[]) {
         return values.map((nes) => nes.value);
     }
+
+    public equals(obj: PositiveIntegerString){
+        return (obj instanceof PositiveIntegerString ? obj.value : obj) === this._value;
+    }
 }
+
+export interface PositiveIntegerStringOptions extends IntervalCreationOptions {}

@@ -64,6 +64,15 @@ export class SafeDate extends ValueObject {
     static toList(values) {
         return values.map((pi) => pi.value);
     }
+    equals(obj) {
+        if (obj instanceof SafeDate) {
+            return obj.value === this._value;
+        }
+        else {
+            const comparable = SafeDate.create(obj, { name: 'SafeDate.equals' });
+            return comparable.value.toJSON() === this._value.toJSON();
+        }
+    }
     /* @ts-ignore */
     toJSON() {
         // TODO it works but check why this can't be the super.toJSON()

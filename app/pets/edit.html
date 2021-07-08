@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Adopets: Update</title>
+    
+    <script src="/js/lib/load_essentials.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
+    <script src="/js/initialize.js"></script>
+    <script src="/js/pets/controller/editPets.js" type="module"></script>
+    <script src="/js/authentication.js" type="module"></script>
+    <script type="module">
+      import {setupUiByUserStatus} from "/js/authentication.js";
+      window.addEventListener("load", setupUiByUserStatus);
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrapper clearfix">
+        <div class="title">
+          <h1>Adopets</h1>
+          <h2>Give home to pets</h2>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/pets/index.html">Pets</a></li>
+            <li><a href="/shelters/index.html">Shelters</a></li>
+            <li><a href="/adopted/index.html">Adopted</a></li>
+            <li><a href="/messages/index.html">Messages</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div id="login-management">
+        <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><button type="button" class="submitButton">Sign out</button></small>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper clearfix">
+        <h3>Create, Update and Delete pets</h3>
+        <form id="Pet">
+          <div>
+            <label
+              >Select a pet:
+              <select name="petSelection">
+                <option value="">---</option>
+              </select>
+            </label>
+          </div>
+          <div>
+            <label>Pet-ID: <output name="petId"></output></label>
+          </div>
+          <div>
+            <label>Creator-ID: <output name="creatorId"></output></label>
+          </div>
+          <div>
+            <label
+              >Name:
+              <input
+                name="petName"
+                type="text"
+                required
+                minlength="1"
+                maxlength="120"
+            /></label>
+          </div>
+          <div class="select-one">
+            <label
+              >Species:
+              <select name="species"></select
+            ></label>
+          </div>
+          <div class="select-one">
+            <label
+              >Sex:
+              <select name="sex"></select
+            ></label>
+          </div>
+          <div class="select-one">
+            <label
+              >Size:
+              <select name="size"></select
+            ></label>
+          </div>
+          <div>
+            <label
+              >Birth date:
+              <!-- pattern is the fallback validation for the missing date input 
+            in safari (which uses the text type ) -->
+              <input
+                name="birthDate"
+                type="date"
+                min="1895-12-28"
+                pattern="\d{4}-\d{2}-\d{2}"
+              />
+            </label>
+          </div>
+          <div>
+            <label
+              >Vaccination status:
+              <input
+                name="vaccinationStatus"
+                type="text"
+                required
+                minlength="1"
+                maxlength="500"
+              />
+            </label>
+          </div>
+          <fieldset data-bind="compatibleWith">
+            <legend>Compatible with</legend>
+          </fieldset>
+          <fieldset data-bind="suitableWith">
+            <legend>Suitable with</legend>
+          </fieldset>
+          <div class="select-one">
+            <label
+              >Housing:
+              <select name="housing"></select
+            ></label>
+          </div>
+          <div>
+            <label>Is adopted:<input type="checkbox" id="isAdopted" name="isAdopted"></label>
+          </div>
+          <div>
+            <label
+              >Shelter:
+              <select name="shelter"></select
+            ></label>
+          </div>
+          <div>
+            <button type="submit" name="submitButton" class="submitButton">Create pet</button>
+            <button type="submit" name="deleteButton" class="deleteButton" hidden="true">Delete pet</button>
+          </div>
+        </form>
+      </div>
+    </main>
+    <footer>
+      <div class="foot-content wrapper">
+        <ul>
+          <li><a href="/index.html">Back to main menu</a></li>
+          <li><a href="/pets/index.html">Back to all Pets</a></li>
+        </ul>
+      </div>
+      <div class="foot-content wrapper">
+        This is the assignment application built on the tutorial for the course
+        12431 Web Applications | SS 2021. Students: Christian Prinz - B.Sc
+        Informations- und Medientechnik and Max Bergmann B.Sc Computer Science
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Adopets | Pets</title>
+    
+    <script src="/js/lib/load_essentials.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
+    <script src="/js/initialize.js"></script>
+    <script src="/js/authentication.js" type="module"></script>
+    <script src="/js/pets/controller/retrieveAndListAllPets.js" type="module"></script>
+    <script type="module">
+      import {setupUiByUserStatus} from "/js/authentication.js";
+      window.addEventListener("load", setupUiByUserStatus);
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrapper clearfix">
+        <div class="title">
+          <h1>Adopets</h1>
+          <h2>Give home to pets</h2>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/pets/index.html" class="disabled">Pets</a></li>
+            <li><a href="/shelters/index.html">Shelters</a></li>
+            <li><a href="/adopted/index.html">Adopted</a></li>
+            <li><a href="/messages/index.html" class="disabled">Messages</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div id="login-management">
+        <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><button type="button" class="submitButton">Sign out</button></small>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper clearfix">
+        <figure>
+          <figcaption>Filter:</figcaption>
+          <div><button type="button" name="expand">expand</button></div>
+          <figcaption>All pets in this database:</figcaption>
+          <div>
+          <table id="pets">
+            <thead>
+              <tr>
+                <th id="petName">Name</th>
+                <th id="species">Species</th>
+                <th id="sex">Sex</th>
+                <th id="size">Size</th>
+                <th id="birthDate">Birth date</th>
+                <th id="vaccinationStatus">Vaccination status</th>
+                <th id="compatibleWith">Compatible with</th>
+                <th id="suitableWith">SuitableWith</th>
+                <th id="housing">Housing</th>
+                <th id="shelter">Shelter</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        </figure>
+      </div>
+    </main>
+    <footer>
+      <div class="foot-content wrapper">
+        <ul>
+          <li><a href="/pets/edit.html" class="disabled">Manage my Pets</a></li>
+        </ul>
+      </div>
+      <div class="foot-content wrapper">
+        This is the assignment application built on the tutorial for the course
+        12431 Web Applications | SS 2021. Students: Christian Prinz - B.Sc
+        Informations- und Medientechnik and Max Bergmann B.Sc Computer Science
+      </div>
+    </footer>
+  </body>
+</html>

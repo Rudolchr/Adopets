@@ -9,7 +9,16 @@
             "type": "firefox",
             "request": "launch",
             "reAttach": true,
-            "file": "${workspaceFolder}/app/index.html"
+            "file": "${workspaceFolder}/app/index.html",
+            "webRoot": "${workspaceFolder}/app"
+        },
+        {
+            "name": "Debug Edge Canary",
+            "type": "msedge",
+            "version": "canary",
+            "request": "launch",
+            "url": "http://localhost:5000/index.html",
+            "webRoot": "${workspaceFolder}/app"
         },
     ]
 }

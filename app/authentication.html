@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Adopets</title>
+
+    <script src="/js/lib/load_essentials.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
+    <script src="/js/initialize.js"></script>
+    <script src="/js/authentication.js" type="module"></script>
+    <script type="module">
+      import {setupSignInAndSignUp} from "/js/authentication.js";
+      //evaluate user authentication status
+      auth.onAuthStateChanged( function (user) {
+        if (!user) { // if user status is unknown
+          // sign in user as 'anonymous'
+          auth.signInAnonymously();
+        }
+      });
+      window.addEventListener("load", setupSignInAndSignUp);
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="wrapper clearfix">
+        <div class="title">
+          <h1>Adopets</h1>
+          <h2>Give home to pets</h2>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="/index.html">Home</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper clearfix">
+        <h2>Authentification</h2>
+        <form id="User">
+          <div>
+            <label>Email: <input name="email" type="email" placeholder="max@mustermann.com"/></label>
+          </div>
+          <div>
+            <label>Password: <input name="password" type="password" placeholder="A-Za-z0-9*?#/.:"/></label>
+          </div>
+          <div>
+            <button type="button" class="submitButton" name="signin">Sign in</button>
+            <button type="button" class="submitButton" name="signup">Sign up</button>
+          </div>
+        </form>
+      </div>
+    </main>
+    <footer>
+      <div class="foot-content wrapper">
+        This is the assignment application built on the tutorial for the course
+        12431 Web Applications | SS 2021. Students: Christian Prinz - B.Sc
+        Informations- und Medientechnik and Max Bergmann B.Sc Computer Science
+      </div>
+    </footer>
+  </body>
+</html>

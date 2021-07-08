@@ -9,7 +9,8 @@ export class NonEmptyString extends ValueObject {
      * @returns the value if the validation was successful
      * @throws {@link TypeError} if not a string or empty
      * @throws {@link TypeError} if doesn't fit the given enum
-     * @throws {@link RangeError} if the value is not inside the interval
+     * @throws {@link RangeError} if the value is not matching the regex
+     * @throws {@link RangeError} if the value's length is not inside the interval
      */
     static validate(value, options) {
         // type
@@ -19,17 +20,28 @@ export class NonEmptyString extends ValueObject {
         }
         if (options) {
             // enum
-            if (options.stringEnum && !Object.values(options.stringEnum).includes(value)) {
-                throw new TypeError(this.pm(options.name) +
-                    `NonEmptyString => the given value (${value}: ${typeof value}) is not in the stringEnum ${JSON.stringify(options?.stringEnum)}`);
-            }
+            NonEmptyString.validateRange(value, options);
             // interval
             if ((options.min && value.length < options.min) || (options.max && value.length > options.max)) {
                 throw new RangeError(this.pm(options.name) +
                     `NonEmptyString => the given string's length (${value}) must be in the interval [${options.min ?? 1}, ${options.max ?? Number.MAX_VALUE}]!`);
             }
+            // regex
+            if (options.regex && !options.regex.test(value)) {
+                throw new RangeError(this.pm(options.name) +
+                    `NonEmptyString => the given value (${value}: ${typeof value}) does not match the RFC 5322 standard!`);
+            }
         }
         return value;
+    }
+    static validateRange(value, options) {
+        if (options.range) {
+            if (Array.isArray(options.range) && !options.range.includes(value)
+                || typeof options.range === 'object' && !Object.values(options.range).includes(value)) {
+                throw new RangeError(this.pm(options.name) +
+                    `NonEmptyString => the given value (${value}: ${typeof value}) is not in the range ${JSON.stringify(options?.range)}`);
+            }
+        }
     }
     /**
      * @param value to create the ValueObject of
@@ -53,6 +65,9 @@ export class NonEmptyString extends ValueObject {
      */
     static toList(values) {
         return values.map((nes) => nes.value);
+    }
+    equals(obj) {
+        return (obj instanceof NonEmptyString ? obj.value : obj) === this._value;
     }
 }
 //# sourceMappingURL=NonEmptyString.js.map

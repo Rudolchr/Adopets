@@ -48,5 +48,8 @@ export class PositiveNumber extends ValueObject {
     static toList(values) {
         return values.map((pi) => pi.value);
     }
+    equals(obj) {
+        return (obj instanceof PositiveNumber ? obj.value : obj) === this._value;
+    }
 }
 //# sourceMappingURL=PositiveNumber.js.map

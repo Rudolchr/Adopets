@@ -103,7 +103,7 @@ Beside a list of pets looking for home, there should exist also a list of animal
     b) shelter should be able to retrieve the list to verify it
 
     c) user should be able to retrieve the list
- 
+
 7. Adoption counter
 Somewhere on the page there should be visible a counter that shows how many animals found home thanks to the app.
 
@@ -141,8 +141,10 @@ adopets.de
 
 ![Design Model](./documentation/design_model.png)
 
-# Run the project
-## setup and edit
+## Run the project
+
+### setup and edit
+
 This project is entirely written in TypeScript and HTML. 
 Further this is a NodeJS project meaning that the following steps have to be fulfilled before:
 
@@ -153,14 +155,22 @@ Further this is a NodeJS project meaning that the following steps have to be ful
 
 After that the project can be edited as following:
 
-- Editable files are in `./app/src/` except ... 
-- The folder `./app/js/` should not be edited though there are the compiled JavaScript files, that will be overwritten after the building process.
+* Editable files are in `./app/src/` except ...
+* The folder `./app/js/` should not be edited though there are the compiled JavaScript files, that will be overwritten after the building process.
 
-## run
-To run the project just open a terminal in the root folder and run `$ npm run watch` to start the watcher which compiles the edited Typescript code on save, or run `$ npm build` to compile the code once. 
-- After that just open the `./app/index.html` in the firefox development browser.
-- Alternatively run `$ npm run serve` to run a local firebase server in your common browser (recommended)
+### run
 
-## debug
+To run the project just open a terminal in the root folder and run `$ npm run watch` to start the watcher which compiles the edited Typescript code on save, or run `$ npm build` to compile the code once.
+
+* After that just open the `./app/index.html` in the firefox development browser.
+* Alternatively run `$ npm run serve` to run a local firebase server in your common browser (recommended)
+
+### debug
+
 To debug the code either use the dev tools from the firefox browser.
 Alternatively (and easier) use VSCode for the development and simply go to the [Run and Debug Tab](F5) and run the Configuration `Launch index.html`. Therefore the installed Firefox Browser will be opened in debug mode and the breakpoints that have been set in the files will be awaited.
+
+## Division of Work
+
+Christian Prinz: Pet Class</br>
+Max Bergmann: Shelter Class

@@ -50,5 +50,8 @@ export class PositiveIntegerString extends ValueObject {
     static toList(values) {
         return values.map((nes) => nes.value);
     }
+    equals(obj) {
+        return (obj instanceof PositiveIntegerString ? obj.value : obj) === this._value;
+    }
 }
 //# sourceMappingURL=PositiveIntegerString.js.map

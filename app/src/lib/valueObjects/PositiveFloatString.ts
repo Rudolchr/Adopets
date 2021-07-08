@@ -13,7 +13,7 @@ export class PositiveFloatString extends ValueObject<number> {
      * @throws {@link TypeError} if not a positive number
      * @throws {@link RangeError} if the value is not inside the interval
      */
-    public static validate(value: number | string, options?: IntervalCreationOptions) {
+    public static validate(value: number | string, options?: PositiveFloatStringOptions) {
         let transformed: number;
 
         // string
@@ -39,7 +39,7 @@ export class PositiveFloatString extends ValueObject<number> {
      * @param options for the creation
      * @returns the created ValueObject
      */
-    public static create(value: number | string, options?: IntervalCreationOptions) {
+    public static create(value: number | string, options?: PositiveFloatStringOptions) {
         return new PositiveFloatString(this.validate(value, options));
     }
 
@@ -48,7 +48,7 @@ export class PositiveFloatString extends ValueObject<number> {
      * @param options for the **individual** creation
      * @returns the array of ValueObjects
      */
-    public static fromList(values: (string | number)[], options?: IntervalCreationOptions) {
+    public static fromList(values: (string | number)[], options?: PositiveFloatStringOptions) {
         return values.map((val) => this.create(val, options));
     }
 
@@ -68,4 +68,10 @@ export class PositiveFloatString extends ValueObject<number> {
     public static parse(value: string) {
         return parseFloat(value.replace(',', '.'));
     }
+
+    public equals(obj: PositiveFloatString){
+        return (obj instanceof PositiveFloatString ? obj.value : obj) === this._value;
+    }
 }
+
+export interface PositiveFloatStringOptions extends IntervalCreationOptions {}

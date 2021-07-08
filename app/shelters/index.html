@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Adopets | Shelters</title>
+    
+    <script src="/js/lib/load_essentials.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
+    <script src="/js/initialize.js"></script>
+    <script src="/js/shelters/controller/retrieveAndListAllShelters.js" type="module"></script>
+    <script src="/js/authentication.js" type="module"></script>
+    <script type="module">
+      import {setupUiByUserStatus} from "/js/authentication.js";
+      window.addEventListener("load", setupUiByUserStatus);
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <div class="wrapper clearfix">
+        <div class="title">
+          <h1>Adopets</h1>
+          <h2>Give home to pets</h2>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/pets/index.html">Pets</a></li>
+            <li><a href="/shelters/index.html">Shelters</a></li>
+            <li><a href="/adopted/index.html">Adopted</a></li>
+            <li><a href="/messages/index.html" class="disabled">Messages</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div id="login-management">
+        <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><button type="button" class="submitButton">Sign out</button></small>
+      </div>
+    </header>
+    <main>
+      <div class="wrapper clearfix">
+        <h3>All shelters in this database:</h3>
+        <figure>
+          <figcaption>Database:</figcaption>
+          <table id="shelters">
+            <thead>
+              <tr>
+                <th id="shelterName">Name</th>
+                <th id="shelterAddress">Address</th>
+                <th id="shelterEmail">E-Mail</th>
+                <th id="shelterOfficeHours">Office Hours</th>
+                <th id="shelterDescription">Desription</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </figure>
+      </div>
+    </main>
+    <footer>
+      <div class="foot-content wrapper">
+        <ul>
+          <li><a href="/shelters/edit.html" class="disabled">Manage my Shelters</a></li>
+        </ul>
+      </div>
+      <div class="foot-content wrapper">
+        This is the assignment application built on the tutorial for the course
+        12431 Web Applications | SS 2021. Students: Christian Prinz - B.Sc
+        Informations- und Medientechnik and Max Bergmann B.Sc Computer Science
+      </div>
+    </footer>
+  </body>
+</html>
