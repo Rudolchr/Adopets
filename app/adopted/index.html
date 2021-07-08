@@ -19,6 +19,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
+    <script src="/js/authentication.js" type="module"></script>
+    <script type="module">
+      import {setupUiByUserStatus} from "/js/authentication.js";
+      window.addEventListener("load", setupUiByUserStatus);
+    </script>
   </head>
 
   <body>
@@ -26,17 +31,22 @@
       <div class="wrapper clearfix">
         <div class="title">
           <h1>Adopets</h1>
-          <h2>Give home to pets</h2>
         </div>
         <nav>
           <ul>
             <li><a href="/index.html">Home</a></li>
             <li><a href="/pets/index.html">Pets</a></li>
             <li><a href="/shelters/index.html">Shelters</a></li>
-            <li><a href="/adopted/index.html" class="disabled">Adopted</a></li>
+            <li><a href="/adopted/index.html" class="current">Adopted</a></li>
             <li><a href="/messages/index.html">Messages</a></li>
           </ul>
         </nav>
+      </div>
+      <div id="login-management">
+        <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
+        <small hidden="hidden"><button type="button" class="submitButton">Sign out</button></small>
+        <small hidden="hidden"><button type="button" class="submitButton">My Pets</button></small>
+        <small hidden="hidden"><button type="button" class="submitButton">My Shelters</button></small>
       </div>
     </header>
     <main>
@@ -45,11 +55,6 @@
       </div>
     </main>
     <footer>
-      <div class="foot-content wrapper">
-        <ul>
-          <li><a href="/index.html">Back to main menu</a></li>
-        </ul>
-      </div>
       <div class="foot-content wrapper">
         This is the assignment application built on the tutorial for the course
         12431 Web Applications | SS 2021. Students: Christian Prinz - B.Sc

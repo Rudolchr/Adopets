@@ -10,7 +10,6 @@
             "request": "launch",
             "reAttach": true,
             "file": "${workspaceFolder}/app/index.html",
-            "webRoot": "${workspaceFolder}/app"
         },
         {
             "name": "Debug Edge Canary",

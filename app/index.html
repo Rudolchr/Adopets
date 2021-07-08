@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title>Adopets</title>
-    
+
     <script src="/js/lib/load_essentials.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
@@ -10,7 +10,7 @@
     <script src="/js/initialize.js"></script>
     <script src="/js/authentication.js" type="module"></script>
     <script type="module">
-      import {setupUiByUserStatus} from "/js/authentication.js";      
+      import { setupUiByUserStatus } from "/js/authentication.js";
       import { createTestData, clear } from "/js/app.js";
 
       const clearButton = document.getElementById("clearData");
@@ -33,17 +33,21 @@
         </div>
         <nav>
           <ul>
-            <li><a href="/index.html">Home</a></li>
-            <li><a href="/pets/index.html" class="disabled">Pets</a></li>
-            <li><a href="/shelters/index.html" class="disabled">Shelters</a></li>
-            <li><a href="/adopted/index.html" class="disabled">Adopted</a></li>
-            <li><a href="/messages/index.html" class="disabled">Messages</a></li>
+            <li><a href="/index.html" class="current">Home</a></li>
+            <li><a href="/pets/index.html">Pets</a></li>
+            <li><a href="/shelters/index.html">Shelters</a></li>
+            <li><a href="/adopted/index.html">Adopted</a></li>
+            <li>
+              <a href="/messages/index.html" class="disabled">Messages</a>
+            </li>
           </ul>
         </nav>
       </div>
       <div id="login-management">
         <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
         <small hidden="hidden"><button type="button" class="submitButton">Sign out</button></small>
+        <small hidden="hidden"><button type="button" class="submitButton">My Pets</button></small>
+        <small hidden="hidden"><button type="button" class="submitButton">My Shelters</button></small>
       </div>
     </header>
     <main>
@@ -52,12 +56,22 @@
         <p>This app supports organising the following two types:</p>
         <div class="two-col-menu">
           <ul role="menubar">
-            <li role="menuitem"><a href="/pets/index.html">Show all Pets</a></li>
-            <li role="menuitem"><a href="/shelters/index.html">Show all Shelters</a></li>
+            <li role="menuitem">
+              <a href="/pets/index.html">Show all Pets</a>
+            </li>
+            <li role="menuitem">
+              <a href="/shelters/index.html">Show all Shelters</a>
+            </li>
           </ul>
           <ul role="menubar">
-            <li role="menuitem"><a href="/pets/edit.html" class="disabled">Organising Pets</a></li>
-            <li role="menuitem"><a href="/shelters/edit.html" class="disabled">Organising Shelters</a></li>
+            <li role="menuitem">
+              <a href="/pets/edit.html" class="disabled">Organising Pets</a>
+            </li>
+            <li role="menuitem">
+              <a href="/shelters/edit.html" class="disabled"
+                >Organising Shelters</a
+              >
+            </li>
           </ul>
           <menu>
             <li>

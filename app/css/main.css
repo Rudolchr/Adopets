@@ -68,36 +68,36 @@ button:disabled {
 }
 
 .deleteButton {
-  background-color: #881900;
+  background-color: var(--red800);
   color: white;
 }
 .deleteButton:hover {
-  background-color: #881900aa;
+  background-color: var(--red600);
   color: white;
 }
 .deleteButton:active {
-  background-color: #881900ee;
+  background-color: var(--red900);
   color: white;
 }
 .deleteButton:disabled {
-  background-color: #88190033;
+  background-color: var(--red200);
   color: #ffffffaa;
 }
 
 .submitButton {
-  background-color: var(--darker-bg-color);
+  background-color: var(--green800);
   color: white;
 }
 .submitButton:hover {
-  background-color: var(--light-bg-color);
+  background-color: var(--green600);
   color: white;
 }
 .submitButton:active {
-  background-color: var(--dark-bg-color);
+  background-color: var(--green900);
   color: white;
 }
 .submitButton:disabled {
-  background-color: var(--darker-bg-disabled);
+  background-color: var(--green200);
   color: var(--darker-bg-disabled-text);
 }
 
@@ -114,19 +114,34 @@ body {
   margin: auto;
 }
 
-
 /* ===================
     ALL: Theme
    =================== */
 :root {
-  /* pseudo-class used for variable definitions */
-  --light-bg-color: #7b6; /*  #f16529 */
-  --dark-bg-color: #372; /*  #e44d26 */
-  --dark-bg-hovered: #261; /*  #e44d26 */
-  --darker-bg-color: #113608; /*  #e44d26 */
-  --darker-bg-disabled: #c7c7c76c; /*  #e44d26 */
-  --darker-bg-disabled-text: #5f5f5f; /*  #e44d26 */
-  --dark-bg-disabled: #483; /*  #f16529 */
+  /* material Light Green (https://material.io/design/color/the-color-system.html#tools-for-picking-colors) */
+  --green900: #33691e; /* buttons */
+  --green800: #558b2f; /* hovered buttons */
+  --green700: #689f38;
+  --green600: #7cb342; /* disabled buttons */
+  --green500: #8bc34a; /* primary */
+  --green400: #9ccc65;
+  --green300: #aed581;
+  --green200: #c5e1a5;
+  --green100: #dcedc8;
+  --green50: #f1f8e9;
+  --red900: #9f1616;
+  --red800: #af2021;
+  --red700: #bc2727;
+  --red600: #cd302d;
+  --red500: #db392d;
+  --red400: #d94b47;
+  --red300: #d36b6a;
+  --red200: #e29393;
+  --red100: #f7c9cd;
+  --red50: #fce9ec;
+  --darker-bg-disabled: #c7c7c76c;
+  --darker-bg-disabled-text: #5f5f5f;
+  --dark-bg-disabled: #483;
   --text-disabled: #ffffff99;
   /* --light-bg-color: forestgreen;
     --dark-bg-color: darkgreen;
@@ -134,16 +149,16 @@ body {
 }
 
 header {
-  border-bottom: 10px solid var(--dark-bg-color);
+  border-bottom: 10px solid var(--green900);
 }
 
 footer {
-  border-top: 10px solid var(--dark-bg-color);
+  border-top: 10px solid var(--green900);
 }
 
 header,
 footer {
-  background: var(--light-bg-color);
+  background: var(--green500);
 }
 
 header .title {
@@ -160,6 +175,7 @@ nav ul {
   list-style-type: none;
 }
 nav a {
+  border-radius: 2pt;
   display: block;
   margin: 5px;
   padding: 15px 0;
@@ -167,7 +183,8 @@ nav a {
   text-decoration: none;
   font-weight: bold;
   color: white;
-  background: var(--dark-bg-color);
+  background: var(--green900);
+  box-shadow: 0 3px 2px var(--green700);
 }
 nav a:hover,
 nav a:visited {
@@ -175,7 +192,14 @@ nav a:visited {
 }
 nav a:hover {
   text-decoration: underline;
-  background: var(--dark-bg-hovered);
+  background: var(--green800);
+  box-shadow: 0 5px 4px var(--green700);
+}
+nav .current {
+  background: var(--green600);
+  pointer-events: none;
+  color: #ffffff77;
+  box-shadow: 0 0px 0px var(--green700);
 }
 
 header figure {
@@ -183,10 +207,38 @@ header figure {
 }
 
 #login-management {
+  border-top-left-radius: 4pt;
+  border-top-right-radius: 4pt;
   align-items: center;
   align-content: center;
-  background: var(--dark-bg-disabled);
+  background: var(--green800);
   margin: 0 5%;
+}
+
+#login-management button {
+  margin-left: 8px;
+  box-shadow: 0 0px 0px var(--green700);
+  background-color: var(--green900);
+}
+#login-management button:hover {
+  margin-left: 8px;
+  box-shadow: 0 0px 0px var(--green700);
+  background-color: var(--green700);
+  text-decoration: underline;
+}
+#login-management button:active {
+  margin-left: 8px;
+  box-shadow: 0 0px 0px var(--green700);
+  background-color: var(--green800);
+  text-decoration: underline;
+}
+#login-management .current {
+  margin-left: 8px;
+  box-shadow: 0 0px 0px var(--green700);
+  background-color: var(--green800);
+  color: white;
+  pointer-events: none;
+  text-decoration: none;
 }
 
 #login-management a {
@@ -232,12 +284,12 @@ footer div.foot-content li {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  background-color: var(--dark-bg-color);
+  background-color: var(--green900);
   list-style-type: none;
   padding: 1em;
 }
 footer div.foot-content li:hover {
-  background: var(--dark-bg-hovered);
+  background: var(--green800);
   color: white;
   text-decoration: underline;
 }
@@ -412,6 +464,8 @@ form div.MultiChoiceWidget > ul > li.added {
     width: 5em;
     margin: 0 1.7%;
     padding: 25px 2%;
+    margin-bottom: 5px;
+    margin-top: 5px;
   }
   nav li:first-child a {
     margin-left: 20;
@@ -494,18 +548,6 @@ form div.MultiChoiceWidget > ul > li.added {
   overflow: visible;
   position: static;
   width: auto;
-}
-
-.disabled {
-  pointer-events: none;
-  color: #ffffff99;
-  background: var(--dark-bg-disabled);
-}
-
-.disabled:hover {
-  text-decoration: none;
-  color: #ffffff99;
-  background: var(--dark-bg-disabled);
 }
 
 .invisible {

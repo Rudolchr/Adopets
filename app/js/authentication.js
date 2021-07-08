@@ -32,6 +32,12 @@ export function setupUiByUserStatus() {
                 }
                 loginMngEls[1].prepend(spanEl);
                 loginMngEls[1].hidden = false; // show 'sign out'
+                // my pets
+                loginMngEls[2].hidden = false;
+                loginMngEls[2].querySelector("button")?.addEventListener('click', () => window.location.pathname = "/pets/edit.html");
+                // my shelters
+                loginMngEls[3].hidden = false;
+                loginMngEls[3].querySelector("button")?.addEventListener('click', () => window.location.pathname = "/shelters/edit.html");
                 // if current page is not allowed & email is not verified
                 if (!allowedPages.includes(page) && !user.emailVerified) { // if current page is not allowed
                     alert(`Check your email ${user.email} for instructions to verify your account before using this operation`);
