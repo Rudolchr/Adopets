@@ -15,7 +15,6 @@ await PetStorage.retrieveAll();
 // for each pet, create a table row with a cell for each attribute
 for (let pet of Object.values(PetStorage.instances).filter(pet => !pet.isAdopted)) {
   const row = tableBody.insertRow();
-  row.insertCell().textContent = pet.id;
   row.insertCell().textContent = pet.name;
   row.insertCell().textContent = pet.species;
   row.insertCell().textContent = pet.sex;
@@ -28,7 +27,7 @@ for (let pet of Object.values(PetStorage.instances).filter(pet => !pet.isAdopted
   const shelter = row.insertCell();
   console.log(ShelterStorage.instances);
   
-  shelter.textContent = ShelterStorage.instances[pet.shelterId]?.name;
+  shelter.textContent = ShelterStorage.instances[pet.shelterId]?.name + '\n';
   const messageButton = document.createElement('button');
   messageButton.textContent = "contact";
   messageButton.className = 'submitButton'

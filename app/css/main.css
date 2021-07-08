@@ -101,7 +101,6 @@ button:disabled {
   color: var(--darker-bg-disabled-text);
 }
 
-
 /* ===== Initializr Styles ==================================================
    Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
    ========================================================================== */
@@ -112,8 +111,9 @@ body {
 
 .wrapper {
   width: 90%;
-  margin: 0 5%;
+  margin: auto;
 }
+
 
 /* ===================
     ALL: Theme
@@ -127,7 +127,7 @@ body {
   --darker-bg-disabled: #c7c7c76c; /*  #e44d26 */
   --darker-bg-disabled-text: #5f5f5f; /*  #e44d26 */
   --dark-bg-disabled: #483; /*  #f16529 */
-  --text-disabled: #ffffff99
+  --text-disabled: #ffffff99;
   /* --light-bg-color: forestgreen;
     --dark-bg-color: darkgreen;
   */
@@ -138,7 +138,7 @@ header {
 }
 
 footer {
-  border-top: 20px solid var(--dark-bg-color);
+  border-top: 10px solid var(--dark-bg-color);
 }
 
 header,
@@ -155,19 +155,19 @@ header .title {
    ============== */
 
 nav ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 }
 nav a {
-    display: block;
-    margin-bottom: 10px;
-    padding: 15px 0;
-    text-align: center;
-    text-decoration: none;
-    font-weight: bold;
-    color: white;
-    background: var(--dark-bg-color);
+  display: block;
+  margin: 5px;
+  padding: 15px 0;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  color: white;
+  background: var(--dark-bg-color);
 }
 nav a:hover,
 nav a:visited {
@@ -212,7 +212,7 @@ header figure {
     MOBILE: Main
    ============== */
 main {
-  padding: 30px 0;
+  padding: 20px 0;
 }
 footer div.foot-content {
   color: black;
@@ -231,13 +231,13 @@ footer div.foot-content li {
   padding: 15px 0;
   text-align: center;
   text-decoration: none;
-  display:inline-block;
-  background-color:var(--dark-bg-color);
-  list-style-type:none;
-  padding:1em;
+  display: inline-block;
+  background-color: var(--dark-bg-color);
+  list-style-type: none;
+  padding: 1em;
 }
 footer div.foot-content li:hover {
-  background:  var(--dark-bg-hovered);
+  background: var(--dark-bg-hovered);
   color: white;
   text-decoration: underline;
 }
@@ -248,6 +248,8 @@ footer div.foot-content a {
 table {
   border-collapse: collapse;
   margin: 1em 0;
+  table-layout: auto;
+  width: 100%;
 }
 table,
 td,
@@ -348,6 +350,11 @@ form > div > button {
   margin-right: 0.5em;
 }
 
+form > div > textarea {
+  width: 100%;
+  height: 120pt;
+}
+
 form > fieldset {
   margin-bottom: 1em;
 }
@@ -393,10 +400,13 @@ form div.MultiChoiceWidget > ul > li.added {
    Media Queries
    ========================================================================== */
 
-@media only screen and (min-width: 480px) {
+@media only screen and (min-width: 710px) {
   /* ====================
         INTERMEDIATE: Menu
        ==================== */
+  nav {
+    align-content: center;
+  }
   nav a {
     float: left;
     width: 5em;
@@ -404,14 +414,14 @@ form div.MultiChoiceWidget > ul > li.added {
     padding: 25px 2%;
   }
   nav li:first-child a {
-    margin-left: 0;
+    margin-left: 20;
   }
   nav li:last-child a {
     margin-right: 0;
   }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1045px) {
   /* ====================
    WIDE: CSS3 Effects
    ==================== */
@@ -450,8 +460,9 @@ form div.MultiChoiceWidget > ul > li.added {
   }
 
   .wrapper {
-    width: 1026px; /* 1140px - 10% for margins */
-    margin: 0 auto;
+    /* width: 1026px; 1140px - 10% for margins */
+    /* width: 90%; */
+    /* margin: 0 auto; */
   }
 }
 
@@ -488,13 +499,13 @@ form div.MultiChoiceWidget > ul > li.added {
 .disabled {
   pointer-events: none;
   color: #ffffff99;
-  background: var(--dark-bg-disabled)
+  background: var(--dark-bg-disabled);
 }
 
 .disabled:hover {
   text-decoration: none;
   color: #ffffff99;
-  background: var(--dark-bg-disabled)
+  background: var(--dark-bg-disabled);
 }
 
 .invisible {
