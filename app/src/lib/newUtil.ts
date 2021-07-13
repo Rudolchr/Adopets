@@ -52,7 +52,7 @@ export function handleUserMessage(
   const userMessageContainerEl: HTMLElement |  null = document.querySelector(".user-message");
   const errorMessage = userMessageContainerEl?.querySelector("div");
   const buttonEl = document.createElement("button");
-  let msgText = `The selected entity ${JSON.stringify(data)} has been ${status}.\n Please reload this page to continue!`;
+  let msgText = `The selected entry has been ${status}. Please reload this page to continue!`;
 
   if (userMessageContainerEl && errorMessage) {
     userMessageContainerEl.innerHTML = "";

@@ -67,6 +67,41 @@ button:disabled {
   box-shadow: 0 0px 0px #ffffff00;
 }
 
+.user-message {
+  border-bottom-left-radius: 4pt;
+  border-bottom-right-radius: 4pt;
+  align-items: center;
+  align-content: center;
+  background: var(--green800);
+  padding-bottom: 8px;
+  margin: 0 5%;
+  color: #fff;
+  font-weight: bold;
+}
+.user-message div {
+  margin-left: 8px;
+  align-self: center;
+}
+.user-message button {
+  margin-left: 8px;
+  box-shadow: 0 0px 0px var(--green700);
+  background-color: var(--green900);
+  color: #fff;
+  font-weight: bold;
+}
+.user-message button:hover {
+  margin-left: 8px;
+  box-shadow: 0 0px 0px var(--green700);
+  background-color: var(--green700);
+  text-decoration: underline;
+}
+.user-message button:active {
+  margin-left: 8px;
+  box-shadow: 0 0px 0px var(--green700);
+  background-color: var(--green800);
+  text-decoration: underline;
+}
+
 .deleteButton {
   background-color: var(--red800);
   color: white;
