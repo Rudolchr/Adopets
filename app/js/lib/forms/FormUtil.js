@@ -13,12 +13,12 @@ export function fillSelectWithEntities(selection, entities, property, selected, 
         selection.add(option);
     }
 }
-export function fillSelectWithRange(selection, range, selected) {
+export function fillSelectWithRange(selection, range, selected, emptyOption = { value: '', text: ' --- ' }) {
     // delete old contents
     selection.innerHTML = "";
     // create "no selection yet" entry
     if (!selection.multiple) {
-        selection.add(createOption("", " --- "));
+        selection.add(createOption(emptyOption.value, emptyOption.text));
     }
     const options = Array.isArray(range) ? range : Object.values(range);
     for (const text of options) {

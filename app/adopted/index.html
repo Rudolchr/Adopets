@@ -15,14 +15,23 @@
     <link rel="stylesheet" href="/css/normalize.css" />
     <link rel="stylesheet" href="/css/main.css" />
 
+    <script src="/js/lib/load_essentials.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
     <script src="/js/initialize.js"></script>
     <script src="/js/authentication.js" type="module"></script>
     <script type="module">
-      import {setupUiByUserStatus} from "/js/authentication.js";
+      import { setupUiByUserStatus } from "/js/authentication.js";
+      import { insertToTable } from "/js/pets/controller/listPets.js";
+      import { ShelterStorage } from "/js/shelters/model/ShelterStorage.js";
+      import { PetStorage } from "/js/pets/model/PetStorage.js";
+
       window.addEventListener("load", setupUiByUserStatus);
+      
+      await ShelterStorage.retrieveAll();
+      await PetStorage.retrieveAll();
+      insertToTable((pet) => pet.isAdopted, ['shelterId', 'vaccinationStatus']);
     </script>
   </head>
 
@@ -51,7 +60,28 @@
     </header>
     <main>
       <div class="wrapper clearfix">
-        <h3>Adopted pets</h3>
+        <figure>
+          <figcaption>Pets that found a home</figcaption>
+          <div>
+          <table id="pets">
+            <thead>
+              <tr>
+                <th id="petName">Name</th>
+                <th id="species">Species</th>
+                <th id="sex">Sex</th>
+                <th id="size">Size</th>
+                <th id="birthDate">Birth date</th>
+                <!-- <th id="vaccinationStatus">Vaccination status</th> -->
+                <th id="compatibleWith">Compatible with</th>
+                <th id="suitableWith">SuitableWith</th>
+                <th id="housing">Housing</th>
+                <!-- <th id="shelter">Shelter</th> -->
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        </figure>
       </div>
     </main>
     <footer>

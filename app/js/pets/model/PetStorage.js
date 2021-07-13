@@ -6,7 +6,7 @@ import { Pet } from "./Pet.js";
 class PetStorageClass extends AbstractStorage {
     /** key for the `firestore.collection` for the `this.instances` */
     STORAGE_KEY = "pets";
-    retrieveAllFromUser(creatorId) {
+    getUserPets(creatorId) {
         let return_instances = {};
         for (const shelter of Object.values(this._instances)) {
             if (shelter.creatorId === creatorId) {

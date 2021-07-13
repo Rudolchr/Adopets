@@ -17,7 +17,7 @@ await PetStorage.retrieveAll();
 
 let userSpecificStorage: string[] = [];
 if (auth.currentUser?.uid) {
-  userSpecificStorage = ShelterStorage.retrieveAllIdsFromUser(auth.currentUser?.uid);
+  userSpecificStorage = ShelterStorage.getUserShelterIds(auth.currentUser?.uid);
 }
 
 MessageStorage.retrieveAllFromUser(userSpecificStorage);

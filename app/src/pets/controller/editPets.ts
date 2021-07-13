@@ -14,11 +14,11 @@ const formFactory = new FormFactory("Pet");
 
 let userPets = PetStorage.instances;
 if (auth.currentUser?.uid) {
-  userPets = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
+  userPets = PetStorage.getUserPets(auth.currentUser?.uid);
 }
 let userShelters = ShelterStorage.instances;
 if (auth.currentUser?.uid) {
-  userShelters = ShelterStorage.retrieveAllFromUser(auth.currentUser?.uid);
+  userShelters = ShelterStorage.getUserShelters(auth.currentUser?.uid);
 }
 
 // which elements should be manipulated with this Form
@@ -78,7 +78,7 @@ async function onSubmit(slots: PetSlots) {
     // TODO
     userPets = PetStorage.instances;
     if (auth.currentUser?.uid) {
-      userPets = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
+      userPets = PetStorage.getUserPets(auth.currentUser?.uid);
     }
     // add new pet to selection
     entitySelection = createSelection();
@@ -98,7 +98,7 @@ deleteButton.addEventListener("click", async () => {
       await PetStorage.destroy(id);
       userPets = PetStorage.instances;
       if (auth.currentUser?.uid) {
-        userPets = PetStorage.retrieveAllFromUser(auth.currentUser?.uid);
+        userPets = PetStorage.getUserPets(auth.currentUser?.uid);
       }
       // update the form
       entitySelection = createSelection();

@@ -12,7 +12,7 @@ await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
 let userSpecificStorage = [];
 if (auth.currentUser?.uid) {
-    userSpecificStorage = ShelterStorage.retrieveAllIdsFromUser(auth.currentUser?.uid);
+    userSpecificStorage = ShelterStorage.getUserShelterIds(auth.currentUser?.uid);
 }
 MessageStorage.retrieveAllFromUser(userSpecificStorage);
 // for each pet, create a table row with a cell for each attribute

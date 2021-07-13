@@ -84,7 +84,7 @@ shelterDescInput.addEventListener("input", () =>
 const shelterSelection: HTMLSelectElement = form['shelterSelection'];
 let userSpecificStorage = ShelterStorage.instances;
 if (auth.currentUser?.uid) {
-  userSpecificStorage = ShelterStorage.retrieveAllFromUser(auth.currentUser?.uid);
+  userSpecificStorage = ShelterStorage.getUserShelters(auth.currentUser?.uid);
 }
 
 fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], {value: '', text: '--- create a new shelter ---'});
@@ -149,7 +149,7 @@ deleteButton.addEventListener("click", async () => {
       await ShelterStorage.destroy(id);
       userSpecificStorage = ShelterStorage.instances;
       if (auth.currentUser?.uid) {
-        userSpecificStorage = ShelterStorage.retrieveAllFromUser(auth.currentUser?.uid);
+        userSpecificStorage = ShelterStorage.getUserShelters(auth.currentUser?.uid);
       }
 
       fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], {value: '', text: '--- create a new shelter ---'});
@@ -220,9 +220,9 @@ submitButton.addEventListener("click", async () => {
 
         userSpecificStorage = ShelterStorage.instances;
         if (auth.currentUser?.uid) {
-          userSpecificStorage = ShelterStorage.retrieveAllFromUser(auth.currentUser?.uid);
+          userSpecificStorage = ShelterStorage.getUserShelters(auth.currentUser?.uid);
         }
-        
+
         // update the selection list option element
         fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], {value: '', text: '--- create a new shelter ---'});
       } else {

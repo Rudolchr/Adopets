@@ -3,13 +3,13 @@
  */
 import { ShelterStorage } from "../../shelters/model/ShelterStorage.js";
 import { PetStorage } from "../model/PetStorage.js";
-// load all pet objects
-await ShelterStorage.retrieveAll();
-await PetStorage.retrieveAll();
+const tableBody = document.querySelector("table").querySelector("tbody");
+export function clearTableBody() {
+    tableBody.innerHTML = '';
+}
 export function insertToTable(filter, hideProps = []) {
     // for each pet, create a table row with a cell for each attribute
     for (let pet of Object.values(PetStorage.instances).filter(filter)) {
-        const tableBody = document.querySelector("table").querySelector("tbody");
         const row = tableBody.insertRow();
         if (!hideProps.includes('name')) {
             row.insertCell().textContent = pet.name;
@@ -53,4 +53,4 @@ export function insertToTable(filter, hideProps = []) {
     }
 }
 // TODO filters
-//# sourceMappingURL=retrieveAndListAllPets.js.map
+//# sourceMappingURL=listPets.js.map

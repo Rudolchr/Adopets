@@ -8,7 +8,7 @@ class PetStorageClass extends AbstractStorage<Pet, PetSlots> {
   /** key for the `firestore.collection` for the `this.instances` */
   STORAGE_KEY = "pets";
 
-  retrieveAllFromUser(creatorId: string) {
+  getUserPets(creatorId: string) {
     let return_instances: {[id: string]: Pet} = {};
 
     for(const shelter of Object.values(this._instances)) {

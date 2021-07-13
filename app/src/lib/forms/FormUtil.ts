@@ -28,14 +28,15 @@ export function fillSelectWithEntities<E extends Entity<any>>(
 export function fillSelectWithRange(
   selection: HTMLSelectElement,
   range: {[key: string]: string;} | string[],
-  selected?: string[]
+  selected?: string[],
+  emptyOption: {value: string; text: string;} = {value: '', text: ' --- '},
 ) {
   // delete old contents
   selection.innerHTML = "";
 
   // create "no selection yet" entry
   if (!selection.multiple) {
-    selection.add(createOption("", " --- "));
+    selection.add(createOption(emptyOption.value, emptyOption.text));
   }
   const options = Array.isArray(range) ? range : Object.values(range);
   for (const text of options) {

@@ -6,7 +6,7 @@ import { Shelter } from "./Shelter.js";
 class ShelterStorageClass extends AbstractStorage {
     /** key for the `firestore.collection` for the `this.instances` */
     STORAGE_KEY = "shelters";
-    retrieveAllFromUser(creatorId) {
+    getUserShelters(creatorId) {
         let return_instances = {};
         for (const shelter of Object.values(this._instances)) {
             if (shelter.creatorId === creatorId) {
@@ -15,7 +15,7 @@ class ShelterStorageClass extends AbstractStorage {
         }
         return return_instances;
     }
-    retrieveAllIdsFromUser(creatorId) {
+    getUserShelterIds(creatorId) {
         let return_ids = [];
         for (const shelter of Object.values(this._instances)) {
             if (shelter.creatorId === creatorId) {
