@@ -2,8 +2,195 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2021, 7, 24);
+      allow read, write: if false;
+    }
+
+    function checkName(name) {
+      // checke ob name string und nicht leer und ob das attribute present ist
+      return name is string && name != '' && "name" in request.resource.data;
+    }
+    function checkStreet(street) {
+      return street is string 
+            && street != ''
+            && street != null;
+    }
+    function checkNumber(number) {
+      return number is int 
+            && number > 0
+            && number != null;
+    }
+    function checkCity(city) {
+      return city is string 
+            && city != ''
+            && city != null;
+    }
+    function checkAddress(address) {
+      return checkCity(address.city) 
+            && checkStreet(address.street) 
+            && checkNumber(address.number)
+            && "address" in request.resource.data
+            && address != null;
+    }
+    function checkPhone(phone) {
+      // TODO match regex
+      return phone is string && phone != '' && "phone" in request.resource.data;
+
+    }
+    function checkEmail(email) {
+      // TODO match regex
+      return email is string && email != '' && "email" in request.resource.data;
+    }
+    function checkDay(day) {
+      return (day[0] == '' && day[1] == '') || (day[0] != '' && day[1] != '')
+    }
+    function checkOfficeHours(officHours) {
+      return checkDay(officHours.monday)
+            && checkDay(officHours.tuesday)
+            && checkDay(officHours.wednesday)
+            && checkDay(officHours.thursday)
+            && checkDay(officHours.friday)
+            && checkDay(officHours.saturday)
+            && checkDay(officHours.sunday)
+            && "officeHours" in request.resource.data
+            && officHours != null;
+    }
+    function checkCreatorId(cId) {
+      return cId is string && "creatorId" in request.resource.data && cId != null;
+    }
+    function checkDescription(description) {
+      return description is string;
+    }
+    
+    // READ
+    match /shelters/{document=**} {
+      allow read: if request.auth != null;
+    }
+    // WRITE
+    match /shelters/{document=**} {
+      allow create: if request.auth.token.email_verified == true
+        && checkName( request.resource.data.name) == true
+        && checkAddress( request.resource.data.address) == true
+        && checkPhone( request.resource.data.phone) == true
+        && checkEmail( request.resource.data.email) == true
+        && checkOfficeHours( request.resource.data.officeHours) == true
+        && checkDescription( request.resource.data.description) == true
+        && checkCreatorId( request.resource.data.creatorId) == true;
+      allow update: if request.auth.token.email_verified == true
+        && !('creatorId' in request.resource.data.diff(resource.data).affectedKeys())
+        && request.resource.data.name != null ? checkName( request.resource.data.name) : true
+        && request.resource.data.address != null ? checkAddress( request.resource.data.address) : true
+        && request.resource.data.phone != null ? checkPhone( request.resource.data.phone) : true
+        && request.resource.data.email != null ? checkEmail( request.resource.data.email) : true
+        && request.resource.data.officeHours != null ? checkOfficeHours( request.resource.data.officeHours) : true
+        && checkDescription( request.resource.data.description);
+      allow delete: if request.auth.token.email_verified == true;
+    }
+
+    function checkSpecies(species) {
+      return species is string && species != '' 
+        && (species == 'Cat' || species == 'Dog' || species == 'Bird')
+        && "species" in request.resource.data;
+    } 
+    function checkSex(sex) {
+      return sex is string && sex != '' 
+        && (sex == 'male' || sex == 'female' || sex == 'unknown')
+        && "sex" in request.resource.data;
+    } 
+    function checkSize(size) {
+      return size is string && size != '' 
+        && (size == 'small' || size == 'medium' || size == 'large' || size== 'very large') 
+        && "size" in request.resource.data;
+    } 
+    function checkBirthDate(birthDate) {
+      return birthDate != null 
+        && birthDate is string 
+        && timestamp.date(birthDate.split('-')[0],birthDate.split('-')[1],birthDate.split('-')[2]) >= timestamp.date(1990, 1, 1);
+    }
+    function checkVaccinationStatus(vaccinationStatus) {
+      return vaccinationStatus is string && vaccinationStatus != '' 
+        && "vaccinationStatus" in request.resource.data;
+    }
+    function checkHousing(housing) {
+      return housing is string && housing != '' 
+        && (housing == 'indoor only' || housing == 'in- and outdoor' || housing == 'outdoor required') 
+        && "housing" in request.resource.data;
+    }
+    function checkShelter(shelterId) {
+      return shelterId != null && exists(/databases/$(database)/documents/shelters/$(shelterId)) 
+        && "shelterId" in request.resource.data;
+    }
+    function checkCompatibleWith(compatibleWith) {
+      return (compatibleWith is string && compatibleWith != ''
+        && (compatibleWith == 'Cat' || compatibleWith == 'Dog' || compatibleWith == 'Bird')) 
+        || !("compatibleWith" in request.resource.data);
+    }
+    function checkSuitableWith(suitableWith) {
+      return (suitableWith is string && suitableWith != '' 
+        && (suitableWith == 'children' || suitableWith == 'seniors'))
+        || !("suitableWith" in request.resource.data);
+    }
+
+    // READ
+    match /pets/{document=**} {
+      allow read: if request.auth != null;
+    }
+    // WRITE
+    match /pets/{document=**} {
+      allow create: if request.auth.token.email_verified == true
+        && checkName(request.resource.data.name) == true
+        && checkSpecies( request.resource.data.species) == true
+        && checkSex( request.resource.data.sex) == true
+        && checkSize( request.resource.data.size) == true
+        && checkBirthDate( request.resource.data.birthDate) == true
+        && checkVaccinationStatus( request.resource.data.vaccinationStatus)
+        && checkHousing( request.resource.data.housing) == true
+        && checkShelter( request.resource.data.shelterId) == true
+        && checkCreatorId( request.resource.data.creatorId) == true
+        && checkCompatibleWith( request.resource.data.compatibleWith) == true
+        && checkSuitableWith( request.resource.data.suitableWith) == true;
+      allow update: if request.auth.token.email_verified == true
+        && !('creatorId' in request.resource.data.diff(resource.data).affectedKeys())
+        && request.resource.data.name != null ? checkName( request.resource.data.name) : true
+        && request.resource.data.species != null ? checkSpecies( request.resource.data.species) : true
+        && request.resource.data.sex != null ? checkSex( request.resource.data.sex) : true
+        && request.resource.data.size != null ? checkSize( request.resource.data.size) : true
+        && request.resource.data.birthDate != null ? checkBirthDate( request.resource.data.birthDate) : true
+        && request.resource.data.vaccinationStatus != null ? checkVaccinationStatus( request.resource.data.vaccinationStatus) : true
+        && request.resource.data.housing != null ? checkHousing( request.resource.data.housing) : true
+        && request.resource.data.shelterId != null ? checkShelter( request.resource.data.shelterId) : true
+        && checkCompatibleWith( request.resource.data.compatibleWith) == true
+        && checkSuitableWith( request.resource.data.suitableWith) == true;
+      allow delete: if request.auth.token.email_verified == true;
+    }
+
+    function checkMessage(message) {
+      return message is string && message != '' && "message" in request.resource.data;
+    }
+    function checkPetId(petId) {
+      return (petId != null && exists(/databases/$(database)/documents/shelters/$(petId))) 
+        || !("petId" in request.resource.data);
+    }
+    function checkEmailMessage(email) {
+      return (email is string && email != '') || !("senderEmail" in request.resource.data);
+    }
+    function checkPhoneNo(phone) {
+      return (phone is string && phone != '') || !("senderPhoneNo" in request.resource.data);
+    }
+
+    // READ
+    match /messages/{document=**} {
+      allow read: if request.auth.token.email_verified == true;
+    }
+    // WRITE
+    match /messages/{document=**} {
+      allow create: if request.auth.token.email_verified == true
+        && checkMessage(request.resource.data.message) == true
+        && checkShelter( request.resource.data.shelterId) == true
+        && checkPetId( request.resource.data.petId) == true
+        && checkEmailMessage( request.resource.data.senderEmail) == true
+        && checkPhoneNo( request.resource.data.senderPhoneNo) == true;
+      allow update: if false;
+      allow delete: if request.auth.token.email_verified == true;
     }
   }
 }
