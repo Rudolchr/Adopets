@@ -7,6 +7,7 @@ import { HousingEnum, Pet, SexEnum, SizeEnum, SpeciesEnum, SuitableWithEnum } fr
 import { PetStorage } from "../model/PetStorage.js";
 await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
+let cancelSyncDBwithUI = null;
 // we use the factory to create the view logic for the Form
 const formFactory = new FormFactory("Pet");
 let userPets = PetStorage.instances;
@@ -38,8 +39,9 @@ let entitySelection = createSelection();
 function createSelection() {
     return formFactory.createEntitySelection('petSelection', userPets, 'name', formElements, { value: '', text: '--- create a new pet ---' });
 }
-entitySelection.addEventListener('change', e => {
+entitySelection.addEventListener('change', async () => {
     const id = entitySelection.value;
+    cancelSyncDBwithUI = await PetStorage.syncDBwithUI(id);
     if (id !== undefined && id.length > 0) {
         deleteButton.hidden = false;
         submitButton.textContent = 'Update pet';
@@ -87,5 +89,8 @@ deleteButton.addEventListener("click", async () => {
             submitButton.textContent = 'Create pet';
         }
     }
+});
+window.addEventListener("beforeunload", () => {
+    cancelSyncDBwithUI();
 });
 //# sourceMappingURL=editPets.js.map
