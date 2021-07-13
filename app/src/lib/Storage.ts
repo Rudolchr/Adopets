@@ -1,4 +1,5 @@
 import {Entity, EntitySlots} from "./Entity.js";
+import { handleUserMessage } from "./newUtil.js";
 
 /**
  * An abstract Storage for Entities. The **Generic** has to be Provided with the stored `Entity` as well 
@@ -43,6 +44,25 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
       console.info(`${entity.toString()} created`, entity);
     }
   }
+
+  async syncDBwithUI(id: string) {
+    try {
+        let entityDocRef = this.DB.collection(this.STORAGE_KEY).doc( id);
+        let originalEntityDocSn = await entityDocRef.get();
+
+        return entityDocRef.onSnapshot( entityDocSn => {
+          if (!entityDocSn.metadata.hasPendingWrites) {
+            if (!entityDocSn.data()) {
+              handleUserMessage("removed", originalEntityDocSn.data());
+            } else if (!entityDocSn.isEqual( originalEntityDocSn)) {
+              handleUserMessage("modified", entityDocSn.data());
+            }
+          }
+        });
+    } catch (e) {
+      console.error(`${e.constructor.name} : ${e.message}`);
+    }
+}
 
   /** -------------------------------------------------------------------------
    * RETRIEVE -----------------------------------------------------------------

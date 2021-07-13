@@ -252,7 +252,6 @@ export class Shelter extends Entity {
             return "The shelter's description is to long!";
         }
     }
-    // TODO: add pets and message
     // *** serialization ********************************************************
     /**
      * this function is invoked by `JSON.stringify()` and converts the inner `"_propertyKey"` to `"propertyKey"`

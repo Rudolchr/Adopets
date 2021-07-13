@@ -45,4 +45,22 @@ export function GetURLParameter(sParam) {
         }
     }
 }
+export function handleUserMessage(status, data) {
+    const userMessageContainerEl = document.querySelector(".user-message");
+    const errorMessage = userMessageContainerEl?.querySelector("div");
+    const buttonEl = document.createElement("button");
+    let msgText = `The selected entry has been ${status}. Please reload this page to continue!`;
+    if (userMessageContainerEl && errorMessage) {
+        userMessageContainerEl.innerHTML = "";
+        errorMessage.textContent = msgText;
+        buttonEl.setAttribute("type", "button");
+        buttonEl.textContent = "Reload";
+        errorMessage?.appendChild(buttonEl);
+        userMessageContainerEl?.appendChild(errorMessage);
+        userMessageContainerEl.hidden = false;
+    }
+    buttonEl.addEventListener("click", () => {
+        location.reload();
+    });
+}
 //# sourceMappingURL=newUtil.js.map

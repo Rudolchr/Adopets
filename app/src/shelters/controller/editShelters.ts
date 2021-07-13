@@ -10,6 +10,8 @@ import {ShelterStorage} from "../model/ShelterStorage.js";
 
 const form = document.forms.namedItem("Shelter")!;
 
+let cancelSyncDBwithUI: any = null;
+
 await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
 
@@ -90,8 +92,10 @@ if (auth.currentUser?.uid) {
 fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], {value: '', text: '--- create a new shelter ---'});
 
 // when a pet is selected, populate the form with its data
-shelterSelection.addEventListener("change", () => {
+shelterSelection.addEventListener("change", async () => {
   const shelterKey = shelterSelection.value;
+
+  cancelSyncDBwithUI = await ShelterStorage.syncDBwithUI(shelterKey);
 
   if (shelterKey !== undefined && shelterKey.length > 0) {
     deleteButton.hidden = false;
@@ -239,4 +243,8 @@ submitButton.addEventListener("click", async () => {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   form.reset();
+});
+
+window.addEventListener("beforeunload", () => {
+  cancelSyncDBwithUI();
 });

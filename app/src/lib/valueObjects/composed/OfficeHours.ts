@@ -1,4 +1,3 @@
-import { NonEmptyString } from "../NonEmptyString.js";
 import { OptionalString } from "../OptionalString.js";
 
 // TODO: probably change to other than string

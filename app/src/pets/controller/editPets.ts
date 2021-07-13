@@ -9,6 +9,8 @@ import {PetStorage} from "../model/PetStorage.js";
 await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
 
+let cancelSyncDBwithUI: any = null;
+
 // we use the factory to create the view logic for the Form
 const formFactory = new FormFactory("Pet");
 
@@ -50,8 +52,11 @@ function createSelection() {
     {value: '', text: '--- create a new pet ---'}
   );
 }
-entitySelection.addEventListener('change', e => {
+entitySelection.addEventListener('change', async () => {
   const id = entitySelection.value;
+
+  cancelSyncDBwithUI = await PetStorage.syncDBwithUI(id);
+
   if (id !== undefined && id.length > 0) {
     deleteButton.hidden = false;
     submitButton.textContent = 'Update pet';
@@ -106,4 +111,8 @@ deleteButton.addEventListener("click", async () => {
       submitButton.textContent = 'Create pet';
     }
   }
+});
+
+window.addEventListener("beforeunload", () => {
+  cancelSyncDBwithUI();
 });
