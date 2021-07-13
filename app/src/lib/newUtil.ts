@@ -44,3 +44,29 @@ export function GetURLParameter(sParam: string) {
     }
   }
 }
+
+export function handleUserMessage(
+  status: string, 
+  data: firebase.firestore.DocumentData | firebase.firestore.DocumentSnapshot | firebase.firestore.SnapshotOptions | undefined
+  ) {
+  const userMessageContainerEl: HTMLElement |  null = document.querySelector(".user-message");
+  const errorMessage = userMessageContainerEl?.querySelector("div");
+  const buttonEl = document.createElement("button");
+  let msgText = `The selected entity ${JSON.stringify(data)} has been ${status}.\n Please reload this page to continue!`;
+
+  if (userMessageContainerEl && errorMessage) {
+    userMessageContainerEl.innerHTML = "";
+    errorMessage.textContent = msgText;
+
+    buttonEl.setAttribute("type", "button");
+    buttonEl.textContent = "Reload";
+
+    errorMessage?.appendChild( buttonEl);
+    userMessageContainerEl?.appendChild( errorMessage);
+    userMessageContainerEl.hidden = false;
+  }
+
+  buttonEl.addEventListener("click", () => {
+    location.reload();
+  })
+}
