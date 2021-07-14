@@ -33,12 +33,11 @@ service cloud.firestore {
     }
     function checkPhone(phone) {
       return phone is string && phone != '' && "phone" in request.resource.data
-        && phone.matches("^\+(?:[0-9] ?){6,14}[0-9]$");
-
+        && phone.matches("^/+([0-9]?/s?){6,14}[0-9]$");
     }
     function checkEmail(email) {
       return email is string && email != '' && "email" in request.resource.data
-        && email.matches("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
+        && email.matches('^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i');
     }
     function checkDay(day) {
       return (day[0] == '' && day[1] == '') || (day[0] != '' && day[1] != '')
