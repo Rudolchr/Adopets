@@ -90,6 +90,8 @@ async function onSubmit(slots: PetSlots) {
   } else {
     // update existing pet
     PetStorage.update(slots);
+    deleteButton.hidden = true;
+    submitButton.textContent = 'Create pet';
   }
 }
 

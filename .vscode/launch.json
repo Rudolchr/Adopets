@@ -19,5 +19,12 @@
             "url": "http://localhost:5000/index.html",
             "webRoot": "${workspaceFolder}/app"
         },
+        {
+            "name": "Debug Firefox",
+            "type": "firefox",
+            "request": "launch",
+            "url": "http://localhost:5000/index.html",
+            "webRoot": "${workspaceFolder}/app"
+        },
     ]
 }

@@ -32,13 +32,13 @@ service cloud.firestore {
             && address != null;
     }
     function checkPhone(phone) {
-      // TODO match regex
-      return phone is string && phone != '' && "phone" in request.resource.data;
+      return phone is string && phone != '' && "phone" in request.resource.data
+        && phone.matches("^\+(?:[0-9] ?){6,14}[0-9]$");
 
     }
     function checkEmail(email) {
-      // TODO match regex
-      return email is string && email != '' && "email" in request.resource.data;
+      return email is string && email != '' && "email" in request.resource.data
+        && email.matches("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
     }
     function checkDay(day) {
       return (day[0] == '' && day[1] == '') || (day[0] != '' && day[1] != '')

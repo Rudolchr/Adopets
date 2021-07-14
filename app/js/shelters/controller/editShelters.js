@@ -183,6 +183,8 @@ submitButton.addEventListener("click", async () => {
             else {
                 // update existing pet
                 ShelterStorage.update(slots);
+                deleteButton.hidden = true;
+                submitButton.textContent = 'Create shelter';
             }
         }
         else {
