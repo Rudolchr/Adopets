@@ -1,4 +1,5 @@
-[{
+[
+  {
     "name": "Wolfgang",
     "species": "Dog",
     "sex": "male",
@@ -9,10 +10,10 @@
     "suitableWith": [],
     "housing": "outdoor required",
     "isAdopted": false,
-    "shelterId": "5Nq9TkaTTV8CvoIQFv2V",
+    "shelterId": "0",
     "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
-},
-{
+  },
+  {
     "name": "Hundula",
     "species": "Dog",
     "sex": "female",
@@ -23,10 +24,10 @@
     "suitableWith": ["children", "seniors"],
     "housing": "outdoor required",
     "isAdopted": false,
-    "shelterId": "myggf0XuPxf2lQdjZSeS",
+    "shelterId": "1",
     "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
-},
-{
+  },
+  {
     "name": "Hundter",
     "species": "Dog",
     "sex": "unknown",
@@ -34,13 +35,13 @@
     "birthDate": "2021-07-05",
     "vaccinationStatus": "not yet",
     "compatibleWith": ["Bird", "Cat"],
-    "suitableWith": [ "seniors"],
+    "suitableWith": ["seniors"],
     "housing": "in- and outdoor",
     "isAdopted": false,
-    "shelterId": "frgClq5ilSU2ILvw1bNs",
+    "shelterId": "2",
     "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
-},
-{
+  },
+  {
     "name": "Hundter II.",
     "species": "Dog",
     "sex": "unknown",
@@ -48,13 +49,13 @@
     "birthDate": "2021-07-05",
     "vaccinationStatus": "yes",
     "compatibleWith": ["Bird", "Cat"],
-    "suitableWith": [ "seniors"],
+    "suitableWith": ["seniors"],
     "housing": "in- and outdoor",
     "isAdopted": true,
-    "shelterId": "frgClq5ilSU2ILvw1bNs",
+    "shelterId": "2",
     "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
-},
-{
+  },
+  {
     "name": "Hundter III.",
     "species": "Dog",
     "sex": "unknown",
@@ -62,13 +63,13 @@
     "birthDate": "2021-07-05",
     "vaccinationStatus": "yes",
     "compatibleWith": ["Bird", "Cat"],
-    "suitableWith": [ "seniors"],
+    "suitableWith": ["seniors"],
     "housing": "in- and outdoor",
     "isAdopted": true,
-    "shelterId": "frgClq5ilSU2ILvw1bNs",
+    "shelterId": "2",
     "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
-},
-{
+  },
+  {
     "name": "Hei Zung",
     "species": "Dog",
     "sex": "male",
@@ -79,10 +80,10 @@
     "suitableWith": ["children"],
     "housing": "in- and outdoor",
     "isAdopted": true,
-    "shelterId": "Thge89zXLi8sme8ylzAB",
+    "shelterId": "3",
     "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
-},
-{
+  },
+  {
     "name": "Katzarina",
     "species": "Cat",
     "sex": "female",
@@ -93,10 +94,10 @@
     "suitableWith": ["children", "seniors"],
     "housing": "indoor only",
     "isAdopted": false,
-    "shelterId": "5Nq9TkaTTV8CvoIQFv2V",
+    "shelterId": "0",
     "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
-},
-{
+  },
+  {
     "name": "Kaatsten",
     "species": "Cat",
     "sex": "male",
@@ -107,10 +108,10 @@
     "suitableWith": ["seniors"],
     "housing": "in- and outdoor",
     "isAdopted": false,
-    "shelterId": "Thge89zXLi8sme8ylzAB",
+    "shelterId": "3",
     "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
-},
-{
+  },
+  {
     "name": "Mietzi",
     "species": "Cat",
     "sex": "unknown",
@@ -121,10 +122,10 @@
     "suitableWith": ["children", "seniors"],
     "housing": "indoor only",
     "isAdopted": false,
-    "shelterId": "frgClq5ilSU2ILvw1bNs",
+    "shelterId": "2",
     "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
-},
-{
+  },
+  {
     "name": "Katzjana",
     "species": "Cat",
     "sex": "female",
@@ -135,10 +136,10 @@
     "suitableWith": ["children"],
     "housing": "in- and outdoor",
     "isAdopted": true,
-    "shelterId": "myggf0XuPxf2lQdjZSeS",
+    "shelterId": "1",
     "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
-},
-{
+  },
+  {
     "name": "Catherine",
     "species": "Cat",
     "sex": "female",
@@ -149,10 +150,10 @@
     "suitableWith": ["children"],
     "housing": "in- and outdoor",
     "isAdopted": false,
-    "shelterId": "myggf0XuPxf2lQdjZSeS",
+    "shelterId": "1",
     "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
-},
-{
+  },
+  {
     "name": "Catherine's Schwester",
     "species": "Cat",
     "sex": "female",
@@ -163,10 +164,10 @@
     "suitableWith": ["children"],
     "housing": "in- and outdoor",
     "isAdopted": false,
-    "shelterId": "myggf0XuPxf2lQdjZSeS",
+    "shelterId": "1",
     "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
-},
-{
+  },
+  {
     "name": "Catherine's Bruder",
     "species": "Cat",
     "sex": "male",
@@ -177,10 +178,10 @@
     "suitableWith": ["children"],
     "housing": "in- and outdoor",
     "isAdopted": true,
-    "shelterId": "myggf0XuPxf2lQdjZSeS",
+    "shelterId": "1",
     "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
-},
-{
+  },
+  {
     "name": "Voglker",
     "species": "Bird",
     "sex": "female",
@@ -191,10 +192,10 @@
     "suitableWith": ["children", "seniors"],
     "housing": "indoor only",
     "isAdopted": false,
-    "shelterId": "5Nq9TkaTTV8CvoIQFv2V",
+    "shelterId": "0",
     "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
-},
-{
+  },
+  {
     "name": "Piep Matze",
     "species": "Bird",
     "sex": "male",
@@ -205,10 +206,10 @@
     "suitableWith": ["seniors"],
     "housing": "in- and outdoor",
     "isAdopted": false,
-    "shelterId": "Thge89zXLi8sme8ylzAB",
+    "shelterId": "3",
     "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
-},
-{
+  },
+  {
     "name": "Vogeldemort",
     "species": "Bird",
     "sex": "unknown",
@@ -219,10 +220,10 @@
     "suitableWith": ["children"],
     "housing": "indoor only",
     "isAdopted": false,
-    "shelterId": "myggf0XuPxf2lQdjZSeS",
+    "shelterId": "1",
     "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
-},
-{
+  },
+  {
     "name": "Pieper Parker",
     "species": "Bird",
     "sex": "unknown",
@@ -233,6 +234,7 @@
     "suitableWith": ["children"],
     "housing": "in- and outdoor",
     "isAdopted": true,
-    "shelterId": "5Nq9TkaTTV8CvoIQFv2V",
+    "shelterId": "0",
     "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
-}]
+  }
+]

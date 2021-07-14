@@ -21,7 +21,7 @@ export async function createTestData() {
     console.log('Creating Pets...');
     const petsResponse = await fetch("../test-data/pets.json");
     const pets: PetSlots[] = await petsResponse.json();
-    await Promise.all(pets.map(async pet => await PetStorage.add(pet)));
+    await Promise.all(pets.map(async pet => await PetStorage.add({...pet, shelterId: Object.keys(ShelterStorage.instances)[Number(pet.shelterId)]})));
     console.log(`${pets.length} pets created.`);
   } catch (e) {
     console.warn(`${e.constructor.name}: ${e.message}`);
