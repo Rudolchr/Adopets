@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Pet Stop",
+    "address": { "city": "Düsseldog", "number": 69, "street": "Am Catdog" },
+    "email": "pet@stop.com",
+    "officeHours": {
+      "monday": ["08:00", "20:00"],
+      "tuesday": ["08:00", "20:00"],
+      "wednesday": ["08:00", "20:00"],
+      "thursday": ["08:00", "20:00"],
+      "friday": ["08:00", "20:00"],
+      "saturday": ["", ""],
+      "sunday": ["", ""]
+    },
+    "phone": "+1234567890",
+    "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
+  },
+  {
+    "name": "Pussy Willow",
+    "address": { "city": "Catbus", "number": 13, "street": "Dingsda" },
+    "email": "cat@bus.com",
+    "officeHours": {
+      "monday": ["08:00", "20:00"],
+      "tuesday": ["08:00", "20:00"],
+      "wednesday": ["08:00", "20:00"],
+      "thursday": ["08:00", "20:00"],
+      "friday": ["08:00", "20:00"],
+      "saturday": ["", ""],
+      "sunday": ["", ""]
+    },
+    "phone": "+0345617829",
+    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
+  },
+  {
+    "name": "Cerberus",
+    "address": { "city": "Bärlin", "number": 17, "street": "Kuhdamm" },
+    "email": "bär@damm.com",
+    "officeHours": {
+      "monday": ["08:00", "20:00"],
+      "tuesday": ["08:00", "20:00"],
+      "wednesday": ["08:00", "20:00"],
+      "thursday": ["08:00", "20:00"],
+      "friday": ["08:00", "20:00"],
+      "saturday": ["", ""],
+      "sunday": ["", ""]
+    },
+    "phone": "+5601432897",
+    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
+  },
+  {
+    "name": "Birds Birds Birds",
+    "address": { "city": "Vogland", "number": 99, "street": "Flugschneise" },
+    "email": "birds@birds.de",
+    "officeHours": {
+      "monday": ["08:00", "20:00"],
+      "tuesday": ["08:00", "20:00"],
+      "wednesday": ["08:00", "20:00"],
+      "thursday": ["08:00", "20:00"],
+      "friday": ["08:00", "20:00"],
+      "saturday": ["", ""],
+      "sunday": ["", ""]
+    },
+    "phone": "+9475149701",
+    "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
+  }
+]

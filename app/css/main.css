@@ -34,6 +34,13 @@ video {
   vertical-align: middle;
 }
 
+img.main {
+  vertical-align: middle;
+  float:left;
+  margin-right: 10pt;
+
+}
+
 fieldset {
   border: 0;
   margin: 0;
