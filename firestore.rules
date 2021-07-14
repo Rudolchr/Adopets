@@ -32,12 +32,10 @@ service cloud.firestore {
             && address != null;
     }
     function checkPhone(phone) {
-      return phone is string && phone != '' && "phone" in request.resource.data
-        && phone.matches("^/+([0-9]?/s?){6,14}[0-9]$");
+      return phone is string && phone != '' && "phone" in request.resource.data;
     }
     function checkEmail(email) {
-      return email is string && email != '' && "email" in request.resource.data
-        && email.matches('^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i');
+      return email is string && email != '' && "email" in request.resource.data;
     }
     function checkDay(day) {
       return (day[0] == '' && day[1] == '') || (day[0] != '' && day[1] != '')
@@ -102,8 +100,7 @@ service cloud.firestore {
     } 
     function checkBirthDate(birthDate) {
       return birthDate != null 
-        && birthDate is string 
-        && timestamp.date(birthDate.split('-')[0],birthDate.split('-')[1],birthDate.split('-')[2]) >= timestamp.date(1990, 1, 1);
+        && birthDate is string && "birthDate" in request.resource.data;
     }
     function checkVaccinationStatus(vaccinationStatus) {
       return vaccinationStatus is string && vaccinationStatus != '' 
@@ -119,13 +116,13 @@ service cloud.firestore {
         && "shelterId" in request.resource.data;
     }
     function checkCompatibleWith(compatibleWith) {
-      return (compatibleWith is string && compatibleWith != ''
-        && (compatibleWith == 'Cat' || compatibleWith == 'Dog' || compatibleWith == 'Bird')) 
+      return (compatibleWith != null
+        && ('Cat' in compatibleWith || 'Dog' in compatibleWith || 'Bird' in compatibleWith)) 
         || !("compatibleWith" in request.resource.data);
     }
     function checkSuitableWith(suitableWith) {
-      return (suitableWith is string && suitableWith != '' 
-        && (suitableWith == 'children' || suitableWith == 'seniors'))
+      return (suitableWith != null 
+        && ('children' in suitableWith || 'seniors' in suitableWith))
         || !("suitableWith" in request.resource.data);
     }
 
