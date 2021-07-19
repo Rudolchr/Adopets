@@ -56,8 +56,8 @@ fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], { valu
 // when a pet is selected, populate the form with its data
 shelterSelection.addEventListener("change", async () => {
     const shelterKey = shelterSelection.value;
-    cancelSyncDBwithUI = await ShelterStorage.syncDBwithUI(shelterKey);
     if (shelterKey !== undefined && shelterKey.length > 0) {
+        cancelSyncDBwithUI = await ShelterStorage.syncDBwithUI(shelterKey);
         deleteButton.hidden = false;
         submitButton.textContent = 'Update shelter';
     }

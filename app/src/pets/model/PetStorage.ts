@@ -18,8 +18,7 @@ class PetStorageClass extends AbstractStorage<Pet, PetSlots> {
     }
 
     return return_instances;
-}
-
+  }
   /**
    * adds a new Pet created from the given `slots` to the collection of `Pet`s
    * if the slots fulfil their constraints. Does nothing otherwise

@@ -46,6 +46,7 @@ class ShelterStorageClass extends AbstractStorage {
     }
     async destroy(id) {
         await super.destroy(id);
+        // PetStorage.destroyShelterRefs(id);
     }
     async clear() {
         await super.clear();

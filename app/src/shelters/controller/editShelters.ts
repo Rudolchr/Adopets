@@ -95,9 +95,8 @@ fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], {value
 shelterSelection.addEventListener("change", async () => {
   const shelterKey = shelterSelection.value;
 
-  cancelSyncDBwithUI = await ShelterStorage.syncDBwithUI(shelterKey);
-
   if (shelterKey !== undefined && shelterKey.length > 0) {
+    cancelSyncDBwithUI = await ShelterStorage.syncDBwithUI(shelterKey);
     deleteButton.hidden = false;
     submitButton.textContent = 'Update shelter';
   } else {

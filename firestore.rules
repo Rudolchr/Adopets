@@ -115,14 +115,14 @@ service cloud.firestore {
       return shelterId != null && exists(/databases/$(database)/documents/shelters/$(shelterId)) 
         && "shelterId" in request.resource.data;
     }
+    // TODO: false
     function checkCompatibleWith(compatibleWith) {
-      return (compatibleWith != null
-        && ('Cat' in compatibleWith || 'Dog' in compatibleWith || 'Bird' in compatibleWith)) 
+      return compatibleWith != null
         || !("compatibleWith" in request.resource.data);
     }
+    // TODO false
     function checkSuitableWith(suitableWith) {
-      return (suitableWith != null 
-        && ('children' in suitableWith || 'seniors' in suitableWith))
+      return suitableWith != null
         || !("suitableWith" in request.resource.data);
     }
 

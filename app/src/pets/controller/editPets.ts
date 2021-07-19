@@ -55,9 +55,9 @@ function createSelection() {
 entitySelection.addEventListener('change', async () => {
   const id = entitySelection.value;
 
-  cancelSyncDBwithUI = await PetStorage.syncDBwithUI(id);
-
+  
   if (id !== undefined && id.length > 0) {
+    cancelSyncDBwithUI = await PetStorage.syncDBwithUI(id);
     deleteButton.hidden = false;
     submitButton.textContent = 'Update pet';
   } else {

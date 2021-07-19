@@ -1,4 +1,5 @@
 import {AbstractStorage} from "../../lib/Storage.js";
+import { PetStorage } from "../../pets/model/PetStorage.js";
 import {Shelter, ShelterSlots} from "./Shelter.js";
 /**
  * internal
@@ -56,6 +57,7 @@ class ShelterStorageClass extends AbstractStorage<Shelter, ShelterSlots> {
 
     async destroy(id: string) {
         await super.destroy(id);
+        // PetStorage.destroyShelterRefs(id);
     }
 
     async clear() {

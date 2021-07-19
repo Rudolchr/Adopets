@@ -80,6 +80,7 @@ export function setupUiByUserStatus() {
                     signOutButton.addEventListener("click", handleLogOut);
                 }
                 console.log(`Authenticated as 'registered with ${user.emailVerified ? '' : 'NO '}verified account' (${user.email})`);
+                console.info(auth.currentUser?.uid);
             }
         }
         else { // if user is not 'registered' nor 'anonymous' (null)  
@@ -150,6 +151,7 @@ export function setupSignInAndSignUp() {
                 if (signIn.user) {
                     if (signIn.user.emailVerified) {
                         console.log(`Granted access to user ${email}`);
+                        console.info(auth.currentUser?.uid);
                     }
                 }
                 window.location.pathname = backPage;

@@ -11,7 +11,7 @@
     "housing": "outdoor required",
     "isAdopted": false,
     "shelterId": "0",
-    "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
+    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
   },
   {
     "name": "Hundula",
@@ -81,7 +81,7 @@
     "housing": "in- and outdoor",
     "isAdopted": true,
     "shelterId": "3",
-    "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
+    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
   },
   {
     "name": "Katzarina",
@@ -95,7 +95,7 @@
     "housing": "indoor only",
     "isAdopted": false,
     "shelterId": "0",
-    "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
+    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
   },
   {
     "name": "Kaatsten",
@@ -109,7 +109,7 @@
     "housing": "in- and outdoor",
     "isAdopted": false,
     "shelterId": "3",
-    "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
+    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
   },
   {
     "name": "Mietzi",
@@ -193,7 +193,7 @@
     "housing": "indoor only",
     "isAdopted": false,
     "shelterId": "0",
-    "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
+    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
   },
   {
     "name": "Piep Matze",
@@ -207,7 +207,7 @@
     "housing": "in- and outdoor",
     "isAdopted": false,
     "shelterId": "3",
-    "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
+    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
   },
   {
     "name": "Vogeldemort",
@@ -235,6 +235,6 @@
     "housing": "in- and outdoor",
     "isAdopted": true,
     "shelterId": "0",
-    "creatorId": "NozVU7hxEZaD0PWOSff2XeMQ43m1"
+    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
   }
 ]
