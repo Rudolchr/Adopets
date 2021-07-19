@@ -159,19 +159,18 @@ service cloud.firestore {
         && checkSuitableWith( request.resource.data.suitableWith) == true;
       allow delete: if request.auth.token.email_verified == true;
     }
-
     function checkMessage(message) {
       return message is string && message != '' && "message" in request.resource.data;
     }
     function checkPetId(petId) {
-      return (petId != null && exists(/databases/$(database)/documents/shelters/$(petId))) 
+      return (petId != null && exists(/databases/$(database)/documents/pets/$(petId))) 
         || !("petId" in request.resource.data);
     }
     function checkEmailMessage(email) {
-      return (email is string && email != '') || !("senderEmail" in request.resource.data);
+      return email is string;
     }
     function checkPhoneNo(phone) {
-      return (phone is string && phone != '') || !("senderPhoneNo" in request.resource.data);
+      return phone is string;
     }
 
     // READ

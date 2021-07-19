@@ -22,6 +22,14 @@ class MessageStorageClass extends AbstractStorage<Message, MessageSlots> {
     return return_instances;
   }
 
+  async destroyShelterRefs(shelterId: string) {
+    for (const msg of Object.values(this._instances)) {
+      if (msg.shelterId === shelterId) {
+        this.destroy(msg.id);
+      }
+    }
+  }
+
   /**
    * adds a new Message created from the given `slots` to the collection of `Message`s
    * if the slots fulfil their constraints. Does nothing otherwise

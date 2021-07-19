@@ -3,6 +3,7 @@
  */
 import { fillSelectWithEntities } from "../../lib/forms/FormUtil.js";
 import { Address } from "../../lib/valueObjects/composed/Address.js";
+import { MessageStorage } from "../../messages/model/MessageStorage.js";
 import { PetStorage } from "../../pets/model/PetStorage.js";
 import { Shelter } from "../model/Shelter.js";
 import { ShelterStorage } from "../model/ShelterStorage.js";
@@ -106,10 +107,11 @@ deleteButton.addEventListener("click", async () => {
     if (id) {
         if (confirm("Do you really want to delete this Shelter?")) {
             if (auth.currentUser?.email) {
-                console.info("Removed delted shelter from user!");
+                console.info("Removed deleted shelter from user!");
             }
             await ShelterStorage.destroy(id);
             await PetStorage.destroyShelterRefs(id);
+            await MessageStorage.destroyShelterRefs(id);
             userSpecificStorage = ShelterStorage.instances;
             if (auth.currentUser?.uid) {
                 userSpecificStorage = ShelterStorage.getUserShelters(auth.currentUser?.uid);

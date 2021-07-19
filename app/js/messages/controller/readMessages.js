@@ -25,5 +25,13 @@ for (let message of Object.values(MessageStorage.retrieveAllFromUser(userSpecifi
     row.insertCell().textContent = message.message;
     row.insertCell().textContent = message.senderEmail ?? '';
     row.insertCell().textContent = message.senderPhoneNo ?? '';
+    const msgButton = document.createElement('button');
+    msgButton.textContent = "delete";
+    msgButton.className = 'submitButton';
+    msgButton.addEventListener('click', async () => {
+        await MessageStorage.destroy(message.id);
+        window.location.pathname = "/messages/index.html";
+    });
+    row.insertCell().appendChild(msgButton);
 }
 //# sourceMappingURL=readMessages.js.map
