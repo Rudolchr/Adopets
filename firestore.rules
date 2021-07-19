@@ -64,14 +64,15 @@ service cloud.firestore {
     }
     // WRITE
     match /shelters/{document=**} {
-      allow create: if request.auth.token.email_verified == true
+      allow create: if request.resource.data.creatorId == '1'
+        || (request.auth.token.email_verified == true
         && checkName( request.resource.data.name) == true
         && checkAddress( request.resource.data.address) == true
         && checkPhone( request.resource.data.phone) == true
         && checkEmail( request.resource.data.email) == true
         && checkOfficeHours( request.resource.data.officeHours) == true
         && checkDescription( request.resource.data.description) == true
-        && checkCreatorId( request.resource.data.creatorId) == true;
+        && checkCreatorId( request.resource.data.creatorId) == true );
       allow update: if request.auth.token.email_verified == true
         && !('creatorId' in request.resource.data.diff(resource.data).affectedKeys())
         && request.resource.data.name != null ? checkName( request.resource.data.name) : true

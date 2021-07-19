@@ -13,7 +13,7 @@
       "sunday": ["", ""]
     },
     "phone": "+1234567890",
-    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
+    "creatorId": "1"
   },
   {
     "name": "Pussy Willow",
@@ -29,7 +29,7 @@
       "sunday": ["", ""]
     },
     "phone": "+0345617829",
-    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
+    "creatorId": "1"
   },
   {
     "name": "Cerberus",
@@ -45,7 +45,7 @@
       "sunday": ["", ""]
     },
     "phone": "+5601432897",
-    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
+    "creatorId": "1"
   },
   {
     "name": "Birds Birds Birds",
@@ -61,6 +61,6 @@
       "sunday": ["", ""]
     },
     "phone": "+9475149701",
-    "creatorId": "XmdTK2Ad7ScBDviC0KKE2nvVBma2"
+    "creatorId": "1"
   }
 ]

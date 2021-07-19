@@ -7,7 +7,10 @@ export async function createTestData() {
         console.log('Creating Shelters...');
         const sheltersResponse = await fetch("../test-data/shelters.json");
         const shelters = await sheltersResponse.json();
-        await Promise.all(shelters.map(async (shelter) => await ShelterStorage.add(shelter)));
+        for (let shelter of shelters) {
+            await ShelterStorage.add(shelter);
+        }
+        // await Promise.all(shelters.map(async shelter => await ShelterStorage.add(shelter)));
         console.log(`${shelters.length} shelters created.`);
     }
     catch (e) {
@@ -15,10 +18,10 @@ export async function createTestData() {
     }
     try {
         console.log('Creating Pets...');
-        const petsResponse = await fetch("../test-data/pets.json");
-        const pets = await petsResponse.json();
-        await Promise.all(pets.map(async (pet) => await PetStorage.add({ ...pet, shelterId: Object.keys(ShelterStorage.instances)[Number(pet.shelterId)] })));
-        console.log(`${pets.length} pets created.`);
+        // const petsResponse = await fetch("../test-data/pets.json");
+        // const pets: PetSlots[] = await petsResponse.json();
+        // await Promise.all(pets.map(async pet => await PetStorage.add({...pet, shelterId: Object.keys(ShelterStorage.instances)[Number(pet.shelterId)]})));
+        // console.log(`${pets.length} pets created.`);
     }
     catch (e) {
         console.warn(`${e.constructor.name}: ${e.message}`);

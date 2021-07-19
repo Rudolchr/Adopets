@@ -15,6 +15,13 @@ class PetStorageClass extends AbstractStorage {
         }
         return return_instances;
     }
+    async destroyShelterRefs(shelterId) {
+        for (const pet of Object.values(this._instances)) {
+            if (pet.shelterId === shelterId) {
+                this.destroy(pet.id);
+            }
+        }
+    }
     /**
      * adds a new Pet created from the given `slots` to the collection of `Pet`s
      * if the slots fulfil their constraints. Does nothing otherwise

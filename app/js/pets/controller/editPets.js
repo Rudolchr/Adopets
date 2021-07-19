@@ -93,6 +93,8 @@ deleteButton.addEventListener("click", async () => {
     }
 });
 window.addEventListener("beforeunload", () => {
-    cancelSyncDBwithUI();
+    if (cancelSyncDBwithUI) {
+        cancelSyncDBwithUI();
+    }
 });
 //# sourceMappingURL=editPets.js.map

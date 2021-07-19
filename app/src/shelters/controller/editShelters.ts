@@ -150,6 +150,7 @@ deleteButton.addEventListener("click", async () => {
         console.info("Removed delted shelter from user!");
       }
       await ShelterStorage.destroy(id);
+      await PetStorage.destroyShelterRefs(id);
       userSpecificStorage = ShelterStorage.instances;
       if (auth.currentUser?.uid) {
         userSpecificStorage = ShelterStorage.getUserShelters(auth.currentUser?.uid);
@@ -247,5 +248,7 @@ form.addEventListener("submit", (e) => {
 });
 
 window.addEventListener("beforeunload", () => {
-  cancelSyncDBwithUI();
+  if (cancelSyncDBwithUI) {
+    cancelSyncDBwithUI();
+  }
 });

@@ -22,6 +22,8 @@ export class AbstractStorage {
         let entity = null;
         try {
             const collectionRef = this.DB.collection(this.STORAGE_KEY);
+            console.info(auth.currentUser?.uid);
+            console.info(auth.currentUser?.emailVerified);
             const newEntity = await collectionRef.add(slots);
             entity = new EntityConstructor({ ...slots, id: newEntity.id });
         }
