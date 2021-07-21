@@ -349,7 +349,7 @@ td,
 th {
   border: 1px solid black;
   padding: 5px;
-  text-align: center;
+  text-align: left;
 }
 table th {
   background: aliceblue;
@@ -357,6 +357,9 @@ table th {
 table td ul {
   text-align: left;
   padding-left: 18px;
+}
+table > tbody > tr > td > button {
+  display: block;
 }
 
 thead.filterHead > tr > th {
