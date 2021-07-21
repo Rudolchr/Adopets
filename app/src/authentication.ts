@@ -20,7 +20,7 @@ export function setupUiByUserStatus () {
                     window.location.pathname = "/authentication.html";
                 }
                 loginMngEls[0].hidden = false; // show 'sign in/up'
-                console.log("Authenticated as 'anonymous'");
+                console.info("Authenticated as 'anonymous'");
             } else { // if user is 'registered'
                 const spanEl: HTMLSpanElement = document.createElement("span");
                 // handle without verified email
@@ -82,7 +82,7 @@ export function setupUiByUserStatus () {
                 if (signOutButton) {
                     signOutButton.addEventListener("click", handleLogOut);
                 }
-                console.log(`Authenticated as 'registered with ${user.emailVerified ? '' : 'NO '}verified account' (${user.email})`);
+                console.info(`Authenticated as 'registered with ${user.emailVerified ? '' : 'NO '}verified account' (${user.email})`);
             }
         } else { // if user is not 'registered' nor 'anonymous' (null)  
             // sign in user as 'anonymous' 
@@ -130,7 +130,7 @@ export function setupSignInAndSignUp () {
                     // send verification email
                     await userRef.sendEmailVerification();
                 }
-                console.log(`User ${email} became 'Registered'`);
+                console.info(`User ${email} became 'Registered'`);
                 alert (`Account created ${email}.\n\nCheck your email for instructions to verify this account.`);
                 window.location.pathname = backPage;
             } catch (e) {
@@ -155,7 +155,7 @@ export function setupSignInAndSignUp () {
             const signIn: firebase.auth.UserCredential = await auth.signInWithEmailAndPassword( email, password);
             if (signIn.user) {
                 if (signIn.user.emailVerified) {
-                    console.log(`Granted access to user ${email}`);
+                    console.info(`Granted access to user ${email}`);
                 }
             }
             window.location.pathname = backPage;

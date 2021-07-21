@@ -43,7 +43,6 @@ export function insertToTable(filter: (pet: Pet) => boolean, hideProps: (keyof P
     }
     if (!hideProps.includes('shelterId')) {
       const shelter = row.insertCell();
-      console.log(ShelterStorage.instances);
 
       shelter.textContent = ShelterStorage.instances[pet.shelterId]?.name + '\n';
       const messageButton = document.createElement('button');

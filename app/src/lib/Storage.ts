@@ -89,7 +89,7 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
     let entity: E | null = null;
     try {
       entity = new EntityConstructor({id: doc.id, ...doc.data()} as unknown as S);
-      console.log("loaded", {id: doc.id, ...doc.data()});
+      console.info("loaded", {id: doc.id, ...doc.data()});
       return Promise.resolve(entity);
     } catch (constructionError) {
       return Promise.reject(constructionError);
@@ -118,7 +118,7 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
       collection.docs.forEach(doc => {
         try {
           const entity = new EntityConstructor({id: doc.id, ...doc.data()} as unknown as S);
-          console.log("loaded", {id: doc.id, ...doc.data()});
+          console.info("loaded", {id: doc.id, ...doc.data()});
           this._instances[doc.id] = entity;
         } catch (error) {
           console.warn(error);

@@ -13,7 +13,6 @@ const formElements = {
     senderEmail: formFactory.createInput("senderEmail", Message.checkSenderEmail),
     senderPhoneNo: formFactory.createInput("senderPhoneNo", Message.checkSenderPhoneNo),
 };
-console.log(GetURLParameter('shelterId'));
 // set url params
 formElements.shelterId.set(GetURLParameter('shelterId'));
 formElements.petId.set(GetURLParameter('petId'));

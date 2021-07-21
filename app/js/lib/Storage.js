@@ -78,7 +78,7 @@ export class AbstractStorage {
         let entity = null;
         try {
             entity = new EntityConstructor({ id: doc.id, ...doc.data() });
-            console.log("loaded", { id: doc.id, ...doc.data() });
+            console.info("loaded", { id: doc.id, ...doc.data() });
             return Promise.resolve(entity);
         }
         catch (constructionError) {
@@ -106,7 +106,7 @@ export class AbstractStorage {
             collection.docs.forEach(doc => {
                 try {
                     const entity = new EntityConstructor({ id: doc.id, ...doc.data() });
-                    console.log("loaded", { id: doc.id, ...doc.data() });
+                    console.info("loaded", { id: doc.id, ...doc.data() });
                     this._instances[doc.id] = entity;
                 }
                 catch (error) {

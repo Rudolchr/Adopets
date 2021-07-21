@@ -278,7 +278,7 @@ export class Shelter extends Entity<ShelterSlots> {
             return "";
         }
         catch (error) {
-            console.log(error);
+            console.error(error);
             return "The shelter's description is to long!";
         }
     }

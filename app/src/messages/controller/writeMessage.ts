@@ -15,7 +15,6 @@ const formElements: Record<keyof Omit<MessageSlots, 'id'>, FormElementBase> = {
     senderEmail: formFactory.createInput("senderEmail", Message.checkSenderEmail),
     senderPhoneNo: formFactory.createInput("senderPhoneNo", Message.checkSenderPhoneNo),
 };
-console.log(GetURLParameter('shelterId'));
 
 // set url params
 formElements.shelterId.set(GetURLParameter('shelterId'));
