@@ -25,7 +25,10 @@ export class AbstractStorage {
             console.info(auth.currentUser?.uid);
             console.info(auth.currentUser?.emailVerified);
             const newEntity = await collectionRef.add(slots);
-            entity = new EntityConstructor({ ...slots, id: newEntity.id });
+            entity = new EntityConstructor({
+                ...slots,
+                id: newEntity.id,
+            });
         }
         catch (e) {
             console.warn(`${e.constructor.name}: ${e.message}`);
@@ -40,7 +43,7 @@ export class AbstractStorage {
         try {
             let entityDocRef = this.DB.collection(this.STORAGE_KEY).doc(id);
             let originalEntityDocSn = await entityDocRef.get();
-            return entityDocRef.onSnapshot(entityDocSn => {
+            return entityDocRef.onSnapshot((entityDocSn) => {
                 if (!entityDocSn.metadata.hasPendingWrites) {
                     if (!entityDocSn.data()) {
                         handleUserMessage("removed", originalEntityDocSn.data());
@@ -77,7 +80,10 @@ export class AbstractStorage {
         }
         let entity = null;
         try {
-            entity = new EntityConstructor({ id: doc.id, ...doc.data() });
+            entity = new EntityConstructor({
+                id: doc.id,
+                ...doc.data(),
+            });
             console.info("loaded", { id: doc.id, ...doc.data() });
             return Promise.resolve(entity);
         }
@@ -103,9 +109,12 @@ export class AbstractStorage {
         }
         if (collection !== undefined && !collection.empty) {
             console.info(`${collection.size} entities loaded`);
-            collection.docs.forEach(doc => {
+            collection.docs.forEach((doc) => {
                 try {
-                    const entity = new EntityConstructor({ id: doc.id, ...doc.data() });
+                    const entity = new EntityConstructor({
+                        id: doc.id,
+                        ...doc.data(),
+                    });
                     console.info("loaded", { id: doc.id, ...doc.data() });
                     this._instances[doc.id] = entity;
                 }
@@ -148,7 +157,7 @@ export class AbstractStorage {
             try {
                 await this.DB.collection(this.STORAGE_KEY).doc(id).update(updateSlots);
                 this._instances[id] = entity;
-                console.info(`Properties ${Object.keys(updateSlots).join(', ')} modified for entity ${id}: ${JSON.stringify(entity)}`);
+                console.info(`Properties ${Object.keys(updateSlots).join(", ")} modified for entity ${id}: ${JSON.stringify(entity)}`);
             }
             catch (error) {
                 console.error(`while updating entity (${id}) on firebase\n` + error);
@@ -198,7 +207,7 @@ export class AbstractStorage {
             const collection = await this.DB.collection(this.STORAGE_KEY).get();
             if (collection !== undefined && !collection.empty) {
                 // delete all documents
-                await Promise.all(collection.docs.map(doc => this.DB.collection(this.STORAGE_KEY).doc(doc.id).delete()));
+                await Promise.all(collection.docs.map((doc) => this.DB.collection(this.STORAGE_KEY).doc(doc.id).delete()));
             }
             this._instances = {};
             console.info("All entities cleared.");

@@ -3,28 +3,34 @@
  */
 import { Entity } from "../../lib/Entity.js";
 import { catchValidation, catchValidations } from "../../lib/newUtil.js";
-import { IdReference } from "../../lib/valueObjects/composed/IdReference.js";
-import { NonEmptyString } from "../../lib/valueObjects/NonEmptyString.js";
-import { SafeBoolean } from "../../lib/valueObjects/SafeBoolean.js";
-import { SafeDate } from "../../lib/valueObjects/SafeDate.js";
+import { IdReference, } from "../../lib/valueObjects/composed/IdReference.js";
+import { NonEmptyString, } from "../../lib/valueObjects/NonEmptyString.js";
+import { SafeBoolean, } from "../../lib/valueObjects/SafeBoolean.js";
+import { SafeDate, } from "../../lib/valueObjects/SafeDate.js";
 import { listEquals } from "../../lib/valueObjects/ValueObject.js";
 import { ShelterStorage } from "../../shelters/model/ShelterStorage.js";
 import { PetStorage } from "./PetStorage.js";
-const NAME_CONSTRAINTS = { name: 'Pet.name', max: 120 };
+const NAME_CONSTRAINTS = { name: "Pet.name", max: 120 };
 export var SpeciesEnum;
 (function (SpeciesEnum) {
     SpeciesEnum["CAT"] = "Cat";
     SpeciesEnum["DOG"] = "Dog";
     SpeciesEnum["BIRD"] = "Bird";
 })(SpeciesEnum || (SpeciesEnum = {}));
-const SPECIES_CONSTRAINTS = { name: 'Pet.species', range: SpeciesEnum };
+const SPECIES_CONSTRAINTS = {
+    name: "Pet.species",
+    range: SpeciesEnum,
+};
 export var SexEnum;
 (function (SexEnum) {
     SexEnum["MALE"] = "male";
     SexEnum["FEMALE"] = "female";
     SexEnum["UNKNOWN"] = "unknown";
 })(SexEnum || (SexEnum = {}));
-const SEX_CONSTRAINTS = { name: 'Pet.sex', range: SexEnum };
+const SEX_CONSTRAINTS = {
+    name: "Pet.sex",
+    range: SexEnum,
+};
 export var SizeEnum;
 (function (SizeEnum) {
     SizeEnum["SMALL"] = "small";
@@ -32,25 +38,46 @@ export var SizeEnum;
     SizeEnum["LARGE"] = "large";
     SizeEnum["VERY_LARGE"] = "very large";
 })(SizeEnum || (SizeEnum = {}));
-const SIZE_CONSTRAINTS = { name: 'Pet.size', range: SizeEnum };
-const BIRTH_DATE_CONSTRAINTS = { name: 'Pet.birthdate', min: '1990-01-01' };
-const VACCINATION_STATUS_CONSTRAINTS = { name: 'Pet.vaccinationStatus', max: 500 };
-const COMPATIBLE_WITH_CONSTRAINTS = { name: 'Pet.compatibleWith', range: SpeciesEnum };
+const SIZE_CONSTRAINTS = {
+    name: "Pet.size",
+    range: SizeEnum,
+};
+const BIRTH_DATE_CONSTRAINTS = {
+    name: "Pet.birthdate",
+    min: "1990-01-01",
+};
+const VACCINATION_STATUS_CONSTRAINTS = {
+    name: "Pet.vaccinationStatus",
+    max: 500,
+};
+const COMPATIBLE_WITH_CONSTRAINTS = {
+    name: "Pet.compatibleWith",
+    range: SpeciesEnum,
+};
 export var SuitableWithEnum;
 (function (SuitableWithEnum) {
     SuitableWithEnum["CHILDREN"] = "children";
     SuitableWithEnum["SENIORS"] = "seniors";
 })(SuitableWithEnum || (SuitableWithEnum = {}));
-const SUITABLE_WITH_CONSTRAINTS = { name: 'Pet.suitableWith', range: SuitableWithEnum };
+const SUITABLE_WITH_CONSTRAINTS = {
+    name: "Pet.suitableWith",
+    range: SuitableWithEnum,
+};
 export var HousingEnum;
 (function (HousingEnum) {
     HousingEnum["INDOOR_ONLY"] = "indoor only";
     HousingEnum["IN_AND_OUT"] = "in- and outdoor";
     HousingEnum["OUTDOOR_REQUIRED"] = "outdoor required";
 })(HousingEnum || (HousingEnum = {}));
-const HOUSING_CONSTRAINTS = { name: 'Pet.housing', range: HousingEnum };
-const IS_ADOPTED_CONSTRAINTS = { name: 'Pet.isAdopted' };
-const SHELTER_ID_CONSTRAINTS = { name: 'Pet.shelter', foreignStorage: ShelterStorage };
+const HOUSING_CONSTRAINTS = {
+    name: "Pet.housing",
+    range: HousingEnum,
+};
+const IS_ADOPTED_CONSTRAINTS = { name: "Pet.isAdopted" };
+const SHELTER_ID_CONSTRAINTS = {
+    name: "Pet.shelter",
+    foreignStorage: ShelterStorage,
+};
 /**
  * The entity of a Pet
  */

@@ -19,16 +19,19 @@ MessageStorage.retrieveAllFromUser(userSpecificStorage);
 for (let message of Object.values(MessageStorage.retrieveAllFromUser(userSpecificStorage))) {
     // TODO filter out messages that regard to shelters that have the accounts userId
     const row = tableBody.insertRow();
-    row.insertCell().textContent = ShelterStorage.instances[message.shelterId].name;
-    row.insertCell().textContent = message.petId ? PetStorage.instances[message.petId].name : '';
+    row.insertCell().textContent =
+        ShelterStorage.instances[message.shelterId].name;
+    row.insertCell().textContent = message.petId
+        ? PetStorage.instances[message.petId].name
+        : "";
     // TODO multiline
     row.insertCell().textContent = message.message;
-    row.insertCell().textContent = message.senderEmail ?? '';
-    row.insertCell().textContent = message.senderPhoneNo ?? '';
-    const msgButton = document.createElement('button');
+    row.insertCell().textContent = message.senderEmail ?? "";
+    row.insertCell().textContent = message.senderPhoneNo ?? "";
+    const msgButton = document.createElement("button");
     msgButton.textContent = "delete";
-    msgButton.className = 'submitButton';
-    msgButton.addEventListener('click', async () => {
+    msgButton.className = "submitButton";
+    msgButton.addEventListener("click", async () => {
         await MessageStorage.destroy(message.id);
         window.location.pathname = "/messages/index.html";
     });

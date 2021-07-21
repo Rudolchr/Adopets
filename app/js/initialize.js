@@ -6,7 +6,8 @@ if (!firebase.apps.length) {
         projectId: "adopets-btu-webapps",
     });
 }
-else { // if already initialized
+else {
+    // if already initialized
     firebase.app();
 }
 // initialize Firebase user authentication interface

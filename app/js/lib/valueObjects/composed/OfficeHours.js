@@ -49,25 +49,32 @@ export class OfficeHours {
         }
     }
     equals(times) {
-        if (this.times.monday[0] !== times.monday[0] && this.times.monday[1] !== times.monday[1]) {
+        if (this.times.monday[0] !== times.monday[0] &&
+            this.times.monday[1] !== times.monday[1]) {
             return false;
         }
-        if (this.times.tuesday[0] !== times.tuesday[0] && this.times.tuesday[1] !== times.tuesday[1]) {
+        if (this.times.tuesday[0] !== times.tuesday[0] &&
+            this.times.tuesday[1] !== times.tuesday[1]) {
             return false;
         }
-        if (this.times.wednesday[0] !== times.wednesday[0] && this.times.wednesday[1] !== times.wednesday[1]) {
+        if (this.times.wednesday[0] !== times.wednesday[0] &&
+            this.times.wednesday[1] !== times.wednesday[1]) {
             return false;
         }
-        if (this.times.thursday[0] !== times.thursday[0] && this.times.thursday[1] !== times.thursday[1]) {
+        if (this.times.thursday[0] !== times.thursday[0] &&
+            this.times.thursday[1] !== times.thursday[1]) {
             return false;
         }
-        if (this.times.friday[0] !== times.friday[0] && this.times.friday[1] !== times.friday[1]) {
+        if (this.times.friday[0] !== times.friday[0] &&
+            this.times.friday[1] !== times.friday[1]) {
             return false;
         }
-        if (this.times.saturday[0] !== times.saturday[0] && this.times.saturday[1] !== times.saturday[1]) {
+        if (this.times.saturday[0] !== times.saturday[0] &&
+            this.times.saturday[1] !== times.saturday[1]) {
             return false;
         }
-        if (this.times.sunday[0] !== times.sunday[0] && this.times.sunday[1] !== times.sunday[1]) {
+        if (this.times.sunday[0] !== times.sunday[0] &&
+            this.times.sunday[1] !== times.sunday[1]) {
             return false;
         }
         return true;

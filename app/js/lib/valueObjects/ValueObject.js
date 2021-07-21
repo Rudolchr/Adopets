@@ -10,7 +10,7 @@ export class ValueObject {
      * @returns the pre error string
      */
     static pm(n) {
-        return n ? n + '->' : '';
+        return n ? n + "->" : "";
     }
     /**
      * the actual value of this ValueObject
@@ -46,7 +46,8 @@ export function listEquals(a, b) {
         const ai = a[i];
         const bi = b[i];
         // types
-        if (bi instanceof ValueObject && ai.constructor.name !== bi.constructor.name) {
+        if (bi instanceof ValueObject &&
+            ai.constructor.name !== bi.constructor.name) {
             return false;
         }
         if (!(bi instanceof ValueObject) && typeof ai.value !== typeof bi) {

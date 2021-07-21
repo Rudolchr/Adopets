@@ -5,7 +5,12 @@ export class PhoneNumber extends NonEmptyString {
     }
     static validate(value, options) {
         let regex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
-        NonEmptyString.validate(value, { name: options?.name ?? 'PhoneNumber', min: 8, max: 30, regex });
+        NonEmptyString.validate(value, {
+            name: options?.name ?? "PhoneNumber",
+            min: 8,
+            max: 30,
+            regex,
+        });
         return value;
     }
     /**

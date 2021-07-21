@@ -1,8 +1,17 @@
 import { NonEmptyString } from "../NonEmptyString.js";
 import { PositiveNumber } from "../PositiveNumber.js";
-const STREET_CONSTRAINTS = { name: "Address.street", max: 120 };
-const NUMBER_CONSTRAINTS = { name: "Address.number", max: 10000 };
-const CITY_CONSTRAINTS = { name: "Address.city", max: 120 };
+const STREET_CONSTRAINTS = {
+    name: "Address.street",
+    max: 120,
+};
+const NUMBER_CONSTRAINTS = {
+    name: "Address.number",
+    max: 10000,
+};
+const CITY_CONSTRAINTS = {
+    name: "Address.city",
+    max: 120,
+};
 export class Address {
     /** the street of the address
      * - requires NonEmptyString(120)

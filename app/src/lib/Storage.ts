@@ -1,17 +1,20 @@
-import {Entity, EntitySlots} from "./Entity.js";
+import { Entity, EntitySlots } from "./Entity.js";
 import { handleUserMessage } from "./newUtil.js";
 
 /**
- * An abstract Storage for Entities. The **Generic** has to be Provided with the stored `Entity` as well 
+ * An abstract Storage for Entities. The **Generic** has to be Provided with the stored `Entity` as well
  * as the `Slots` used for the **constructor** of the Entity.
  */
-export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlots> {
-  protected _instances: {[id: string]: E;} = {};
+export abstract class AbstractStorage<
+  E extends Entity<any>,
+  S extends EntitySlots
+> {
+  protected _instances: { [id: string]: E } = {};
   abstract STORAGE_KEY: string;
   protected DB = firebase.firestore();
 
   /** @returns a map of the Entities from this Storage */
-  get instances(): {readonly [id: string]: E;} {
+  get instances(): { readonly [id: string]: E } {
     return this._instances;
   }
 
@@ -19,24 +22,30 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
    * CREATE -------------------------------------------------------------------
    * ------------------------------------------------------------------------*/
 
-  abstract add(slots: Omit<S, 'id'>): Promise<void>;
+  abstract add(slots: Omit<S, "id">): Promise<void>;
 
   /**
    * uses the constructor and the slots for an Entity to create and store the Entity.
-   * The constructor has to be the actual class of the Entity. In case you would construct the 
-   * Entity manually by writing `new MyEntity(slots)`, then this function has to get `MyEntity` as 
+   * The constructor has to be the actual class of the Entity. In case you would construct the
+   * Entity manually by writing `new MyEntity(slots)`, then this function has to get `MyEntity` as
    * the first parameter
    * @param EntityConstructor the actual `class` of the Entity stored in this Storage
    * @param slots that are usually used for the Entity's constructor
    */
-  protected async addWithConstructor(EntityConstructor: new (slots: S) => E, slots: Omit<S, 'id'>) {
+  protected async addWithConstructor(
+    EntityConstructor: new (slots: S) => E,
+    slots: Omit<S, "id">
+  ) {
     let entity = null;
     try {
       const collectionRef = this.DB.collection(this.STORAGE_KEY);
-      console.info(auth.currentUser?.uid)
-      console.info(auth.currentUser?.emailVerified)
+      console.info(auth.currentUser?.uid);
+      console.info(auth.currentUser?.emailVerified);
       const newEntity = await collectionRef.add(slots);
-      entity = new EntityConstructor({...slots, id: newEntity.id} as unknown as S);
+      entity = new EntityConstructor({
+        ...slots,
+        id: newEntity.id,
+      } as unknown as S);
     } catch (e) {
       console.warn(`${e.constructor.name}: ${e.message}`);
       entity = null;
@@ -49,47 +58,57 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
 
   async syncDBwithUI(id: string) {
     try {
-        let entityDocRef = this.DB.collection(this.STORAGE_KEY).doc( id);
-        let originalEntityDocSn = await entityDocRef.get();
+      let entityDocRef = this.DB.collection(this.STORAGE_KEY).doc(id);
+      let originalEntityDocSn = await entityDocRef.get();
 
-        return entityDocRef.onSnapshot( entityDocSn => {
-          if (!entityDocSn.metadata.hasPendingWrites) {
-            if (!entityDocSn.data()) {
-              handleUserMessage("removed", originalEntityDocSn.data());
-            } else if (!entityDocSn.isEqual( originalEntityDocSn)) {
-              handleUserMessage("modified", entityDocSn.data());
-            }
+      return entityDocRef.onSnapshot((entityDocSn) => {
+        if (!entityDocSn.metadata.hasPendingWrites) {
+          if (!entityDocSn.data()) {
+            handleUserMessage("removed", originalEntityDocSn.data());
+          } else if (!entityDocSn.isEqual(originalEntityDocSn)) {
+            handleUserMessage("modified", entityDocSn.data());
           }
-        });
+        }
+      });
     } catch (e) {
       console.error(`${e.constructor.name} : ${e.message}`);
     }
-}
+  }
 
   /** -------------------------------------------------------------------------
    * RETRIEVE -----------------------------------------------------------------
    * ------------------------------------------------------------------------*/
 
   /**
-   * uses the constructor of an Entity to create new Entities from the local stored (stringified) 
+   * uses the constructor of an Entity to create new Entities from the local stored (stringified)
    * Entities.
-   * The constructor has to be the actual class of the Entity. In case you would construct the 
-   * Entity manually by writing `new MyEntity(slots)`, then this function has to get `MyEntity` as 
+   * The constructor has to be the actual class of the Entity. In case you would construct the
+   * Entity manually by writing `new MyEntity(slots)`, then this function has to get `MyEntity` as
    * the first parameter
    * @param EntityConstructor the actual `class` of the Entity stored in this Storage
    */
-  private async retrieveWithConstructor(EntityConstructor: new (slots: S) => E, id: string): Promise<E> {
+  private async retrieveWithConstructor(
+    EntityConstructor: new (slots: S) => E,
+    id: string
+  ): Promise<E> {
     const docRef = this.DB.collection(this.STORAGE_KEY).doc(id);
-    let doc: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData> | undefined;
+    let doc:
+      | firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>
+      | undefined;
     try {
       doc = await docRef.get();
     } catch (firebaseError) {
-      return Promise.reject(`Error when reading entity (${id}) from firestore\n` + firebaseError);
+      return Promise.reject(
+        `Error when reading entity (${id}) from firestore\n` + firebaseError
+      );
     }
     let entity: E | null = null;
     try {
-      entity = new EntityConstructor({id: doc.id, ...doc.data()} as unknown as S);
-      console.info("loaded", {id: doc.id, ...doc.data()});
+      entity = new EntityConstructor({
+        id: doc.id,
+        ...doc.data(),
+      } as unknown as S);
+      console.info("loaded", { id: doc.id, ...doc.data() });
       return Promise.resolve(entity);
     } catch (constructionError) {
       return Promise.reject(constructionError);
@@ -99,15 +118,19 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
   abstract retrieveAll(): Promise<void>;
 
   /**
-   * uses the constructor of an Entity to create new Entities from the local stored (stringified) 
+   * uses the constructor of an Entity to create new Entities from the local stored (stringified)
    * Entities.
-   * The constructor has to be the actual class of the Entity. In case you would construct the 
-   * Entity manually by writing `new MyEntity(slots)`, then this function has to get `MyEntity` as 
+   * The constructor has to be the actual class of the Entity. In case you would construct the
+   * Entity manually by writing `new MyEntity(slots)`, then this function has to get `MyEntity` as
    * the first parameter
    * @param EntityConstructor the actual `class` of the Entity stored in this Storage
    */
-  protected async retrieveAllWithConstructor(EntityConstructor: new (slots: S) => E) {
-    let collection: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData> | undefined;
+  protected async retrieveAllWithConstructor(
+    EntityConstructor: new (slots: S) => E
+  ) {
+    let collection:
+      | firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>
+      | undefined;
     try {
       collection = await this.DB.collection(this.STORAGE_KEY).get();
     } catch (e) {
@@ -115,10 +138,13 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
     }
     if (collection !== undefined && !collection.empty) {
       console.info(`${collection.size} entities loaded`);
-      collection.docs.forEach(doc => {
+      collection.docs.forEach((doc) => {
         try {
-          const entity = new EntityConstructor({id: doc.id, ...doc.data()} as unknown as S);
-          console.info("loaded", {id: doc.id, ...doc.data()});
+          const entity = new EntityConstructor({
+            id: doc.id,
+            ...doc.data(),
+          } as unknown as S);
+          console.info("loaded", { id: doc.id, ...doc.data() });
           this._instances[doc.id] = entity;
         } catch (error) {
           console.warn(error);
@@ -134,13 +160,16 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
   abstract update(slots: S): Promise<void>;
 
   /**
-   * updates the entity for the given slots in the local instances as well as in the firestore. 
+   * updates the entity for the given slots in the local instances as well as in the firestore.
    * This function uses the Entities constructor for restoring the old entity after a failed update.
    * @param EntityConstructor the actual `class` of the Entity stored in this Storage
    * @param slots that are usually used for the Entity's constructor
    */
-  async updateWithConstructor(EntityConstructor: new (slots: S) => E, slots: S) {
-    const {id} = slots;
+  async updateWithConstructor(
+    EntityConstructor: new (slots: S) => E,
+    slots: S
+  ) {
+    const { id } = slots;
     let updateSlots: Partial<S> = {};
     const instance = this._instances[id];
     var updateFailed = false;
@@ -150,7 +179,9 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
     try {
       entity = await this.retrieveWithConstructor(EntityConstructor, id);
     } catch (error) {
-      console.warn(`could not retrieve the entity (${id}) to update:\n` + error);
+      console.warn(
+        `could not retrieve the entity (${id}) to update:\n` + error
+      );
       return;
     }
 
@@ -168,7 +199,10 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
         await this.DB.collection(this.STORAGE_KEY).doc(id).update(updateSlots);
         this._instances[id] = entity;
         console.info(
-          `Properties ${Object.keys(updateSlots).join(', ')} modified for entity ${id}: ${JSON.stringify(entity)}`);
+          `Properties ${Object.keys(updateSlots).join(
+            ", "
+          )} modified for entity ${id}: ${JSON.stringify(entity)}`
+        );
       } catch (error) {
         console.error(`while updating entity (${id}) on firebase\n` + error);
         updateFailed = true;
@@ -182,7 +216,9 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
         console.info(`Destroy corrupted entity (${id}). `);
         // this.destroy(id);
       } catch (error) {
-        console.error(`while restoring entity (${id}) after failed update:\n` + error);
+        console.error(
+          `while restoring entity (${id}) after failed update:\n` + error
+        );
       }
     }
   }
@@ -221,7 +257,9 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
       if (collection !== undefined && !collection.empty) {
         // delete all documents
         await Promise.all(
-          collection.docs.map(doc => this.DB.collection(this.STORAGE_KEY).doc(doc.id).delete())
+          collection.docs.map((doc) =>
+            this.DB.collection(this.STORAGE_KEY).doc(doc.id).delete()
+          )
         );
       }
       this._instances = {};
@@ -247,7 +285,9 @@ export abstract class AbstractStorage<E extends Entity<any>, S extends EntitySlo
       const doc = await docRef.get();
       return doc.exists;
     } catch (firebaseError) {
-      console.error(`Error when reading entity (${id}) from firestore\n` + firebaseError);
+      console.error(
+        `Error when reading entity (${id}) from firestore\n` + firebaseError
+      );
       return false;
     }
   }

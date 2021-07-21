@@ -48,23 +48,26 @@ const sheltersunTInput = form["sunT"];
 const shelterDescInput = form["shelterDescription"];
 shelterDescInput.addEventListener("input", () => shelterDescInput.setCustomValidity(Shelter.checkDescription(shelterDescInput.value)));
 /** ### SHELTER_SELECTION -------------------------------------------------- */
-const shelterSelection = form['shelterSelection'];
+const shelterSelection = form["shelterSelection"];
 let userSpecificStorage = ShelterStorage.instances;
 if (auth.currentUser?.uid) {
     userSpecificStorage = ShelterStorage.getUserShelters(auth.currentUser?.uid);
 }
-fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], { value: '', text: '--- create a new shelter ---' });
+fillSelectWithEntities(shelterSelection, userSpecificStorage, "name", [], {
+    value: "",
+    text: "--- create a new shelter ---",
+});
 // when a pet is selected, populate the form with its data
 shelterSelection.addEventListener("change", async () => {
     const shelterKey = shelterSelection.value;
     if (shelterKey !== undefined && shelterKey.length > 0) {
         cancelSyncDBwithUI = await ShelterStorage.syncDBwithUI(shelterKey);
         deleteButton.hidden = false;
-        submitButton.textContent = 'Update shelter';
+        submitButton.textContent = "Update shelter";
     }
     else {
         deleteButton.hidden = true;
-        submitButton.textContent = 'Create shelter';
+        submitButton.textContent = "Create shelter";
     }
     // fill the form with the shelter's data
     if (shelterKey) {
@@ -116,9 +119,9 @@ deleteButton.addEventListener("click", async () => {
             if (auth.currentUser?.uid) {
                 userSpecificStorage = ShelterStorage.getUserShelters(auth.currentUser?.uid);
             }
-            fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], { value: '', text: '--- create a new shelter ---' });
+            fillSelectWithEntities(shelterSelection, userSpecificStorage, "name", [], { value: "", text: "--- create a new shelter ---" });
             deleteButton.hidden = true;
-            submitButton.textContent = 'Create shelter';
+            submitButton.textContent = "Create shelter";
         }
     }
 });
@@ -181,13 +184,13 @@ submitButton.addEventListener("click", async () => {
                     userSpecificStorage = ShelterStorage.getUserShelters(auth.currentUser?.uid);
                 }
                 // update the selection list option element
-                fillSelectWithEntities(shelterSelection, userSpecificStorage, 'name', [], { value: '', text: '--- create a new shelter ---' });
+                fillSelectWithEntities(shelterSelection, userSpecificStorage, "name", [], { value: "", text: "--- create a new shelter ---" });
             }
             else {
                 // update existing pet
                 ShelterStorage.update(slots);
                 deleteButton.hidden = true;
-                submitButton.textContent = 'Create shelter';
+                submitButton.textContent = "Create shelter";
             }
         }
         else {

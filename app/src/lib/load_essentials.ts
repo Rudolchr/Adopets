@@ -17,7 +17,6 @@ m4.name = "description";
 m4.content = "Adopets";
 document.head.appendChild(m4);
 
-
 const l1 = document.createElement("link");
 l1.rel = "icon";
 l1.href = "/assets/favicon.svg";

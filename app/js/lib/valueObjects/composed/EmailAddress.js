@@ -4,9 +4,13 @@ export class EmailAddress extends NonEmptyString {
         super(value);
     }
     static validate(value, options) {
-        // RFC 5322 standard 
+        // RFC 5322 standard
         const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        NonEmptyString.validate(value, { name: options?.name ?? 'EmailAddress', max: 120, regex });
+        NonEmptyString.validate(value, {
+            name: options?.name ?? "EmailAddress",
+            max: 120,
+            regex,
+        });
         return value;
     }
     /**

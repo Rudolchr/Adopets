@@ -3,21 +3,39 @@
  */
 import { Entity } from "../../lib/Entity.js";
 import { catchValidation } from "../../lib/newUtil.js";
-import { Address } from "../../lib/valueObjects/composed/Address.js";
+import { Address, } from "../../lib/valueObjects/composed/Address.js";
 import { EmailAddress } from "../../lib/valueObjects/composed/EmailAddress.js";
-import { OfficeHours } from "../../lib/valueObjects/composed/OfficeHours.js";
+import { OfficeHours, } from "../../lib/valueObjects/composed/OfficeHours.js";
 import { PhoneNumber } from "../../lib/valueObjects/composed/PhoneNumber.js";
-import { NonEmptyString } from "../../lib/valueObjects/NonEmptyString.js";
-import { OptionalString } from "../../lib/valueObjects/OptionalString.js";
+import { NonEmptyString, } from "../../lib/valueObjects/NonEmptyString.js";
+import { OptionalString, } from "../../lib/valueObjects/OptionalString.js";
 import { ShelterStorage } from "./ShelterStorage.js";
-const NAME_CONSTRAINTS = { name: "Shelter.name", max: 120 };
-const STREET_CONSTRAINTS = { name: "Shelter.street", max: 120 };
-const CITY_CONSTRAINTS = { name: "Shelter.city", max: 120 };
+const NAME_CONSTRAINTS = {
+    name: "Shelter.name",
+    max: 120,
+};
+const STREET_CONSTRAINTS = {
+    name: "Shelter.street",
+    max: 120,
+};
+const CITY_CONSTRAINTS = {
+    name: "Shelter.city",
+    max: 120,
+};
 const PHONE_CONSTRAINTS = { name: "Shelter.phone" };
 const EMAIL_CONSTRAINTS = { name: "Shelter.email" };
-const DESCRIPTION_CONSTRAINT = { name: "Shelter.description", max: 500 };
-const OFFICEHOURS_CONSTRAINT = { name: "Shelter.officeHours", max: 500 };
-const NUMBER_CONSTRAINTS = { name: "Address.number", max: 10000 };
+const DESCRIPTION_CONSTRAINT = {
+    name: "Shelter.description",
+    max: 500,
+};
+const OFFICEHOURS_CONSTRAINT = {
+    name: "Shelter.officeHours",
+    max: 500,
+};
+const NUMBER_CONSTRAINTS = {
+    name: "Address.number",
+    max: 10000,
+};
 export class Shelter extends Entity {
     /** the name of the shelter
      * - requires NonEmptyString(120)
@@ -257,7 +275,16 @@ export class Shelter extends Entity {
      * this function is invoked by `JSON.stringify()` and converts the inner `"_propertyKey"` to `"propertyKey"`
      */
     toJSON() {
-        return { id: this.id, name: this.name, address: this.address, email: this.email, officeHours: this.officeHours.times, phone: this.phone, description: this.description, creatorId: this.creatorId };
+        return {
+            id: this.id,
+            name: this.name,
+            address: this.address,
+            email: this.email,
+            officeHours: this.officeHours.times,
+            phone: this.phone,
+            description: this.description,
+            creatorId: this.creatorId,
+        };
     }
     /** @returns the stringified Pet */
     toString() {

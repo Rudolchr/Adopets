@@ -1,5 +1,5 @@
-import { PositiveNumber } from './PositiveNumber.js';
-import { ValueObject } from './ValueObject.js';
+import { PositiveNumber } from "./PositiveNumber.js";
+import { ValueObject } from "./ValueObject.js";
 /** a float that is greater than 0 an can be created from a (valid) string as well as a number */
 export class PositiveFloatString extends ValueObject {
     constructor(value) {
@@ -14,7 +14,7 @@ export class PositiveFloatString extends ValueObject {
     static validate(value, options) {
         let transformed;
         // string
-        if (typeof value !== 'number') {
+        if (typeof value !== "number") {
             if (isNaN(this.parse(value))) {
                 throw new TypeError(this.pm(options?.name) +
                     `PositiveFloatString => the given value (${value}: ${typeof value}) has to be a number or a string representing a number!`);
@@ -56,10 +56,10 @@ export class PositiveFloatString extends ValueObject {
      * @returns the parsed number **OR** `NaN` if not parsable
      */
     static parse(value) {
-        return parseFloat(value.replace(',', '.'));
+        return parseFloat(value.replace(",", "."));
     }
     equals(obj) {
-        return (obj instanceof PositiveFloatString ? obj.value : obj) === this._value;
+        return ((obj instanceof PositiveFloatString ? obj.value : obj) === this._value);
     }
 }
 //# sourceMappingURL=PositiveFloatString.js.map

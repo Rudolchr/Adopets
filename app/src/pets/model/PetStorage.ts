@@ -1,5 +1,5 @@
-import {AbstractStorage} from "../../lib/Storage.js";
-import {Pet, PetSlots} from "./Pet.js";
+import { AbstractStorage } from "../../lib/Storage.js";
+import { Pet, PetSlots } from "./Pet.js";
 
 /**
  * internal
@@ -9,12 +9,12 @@ class PetStorageClass extends AbstractStorage<Pet, PetSlots> {
   STORAGE_KEY = "pets";
 
   getUserPets(creatorId: string) {
-    let return_instances: {[id: string]: Pet} = {};
+    let return_instances: { [id: string]: Pet } = {};
 
-    for(const shelter of Object.values(this._instances)) {
-        if (shelter.creatorId === creatorId) {
-            return_instances[shelter.id] = shelter;
-        }
+    for (const shelter of Object.values(this._instances)) {
+      if (shelter.creatorId === creatorId) {
+        return_instances[shelter.id] = shelter;
+      }
     }
 
     return return_instances;
@@ -31,7 +31,7 @@ class PetStorageClass extends AbstractStorage<Pet, PetSlots> {
    * adds a new Pet created from the given `slots` to the collection of `Pet`s
    * if the slots fulfil their constraints. Does nothing otherwise
    */
-  async add(slots: Omit<PetSlots, 'id'>) {
+  async add(slots: Omit<PetSlots, "id">) {
     await super.addWithConstructor(Pet, slots);
   }
 

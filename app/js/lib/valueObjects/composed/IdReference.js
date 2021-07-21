@@ -5,7 +5,7 @@ export class IdReference extends ValueObject {
     }
     static validate(value, options) {
         // type
-        if (!value || typeof value !== 'string' || value === '') {
+        if (!value || typeof value !== "string" || value === "") {
             throw new TypeError(this.pm(options.name) +
                 `IdReference => the given value (${value}: ${typeof value}) has to be a string with length > 0!`);
         }

@@ -14,11 +14,11 @@ const formElements = {
     senderPhoneNo: formFactory.createInput("senderPhoneNo", Message.checkSenderPhoneNo),
 };
 // set url params
-formElements.shelterId.set(GetURLParameter('shelterId'));
-formElements.petId.set(GetURLParameter('petId'));
+formElements.shelterId.set(GetURLParameter("shelterId"));
+formElements.petId.set(GetURLParameter("petId"));
 if (auth.currentUser?.email) {
     formElements.senderEmail.set(auth.currentUser.email);
 }
 // send button
-formFactory.createSubmitButton('sendButton', formElements, (slots) => MessageStorage.add(slots));
+formFactory.createSubmitButton("sendButton", formElements, (slots) => MessageStorage.add(slots));
 //# sourceMappingURL=writeMessage.js.map

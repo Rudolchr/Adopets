@@ -4,7 +4,8 @@ if (!firebase.apps.length) {
     authDomain: "adopets-btu-webapps.firebaseapp.com",
     projectId: "adopets-btu-webapps",
   });
-} else {  // if already initialized
+} else {
+  // if already initialized
   firebase.app();
 }
 

@@ -1,4 +1,4 @@
-import { ValueObject } from './ValueObject.js';
+import { ValueObject } from "./ValueObject.js";
 /** a String that can (by creation) be either `"" | undefined` as well as a conventional string */
 export class OptionalString extends ValueObject {
     constructor(value) {
@@ -14,12 +14,14 @@ export class OptionalString extends ValueObject {
      */
     static validate(value, options) {
         // type
-        if (typeof value !== 'string') {
-            throw new TypeError(this.pm(options?.name) + `String => the given value (${value}: ${typeof value}) has to be a string!`);
+        if (typeof value !== "string") {
+            throw new TypeError(this.pm(options?.name) +
+                `String => the given value (${value}: ${typeof value}) has to be a string!`);
         }
         if (value.length > 0 && options) {
             // interval
-            if ((options.min && value.length < options.min) || (options.max && value.length > options.max)) {
+            if ((options.min && value.length < options.min) ||
+                (options.max && value.length > options.max)) {
                 throw new RangeError(this.pm(options.name) +
                     `String => the given string's length (${value}) must be in the interval [${options.min ?? 1}, ${options.max ?? Number.MAX_VALUE}]!`);
             }
@@ -37,7 +39,7 @@ export class OptionalString extends ValueObject {
      * @returns the created ValueObject
      */
     static create(value, options) {
-        return new OptionalString(this.validate(value ?? '', options));
+        return new OptionalString(this.validate(value ?? "", options));
     }
     /**
      * @param values an array of strings to map to an array of ValueObjects

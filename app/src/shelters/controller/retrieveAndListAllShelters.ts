@@ -1,9 +1,9 @@
 /**
  * @author Max Bergmann
  */
-import {createListFromList} from "../../lib/forms/FormUtil.js";
-import {PetStorage} from "../../pets/model/PetStorage.js";
-import {ShelterStorage} from "../model/ShelterStorage.js";
+import { createListFromList } from "../../lib/forms/FormUtil.js";
+import { PetStorage } from "../../pets/model/PetStorage.js";
+import { ShelterStorage } from "../model/ShelterStorage.js";
 
 // this makes my ESLint type this const correctly as "HTMLTableSectionElement"
 const tableBody = document!.querySelector("table")!.querySelector("tbody")!;
@@ -19,7 +19,9 @@ for (let key of Object.keys(ShelterStorage.instances)) {
   row.insertCell().textContent = shelter.name;
   row.insertCell().textContent = shelter.address.toString();
   row.insertCell().textContent = shelter.email;
-  const timeList: HTMLUListElement = createListFromList(shelter.officeHours.toList());
+  const timeList: HTMLUListElement = createListFromList(
+    shelter.officeHours.toList()
+  );
   if (timeList.childElementCount > 0) {
     row.insertCell().appendChild(timeList);
   } else {

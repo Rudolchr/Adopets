@@ -1,5 +1,5 @@
-import { PositiveNumber } from './PositiveNumber.js';
-import { ValueObject } from './ValueObject.js';
+import { PositiveNumber } from "./PositiveNumber.js";
+import { ValueObject } from "./ValueObject.js";
 /** an integer that is greater than 0 an can be created from a (valid) string as well as a number */
 export class PositiveIntegerString extends ValueObject {
     constructor(value) {
@@ -14,7 +14,7 @@ export class PositiveIntegerString extends ValueObject {
     static validate(value, options) {
         let transformed;
         // string
-        if (typeof value !== 'number') {
+        if (typeof value !== "number") {
             if (isNaN(parseInt(value, 10))) {
                 throw new TypeError(this.pm(options?.name) +
                     `PositiveIntegerString => the given value (${value}: ${typeof value}) has to be a number or a string representing a number!`);
@@ -51,7 +51,7 @@ export class PositiveIntegerString extends ValueObject {
         return values.map((nes) => nes.value);
     }
     equals(obj) {
-        return (obj instanceof PositiveIntegerString ? obj.value : obj) === this._value;
+        return ((obj instanceof PositiveIntegerString ? obj.value : obj) === this._value);
     }
 }
 //# sourceMappingURL=PositiveIntegerString.js.map

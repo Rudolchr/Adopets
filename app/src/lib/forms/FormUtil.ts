@@ -1,12 +1,14 @@
-import {Entity} from "../Entity.js";
-
+import { Entity } from "../Entity.js";
 
 export function fillSelectWithEntities<E extends Entity<any>>(
   selection: HTMLSelectElement,
-  entities: {[key: string]: E;},
+  entities: { [key: string]: E },
   property: keyof E,
   selected?: string[],
-  emptyOption: {value: string; text: string;} = {value: '', text: ' -- create -- '},
+  emptyOption: { value: string; text: string } = {
+    value: "",
+    text: " -- create -- ",
+  }
 ) {
   // delete old contents
   selection.innerHTML = "";
@@ -27,9 +29,9 @@ export function fillSelectWithEntities<E extends Entity<any>>(
 
 export function fillSelectWithRange(
   selection: HTMLSelectElement,
-  range: {[key: string]: string;} | string[],
+  range: { [key: string]: string } | string[],
   selected?: string[],
-  emptyOption: {value: string; text: string;} = {value: '', text: ' --- '},
+  emptyOption: { value: string; text: string } = { value: "", text: " --- " }
 ) {
   // delete old contents
   selection.innerHTML = "";
@@ -75,7 +77,12 @@ export function createOption(val: string, txt?: string, classValues?: string) {
  * @param label  The label text of the choice control
  * @return {HTMLLabelElement}
  */
-function createLabeledChoiceControl(type: 'radio' | 'checkbox', name: string, value: string, label: string) {
+function createLabeledChoiceControl(
+  type: "radio" | "checkbox",
+  name: string,
+  value: string,
+  label: string
+) {
   const choiceEl = document.createElement("input");
   choiceEl.type = type;
   choiceEl.name = name;
@@ -84,7 +91,7 @@ function createLabeledChoiceControl(type: 'radio' | 'checkbox', name: string, va
   const labelEl = document.createElement("label");
   labelEl.appendChild(document.createTextNode(label));
   labelEl.htmlFor = value;
-  return {choiceEl, labelEl};
+  return { choiceEl, labelEl };
 }
 
 /**
@@ -102,11 +109,14 @@ export function createChoiceWidget(
   containerEl: HTMLFieldSetElement,
   fld: string,
   selected: string[],
-  choiceWidgetType: 'radio' | 'checkbox',
+  choiceWidgetType: "radio" | "checkbox",
   range: string[],
   isMandatory?: boolean
 ) {
-  const choiceControls = [...containerEl.querySelectorAll("label"), ...containerEl.querySelectorAll("input")];
+  const choiceControls = [
+    ...containerEl.querySelectorAll("label"),
+    ...containerEl.querySelectorAll("input"),
+  ];
   // remove old content
   for (const j of choiceControls.keys()) {
     containerEl.removeChild(choiceControls[j]);
@@ -123,7 +133,7 @@ export function createChoiceWidget(
   }
   // button values = 1..n
   for (const entry of range) {
-    const {choiceEl, labelEl} = createLabeledChoiceControl(
+    const { choiceEl, labelEl } = createLabeledChoiceControl(
       choiceWidgetType,
       fld,
       entry,
@@ -147,7 +157,9 @@ export function createChoiceWidget(
         }
       } else {
         // checkbox
-        const existing: string[] = JSON.parse(containerEl.getAttribute("data-value") ?? "[]");
+        const existing: string[] = JSON.parse(
+          containerEl.getAttribute("data-value") ?? "[]"
+        );
         const i = existing.indexOf(btnEl.value);
         if (i > -1) {
           existing.splice(i, 1); // delete from value list

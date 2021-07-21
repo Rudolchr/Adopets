@@ -1,5 +1,5 @@
-import {AbstractStorage} from "../../lib/Storage.js";
-import {Message, MessageSlots} from "./Message.js";
+import { AbstractStorage } from "../../lib/Storage.js";
+import { Message, MessageSlots } from "./Message.js";
 
 /**
  * internal
@@ -9,9 +9,9 @@ class MessageStorageClass extends AbstractStorage<Message, MessageSlots> {
   STORAGE_KEY = "messages";
 
   retrieveAllFromUser(shelterIds: string[]) {
-    let return_instances: {[id: string]: Message} = {};
+    let return_instances: { [id: string]: Message } = {};
 
-    for(const message of Object.values(this._instances)) {
+    for (const message of Object.values(this._instances)) {
       for (let id of shelterIds) {
         if (id === message.shelterId) {
           return_instances[message.id] = message;
@@ -34,7 +34,7 @@ class MessageStorageClass extends AbstractStorage<Message, MessageSlots> {
    * adds a new Message created from the given `slots` to the collection of `Message`s
    * if the slots fulfil their constraints. Does nothing otherwise
    */
-  async add(slots: Omit<MessageSlots, 'id'>) {
+  async add(slots: Omit<MessageSlots, "id">) {
     await super.addWithConstructor(Message, slots);
   }
 

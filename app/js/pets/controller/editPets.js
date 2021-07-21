@@ -3,7 +3,7 @@
  */
 import { FormFactory } from "../../lib/forms/FormFactory.js";
 import { ShelterStorage } from "../../shelters/model/ShelterStorage.js";
-import { HousingEnum, Pet, SexEnum, SizeEnum, SpeciesEnum, SuitableWithEnum } from "../model/Pet.js";
+import { HousingEnum, Pet, SexEnum, SizeEnum, SpeciesEnum, SuitableWithEnum, } from "../model/Pet.js";
 import { PetStorage } from "../model/PetStorage.js";
 await ShelterStorage.retrieveAll();
 await PetStorage.retrieveAll();
@@ -28,31 +28,31 @@ const formElements = {
     size: formFactory.createRangeSelection("size", Pet.checkSize, SizeEnum),
     birthDate: formFactory.createInput("birthDate", Pet.checkBirthDate),
     vaccinationStatus: formFactory.createInput("vaccinationStatus", Pet.checkVaccinationStatus),
-    compatibleWith: formFactory.createChoiceWidget('compatibleWith', Pet.checkCompatibleWith, 'checkbox', SpeciesEnum, []),
-    suitableWith: formFactory.createChoiceWidget('suitableWith', Pet.checkSuitableWith, 'checkbox', SuitableWithEnum, []),
+    compatibleWith: formFactory.createChoiceWidget("compatibleWith", Pet.checkCompatibleWith, "checkbox", SpeciesEnum, []),
+    suitableWith: formFactory.createChoiceWidget("suitableWith", Pet.checkSuitableWith, "checkbox", SuitableWithEnum, []),
     housing: formFactory.createRangeSelection("housing", Pet.checkHousing, HousingEnum),
-    isAdopted: formFactory.createSingleCheckbox('isAdopted'),
-    shelterId: formFactory.createReferenceSelection("shelter", Pet.checkShelterId, userShelters, 'name'),
+    isAdopted: formFactory.createSingleCheckbox("isAdopted"),
+    shelterId: formFactory.createReferenceSelection("shelter", Pet.checkShelterId, userShelters, "name"),
 };
 // selection
 let entitySelection = createSelection();
 function createSelection() {
-    return formFactory.createEntitySelection('petSelection', userPets, 'name', formElements, { value: '', text: '--- create a new pet ---' });
+    return formFactory.createEntitySelection("petSelection", userPets, "name", formElements, { value: "", text: "--- create a new pet ---" });
 }
-entitySelection.addEventListener('change', async () => {
+entitySelection.addEventListener("change", async () => {
     const id = entitySelection.value;
     if (id !== undefined && id.length > 0) {
         cancelSyncDBwithUI = await PetStorage.syncDBwithUI(id);
         deleteButton.hidden = false;
-        submitButton.textContent = 'Update pet';
+        submitButton.textContent = "Update pet";
     }
     else {
         deleteButton.hidden = true;
-        submitButton.textContent = 'Create pet';
+        submitButton.textContent = "Create pet";
     }
 });
 // submit button
-const submitButton = formFactory.createSubmitButton('submitButton', formElements, onSubmit, entitySelection, 'name');
+const submitButton = formFactory.createSubmitButton("submitButton", formElements, onSubmit, entitySelection, "name");
 async function onSubmit(slots) {
     if (deleteButton.hidden) {
         // create a new pet
@@ -70,11 +70,11 @@ async function onSubmit(slots) {
         // update existing pet
         PetStorage.update(slots);
         deleteButton.hidden = true;
-        submitButton.textContent = 'Create pet';
+        submitButton.textContent = "Create pet";
     }
 }
 // delete Button
-const deleteButton = formFactory.form['deleteButton'];
+const deleteButton = formFactory.form["deleteButton"];
 deleteButton.hidden = true;
 deleteButton.addEventListener("click", async () => {
     const id = entitySelection.value;
@@ -88,7 +88,7 @@ deleteButton.addEventListener("click", async () => {
             // update the form
             entitySelection = createSelection();
             deleteButton.hidden = true;
-            submitButton.textContent = 'Create pet';
+            submitButton.textContent = "Create pet";
         }
     }
 });

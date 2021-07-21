@@ -1,4 +1,4 @@
-import { ValueObject } from './ValueObject.js';
+import { ValueObject } from "./ValueObject.js";
 /** a number that is definitely positive */
 export class PositiveNumber extends ValueObject {
     constructor(value) {
@@ -12,13 +12,14 @@ export class PositiveNumber extends ValueObject {
      */
     static validate(value, options) {
         // type
-        if (typeof value !== 'number' || value < 0) {
+        if (typeof value !== "number" || value < 0) {
             throw new TypeError(this.pm(options?.name) +
                 `PositiveNumber => the given value (${value}: ${typeof value}) has to be a number >= 0!`);
         }
         if (options) {
             // interval
-            if ((options.min && value < options.min) || (options.max && value > options.max)) {
+            if ((options.min && value < options.min) ||
+                (options.max && value > options.max)) {
                 throw new RangeError(this.pm(options.name) +
                     `PositiveNumber => the given value (${value}) must be in the interval [${options.min}, ${options.max}]!`);
             }

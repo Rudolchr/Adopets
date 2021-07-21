@@ -1,11 +1,14 @@
 /**
  * runs the given `validationFunction` and returns the given `errorMessage` if the function throws an Error - which will be also logged to `console.error`.
  * Returns an empty string otherwise.
- * @param validationFunction to run 
+ * @param validationFunction to run
  * @param errorMessage to show if the `validationFunction` throws an Error
  * @returns the given `errorMessage` if the `validationFunction` throws an Error. Returns `""` otherwise
  */
-export function catchValidation(validationFunction: () => any, errorMessage: string) {
+export function catchValidation(
+  validationFunction: () => any,
+  errorMessage: string
+) {
   try {
     validationFunction();
     return "";
@@ -17,12 +20,16 @@ export function catchValidation(validationFunction: () => any, errorMessage: str
 /**
  * runs the given `validationFunction` and returns the given `errorMessage` if the function throws an Error - which will be also logged to `console.error`.
  * Returns an empty string otherwise.
- * @param values that will be iterated and checked with the function 
- * @param validationFunction to run 
+ * @param values that will be iterated and checked with the function
+ * @param validationFunction to run
  * @param errorMessage to show if the `validationFunction` throws an Error
  * @returns the given `errorMessage` if the `validationFunction` throws an Error. Returns `""` otherwise
  */
-export function catchValidations<T>(values: T[], validationFunction: (value: T) => any, errorMessage: string) {
+export function catchValidations<T>(
+  values: T[],
+  validationFunction: (value: T) => any,
+  errorMessage: string
+) {
   try {
     for (const value of values) {
       validationFunction(value);
@@ -36,9 +43,9 @@ export function catchValidations<T>(values: T[], validationFunction: (value: T) 
 
 export function GetURLParameter(sParam: string) {
   var sPageURL = window.location.search.substring(1);
-  var sURLVariables = sPageURL.split('&');
+  var sURLVariables = sPageURL.split("&");
   for (const sParamName of sURLVariables) {
-    var sParameterName = sParamName.split('=');
+    var sParameterName = sParamName.split("=");
     if (sParameterName[0] == sParam) {
       return sParameterName[1];
     }
@@ -46,10 +53,15 @@ export function GetURLParameter(sParam: string) {
 }
 
 export function handleUserMessage(
-  status: string, 
-  data: firebase.firestore.DocumentData | firebase.firestore.DocumentSnapshot | firebase.firestore.SnapshotOptions | undefined
-  ) {
-  const userMessageContainerEl: HTMLElement |  null = document.querySelector(".user-message");
+  status: string,
+  data:
+    | firebase.firestore.DocumentData
+    | firebase.firestore.DocumentSnapshot
+    | firebase.firestore.SnapshotOptions
+    | undefined
+) {
+  const userMessageContainerEl: HTMLElement | null =
+    document.querySelector(".user-message");
   const errorMessage = userMessageContainerEl?.querySelector("div");
   const buttonEl = document.createElement("button");
   let msgText = `The selected entry has been ${status}. Please reload this page to continue!`;
@@ -61,12 +73,12 @@ export function handleUserMessage(
     buttonEl.setAttribute("type", "button");
     buttonEl.textContent = "Reload";
 
-    errorMessage?.appendChild( buttonEl);
-    userMessageContainerEl?.appendChild( errorMessage);
+    errorMessage?.appendChild(buttonEl);
+    userMessageContainerEl?.appendChild(errorMessage);
     userMessageContainerEl.hidden = false;
   }
 
   buttonEl.addEventListener("click", () => {
     location.reload();
-  })
+  });
 }

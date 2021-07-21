@@ -1,4 +1,7 @@
-export function fillSelectWithEntities(selection, entities, property, selected, emptyOption = { value: '', text: ' -- create -- ' }) {
+export function fillSelectWithEntities(selection, entities, property, selected, emptyOption = {
+    value: "",
+    text: " -- create -- ",
+}) {
     // delete old contents
     selection.innerHTML = "";
     // create "no selection yet" entry
@@ -13,7 +16,7 @@ export function fillSelectWithEntities(selection, entities, property, selected, 
         selection.add(option);
     }
 }
-export function fillSelectWithRange(selection, range, selected, emptyOption = { value: '', text: ' --- ' }) {
+export function fillSelectWithRange(selection, range, selected, emptyOption = { value: "", text: " --- " }) {
     // delete old contents
     selection.innerHTML = "";
     // create "no selection yet" entry
@@ -77,7 +80,10 @@ function createLabeledChoiceControl(type, name, value, label) {
  * @returns {HTMLFieldSetElement} the modified `containerEl`, but also works without using the returned element though it is modified anyways.
  */
 export function createChoiceWidget(containerEl, fld, selected, choiceWidgetType, range, isMandatory) {
-    const choiceControls = [...containerEl.querySelectorAll("label"), ...containerEl.querySelectorAll("input")];
+    const choiceControls = [
+        ...containerEl.querySelectorAll("label"),
+        ...containerEl.querySelectorAll("input"),
+    ];
     // remove old content
     for (const j of choiceControls.keys()) {
         containerEl.removeChild(choiceControls[j]);

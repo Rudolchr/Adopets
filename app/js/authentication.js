@@ -3,7 +3,14 @@
  */
 export function setupUiByUserStatus() {
     const page = window.location.pathname;
-    const allowedPages = ["/", "/index.html", "/authentication.html", "/404.html", "/shelters/index.html", "/pets/index.html"];
+    const allowedPages = [
+        "/",
+        "/index.html",
+        "/authentication.html",
+        "/404.html",
+        "/shelters/index.html",
+        "/pets/index.html",
+    ];
     const loginMngEls = document.querySelectorAll("header > div#login-management > small");
     // reset (hide) all login management elements: [0]sign in/up , [1]sign out
     if (page !== "/authentication.html") {
@@ -13,7 +20,8 @@ export function setupUiByUserStatus() {
     auth.onAuthStateChanged(async function (user) {
         // if status is 'anonymous' or 'registered'
         if (user) {
-            if (user.isAnonymous) { // if user is 'anonymous'
+            if (user.isAnonymous) {
+                // if user is 'anonymous'
                 if (!allowedPages.includes(page)) {
                     // redirect to authentication page
                     window.location.pathname = "/authentication.html";
@@ -21,7 +29,8 @@ export function setupUiByUserStatus() {
                 loginMngEls[0].hidden = false; // show 'sign in/up'
                 console.info("Authenticated as 'anonymous'");
             }
-            else { // if user is 'registered'
+            else {
+                // if user is 'registered'
                 const spanEl = document.createElement("span");
                 // handle without verified email
                 if (!user.emailVerified) {
@@ -34,16 +43,25 @@ export function setupUiByUserStatus() {
                 loginMngEls[1].hidden = false; // show 'sign out'
                 // my pets
                 loginMngEls[2].hidden = false;
-                loginMngEls[2].querySelector("button")?.addEventListener('click', () => window.location.pathname = "/pets/edit.html");
+                loginMngEls[2]
+                    .querySelector("button")
+                    ?.addEventListener("click", () => (window.location.pathname = "/pets/edit.html"));
                 // my shelters
                 loginMngEls[3].hidden = false;
-                loginMngEls[3].querySelector("button")?.addEventListener('click', () => window.location.pathname = "/shelters/edit.html");
+                loginMngEls[3]
+                    .querySelector("button")
+                    ?.addEventListener("click", () => (window.location.pathname = "/shelters/edit.html"));
                 // if current page is not allowed & email is not verified
-                if (!allowedPages.includes(page) && !user.emailVerified) { // if current page is not allowed
+                if (!allowedPages.includes(page) && !user.emailVerified) {
+                    // if current page is not allowed
                     alert(`Check your email ${user.email} for instructions to verify your account before using this operation`);
                     window.location.pathname = "/index.html";
                 }
-                else if ((page === "/" || page === "/index.html" || page === "/shelters/index.html" || page === "/pets/index.html") && user.emailVerified) {
+                else if ((page === "/" ||
+                    page === "/index.html" ||
+                    page === "/shelters/index.html" ||
+                    page === "/pets/index.html") &&
+                    user.emailVerified) {
                     // enable UI elements on home page
                     const linkEls = document.querySelectorAll(".disabled");
                     for (const el of linkEls) {
@@ -79,11 +97,12 @@ export function setupUiByUserStatus() {
                 if (signOutButton) {
                     signOutButton.addEventListener("click", handleLogOut);
                 }
-                console.info(`Authenticated as 'registered with ${user.emailVerified ? '' : 'NO '}verified account' (${user.email})`);
+                console.info(`Authenticated as 'registered with ${user.emailVerified ? "" : "NO "}verified account' (${user.email})`);
             }
         }
-        else { // if user is not 'registered' nor 'anonymous' (null)  
-            // sign in user as 'anonymous' 
+        else {
+            // if user is not 'registered' nor 'anonymous' (null)
+            // sign in user as 'anonymous'
             auth.signInAnonymously();
         }
     });
@@ -102,7 +121,8 @@ export function setupSignInAndSignUp() {
     });
     const path = document.referrer.split("/");
     var backPage = "/index.html";
-    if (document.referrer.includes("/shelters/") || document.referrer.includes("/pets/")) {
+    if (document.referrer.includes("/shelters/") ||
+        document.referrer.includes("/pets/")) {
         backPage = "/" + path[path.length - 2] + "/" + path[path.length - 1];
     }
     else {
@@ -173,7 +193,8 @@ export async function handleVerifyEmail() {
     const h1El = document.querySelector("main > h1");
     const pEl = document.querySelector("main > p");
     const linkEl = document.querySelector("footer > a");
-    try { // if email can be verified
+    try {
+        // if email can be verified
         if (verificationCode && h1El && pEl && linkEl) {
             // apply the email verification code
             await auth.applyActionCode(verificationCode);
@@ -185,11 +206,13 @@ export async function handleVerifyEmail() {
             linkEl.href = "index.html";
         }
     }
-    catch (e) { // if email has been already verified
+    catch (e) {
+        // if email has been already verified
         if (verificationCode && h1El && pEl && linkEl) {
             // if error, manipulate HTML elements: message, instructions and link
             h1El.textContent = "Your validation link has been already used.";
-            pEl.textContent = "You can now Sign In the JS + Firebase Minimal App with Auth.";
+            pEl.textContent =
+                "You can now Sign In the JS + Firebase Minimal App with Auth.";
             let textNodeEl = document.createTextNode("« Go to the Sign in page");
             linkEl.appendChild(textNodeEl);
             linkEl.href = "authenticateUser.html";

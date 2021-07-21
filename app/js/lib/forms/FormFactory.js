@@ -1,4 +1,4 @@
-import { createChoiceWidget, fillSelectWithEntities, fillSelectWithRange } from "./FormUtil.js";
+import { createChoiceWidget, fillSelectWithEntities, fillSelectWithRange, } from "./FormUtil.js";
 export class FormFactory {
     _form;
     /**
@@ -53,9 +53,11 @@ export class FormFactory {
             return output.value;
         }
         function set(value) {
-            output.value = typeof value === 'string' ? value : value.toString();
+            output.value = typeof value === "string" ? value : value.toString();
         }
-        function check() { }
+        function check() {
+            /** does nothing though its an output */
+        }
         return { get, set, check };
     }
     /**
@@ -73,10 +75,10 @@ export class FormFactory {
             return input.value;
         }
         function set(value) {
-            if (typeof value === 'string') {
+            if (typeof value === "string") {
                 input.value = value;
             }
-            else if (typeof value === 'number') {
+            else if (typeof value === "number") {
                 input.valueAsNumber = value;
             }
             else {
@@ -105,7 +107,9 @@ export class FormFactory {
             return selection.value;
         }
         function set(value) {
-            fillSelectWithEntities(selection, entities, referenceDisplayProp, [value]);
+            fillSelectWithEntities(selection, entities, referenceDisplayProp, [
+                value,
+            ]);
         }
         selection.addEventListener("change", () => check());
         return { get, set, check };
@@ -145,10 +149,14 @@ export class FormFactory {
      */
     createChoiceWidget(id, validationFunction, type, range, selected, isMandatory = false) {
         const fieldSet = this._form.querySelector("fieldset[data-bind='" + id + "']");
-        const fixRange = Array.isArray(range) ? range : Object.values(range);
+        const fixRange = Array.isArray(range)
+            ? range
+            : Object.values(range);
         createChoiceWidget(fieldSet, id, selected, type, fixRange, isMandatory);
         function check() {
-            const message = isMandatory ? 'One of the options has to be chosen' : validationFunction(get());
+            const message = isMandatory
+                ? "One of the options has to be chosen"
+                : validationFunction(get());
             fieldSet.setCustomValidity(message);
         }
         function get() {
@@ -169,7 +177,9 @@ export class FormFactory {
     createSingleCheckbox(id, selected = false) {
         const input = this._form[id];
         input.checked = selected;
-        function check() { }
+        function check() {
+            /** does nothing */
+        }
         function get() {
             return input.checked;
         }
@@ -187,7 +197,7 @@ export class FormFactory {
      * @param formElements the form elements (combined with the corresponding slots of the entity as keys)
      * @returns the HTMLSelectElement itself
      */
-    createEntitySelection(id, entities, entityDisplayProp, formElements, emptyOption = { value: '', text: ' --- ' }) {
+    createEntitySelection(id, entities, entityDisplayProp, formElements, emptyOption = { value: "", text: " --- " }) {
         const selection = this.form[id];
         fillSelectWithEntities(selection, entities, entityDisplayProp, [], emptyOption);
         // when a pet is selected, populate the form with its data
@@ -234,7 +244,8 @@ export class FormFactory {
                 else {
                     slots[elementId] = element.get();
                 }
-                if (entityDisplayProp !== undefined && elementId === entityDisplayProp) {
+                if (entityDisplayProp !== undefined &&
+                    elementId === entityDisplayProp) {
                     nextProperty = element.get();
                 }
             }
@@ -245,7 +256,8 @@ export class FormFactory {
                 onConfirm(slots);
                 // update the selection list option element
                 if (entitySelection !== undefined && nextProperty !== undefined) {
-                    entitySelection.options[entitySelection.selectedIndex].text = nextProperty;
+                    entitySelection.options[entitySelection.selectedIndex].text =
+                        nextProperty;
                 }
             }
         });

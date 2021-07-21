@@ -1,4 +1,4 @@
-import { ValueObject } from './ValueObject.js';
+import { ValueObject } from "./ValueObject.js";
 /** a Boolean that is definitely a Boolean that (with option) can be undefined */
 export class SafeBoolean extends ValueObject {
     constructor(value) {
@@ -16,9 +16,12 @@ export class SafeBoolean extends ValueObject {
                 `SafeBoolean => the given boolean has to be defined!`);
         }
         let safeBoolean = value === undefined ? false : value;
-        safeBoolean = typeof safeBoolean === 'boolean' ? safeBoolean : JSON.parse(safeBoolean);
+        safeBoolean =
+            typeof safeBoolean === "boolean"
+                ? safeBoolean
+                : JSON.parse(safeBoolean);
         // type
-        if (typeof safeBoolean !== 'boolean') {
+        if (typeof safeBoolean !== "boolean") {
             throw new TypeError(this.pm(options?.name) +
                 `SafeBoolean => the given value (${safeBoolean}: ${typeof safeBoolean}) has to be a boolean!`);
         }
@@ -48,9 +51,12 @@ export class SafeBoolean extends ValueObject {
         return values.map((nes) => nes.value);
     }
     equals(obj) {
-        const value = (obj instanceof SafeBoolean ? obj.value : obj);
+        const value = obj instanceof SafeBoolean ? obj.value : obj;
         let safeBoolean = value === undefined ? false : value;
-        safeBoolean = typeof safeBoolean === 'boolean' ? safeBoolean : JSON.parse(safeBoolean);
+        safeBoolean =
+            typeof safeBoolean === "boolean"
+                ? safeBoolean
+                : JSON.parse(safeBoolean);
         return safeBoolean === this._value;
     }
 }

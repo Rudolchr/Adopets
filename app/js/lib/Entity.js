@@ -10,7 +10,7 @@ export class Entity {
      */
     constructor(storage, id) {
         Entity.validateUniqueId(storage, id);
-        this._id = NonEmptyString.create(id, { name: 'Entity.id' });
+        this._id = NonEmptyString.create(id, { name: "Entity.id" });
     }
     get id() {
         return this._id.value;
@@ -27,7 +27,7 @@ export class Entity {
             if (storage.contains(id)) {
                 return "This ID is already taken";
             }
-            NonEmptyString.validate(id, { name: 'Entity.id' });
+            NonEmptyString.validate(id, { name: "Entity.id" });
             return "";
         }
         catch (error) {

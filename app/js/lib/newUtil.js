@@ -37,9 +37,9 @@ export function catchValidations(values, validationFunction, errorMessage) {
 }
 export function GetURLParameter(sParam) {
     var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
+    var sURLVariables = sPageURL.split("&");
     for (const sParamName of sURLVariables) {
-        var sParameterName = sParamName.split('=');
+        var sParameterName = sParamName.split("=");
         if (sParameterName[0] == sParam) {
             return sParameterName[1];
         }

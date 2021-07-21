@@ -1,14 +1,20 @@
-import {Entity, EntitySlots} from "../../lib/Entity.js";
-import {catchValidation} from "../../lib/newUtil.js";
-import {EmailAddress} from "../../lib/valueObjects/composed/EmailAddress.js";
-import {IdReference, IdReferenceOptions} from "../../lib/valueObjects/composed/IdReference.js";
-import {PhoneNumber} from "../../lib/valueObjects/composed/PhoneNumber.js";
-import {NonEmptyString, NonEmptyStringOptions} from "../../lib/valueObjects/NonEmptyString.js";
-import {PetSlots, Pet} from "../../pets/model/Pet.js";
-import {PetStorage} from "../../pets/model/PetStorage.js";
-import {Shelter, ShelterSlots} from "../../shelters/model/Shelter.js";
-import {ShelterStorage} from "../../shelters/model/ShelterStorage.js";
-import {MessageStorage} from "./MessageStorage.js";
+import { Entity, EntitySlots } from "../../lib/Entity.js";
+import { catchValidation } from "../../lib/newUtil.js";
+import { EmailAddress } from "../../lib/valueObjects/composed/EmailAddress.js";
+import {
+  IdReference,
+  IdReferenceOptions,
+} from "../../lib/valueObjects/composed/IdReference.js";
+import { PhoneNumber } from "../../lib/valueObjects/composed/PhoneNumber.js";
+import {
+  NonEmptyString,
+  NonEmptyStringOptions,
+} from "../../lib/valueObjects/NonEmptyString.js";
+import { Pet, PetSlots } from "../../pets/model/Pet.js";
+import { PetStorage } from "../../pets/model/PetStorage.js";
+import { Shelter, ShelterSlots } from "../../shelters/model/Shelter.js";
+import { ShelterStorage } from "../../shelters/model/ShelterStorage.js";
+import { MessageStorage } from "./MessageStorage.js";
 
 export interface MessageSlots extends EntitySlots {
   message: string;
@@ -18,11 +24,24 @@ export interface MessageSlots extends EntitySlots {
   senderPhoneNo?: string;
 }
 
-const MESSAGE_CONSTRAINTS: NonEmptyStringOptions = {name: 'Message.message', max: 500};
-const SHELTER_ID_CONSTRAINTS: IdReferenceOptions<ShelterSlots, Shelter> = {name: 'Message.shelterId', foreignStorage: ShelterStorage};
-const PET_ID_CONSTRAINTS: IdReferenceOptions<PetSlots, Pet> = {name: 'Message.shelterId', foreignStorage: PetStorage};
-const SENDER_EMAIL_CONSTRAINTS: NonEmptyStringOptions = {name: 'Message.senderEmail'};
-const SENDER_PHONE_NO_CONSTRAINTS: NonEmptyStringOptions = {name: 'Message.senderPhoneNo'};
+const MESSAGE_CONSTRAINTS: NonEmptyStringOptions = {
+  name: "Message.message",
+  max: 500,
+};
+const SHELTER_ID_CONSTRAINTS: IdReferenceOptions<ShelterSlots, Shelter> = {
+  name: "Message.shelterId",
+  foreignStorage: ShelterStorage,
+};
+const PET_ID_CONSTRAINTS: IdReferenceOptions<PetSlots, Pet> = {
+  name: "Message.shelterId",
+  foreignStorage: PetStorage,
+};
+const SENDER_EMAIL_CONSTRAINTS: NonEmptyStringOptions = {
+  name: "Message.senderEmail",
+};
+const SENDER_PHONE_NO_CONSTRAINTS: NonEmptyStringOptions = {
+  name: "Message.senderPhoneNo",
+};
 
 export class Message extends Entity<MessageSlots> {
   private _message: NonEmptyString;
@@ -34,10 +53,19 @@ export class Message extends Entity<MessageSlots> {
   constructor(slots: MessageSlots) {
     super(MessageStorage, slots.id);
     this._message = NonEmptyString.create(slots.message, MESSAGE_CONSTRAINTS);
-    this._shelterId = IdReference.create(slots.shelterId, SHELTER_ID_CONSTRAINTS);
-    this._petId = slots.petId ? IdReference.create(slots.petId, PET_ID_CONSTRAINTS) : undefined;
-    this._senderEmail = slots.senderEmail ? EmailAddress.create(slots.senderEmail, SENDER_EMAIL_CONSTRAINTS) : undefined;
-    this._senderPhoneNo = slots.senderPhoneNo ? PhoneNumber.create(slots.senderPhoneNo, SENDER_PHONE_NO_CONSTRAINTS) : undefined;
+    this._shelterId = IdReference.create(
+      slots.shelterId,
+      SHELTER_ID_CONSTRAINTS
+    );
+    this._petId = slots.petId
+      ? IdReference.create(slots.petId, PET_ID_CONSTRAINTS)
+      : undefined;
+    this._senderEmail = slots.senderEmail
+      ? EmailAddress.create(slots.senderEmail, SENDER_EMAIL_CONSTRAINTS)
+      : undefined;
+    this._senderPhoneNo = slots.senderPhoneNo
+      ? PhoneNumber.create(slots.senderPhoneNo, SENDER_PHONE_NO_CONSTRAINTS)
+      : undefined;
   }
 
   // *** UPDATE *************************************************************
@@ -55,25 +83,32 @@ export class Message extends Entity<MessageSlots> {
       updateSlots.shelterId = slots.shelterId;
     }
     // update petId
-    if ((!this._petId && slots.petId)
-      || (this._petId && !slots.petId)
-      || (this._petId && slots.petId && !this._petId.equals(slots.petId))
+    if (
+      (!this._petId && slots.petId) ||
+      (this._petId && !slots.petId) ||
+      (this._petId && slots.petId && !this._petId.equals(slots.petId))
     ) {
       this.petId = slots.petId;
       updateSlots.petId = slots.petId;
     }
     // update senderEmail
-    if ((!this._senderEmail && slots.senderEmail)
-      || (this._senderEmail && !slots.senderEmail)
-      || (this._senderEmail && slots.senderEmail && !this._senderEmail.equals(slots.senderEmail))
+    if (
+      (!this._senderEmail && slots.senderEmail) ||
+      (this._senderEmail && !slots.senderEmail) ||
+      (this._senderEmail &&
+        slots.senderEmail &&
+        !this._senderEmail.equals(slots.senderEmail))
     ) {
       this.senderEmail = slots.senderEmail;
       updateSlots.senderEmail = slots.senderEmail;
     }
     // update senderPhoneNo
-    if ((!this._senderPhoneNo && slots.senderPhoneNo)
-      || (this._senderPhoneNo && !slots.senderPhoneNo)
-      || (this._senderPhoneNo && slots.senderPhoneNo && !this._senderPhoneNo.equals(slots.senderPhoneNo))
+    if (
+      (!this._senderPhoneNo && slots.senderPhoneNo) ||
+      (this._senderPhoneNo && !slots.senderPhoneNo) ||
+      (this._senderPhoneNo &&
+        slots.senderPhoneNo &&
+        !this._senderPhoneNo.equals(slots.senderPhoneNo))
     ) {
       this.senderPhoneNo = slots.senderPhoneNo;
       updateSlots.senderPhoneNo = slots.senderPhoneNo;
@@ -87,8 +122,8 @@ export class Message extends Entity<MessageSlots> {
     return this._message.value;
   }
   static checkMessage(message: string) {
-    return catchValidation(() =>
-      NonEmptyString.validate(message, MESSAGE_CONSTRAINTS),
+    return catchValidation(
+      () => NonEmptyString.validate(message, MESSAGE_CONSTRAINTS),
       "The message's message must not be empty or larger than 500 letters!"
     );
   }
@@ -104,15 +139,16 @@ export class Message extends Entity<MessageSlots> {
   }
 
   /**
-   * checks if the given shelterId is valid 
+   * checks if the given shelterId is valid
    * @param shelterId
    * @returns a ConstraintViolation
    * @public
    */
   static checkShelterId(shelterId: string) {
-    return catchValidation(() =>
-      IdReference.validate(shelterId, SHELTER_ID_CONSTRAINTS),
-      "The message's shelter does not exist!");
+    return catchValidation(
+      () => IdReference.validate(shelterId, SHELTER_ID_CONSTRAINTS),
+      "The message's shelter does not exist!"
+    );
   }
 
   /** @param shelterId - the new shelterId to set */
@@ -128,21 +164,25 @@ export class Message extends Entity<MessageSlots> {
   }
 
   /**
-   * checks if the given petId is valid 
+   * checks if the given petId is valid
    * @param petId
    * @returns a ConstraintViolation
    * @public
    */
   static checkPetId(petId: string | undefined) {
-    return petId ? catchValidation(() =>
-      IdReference.validate(petId, PET_ID_CONSTRAINTS),
-      "The message's pet does not exist!"
-    ) : '';
+    return petId
+      ? catchValidation(
+          () => IdReference.validate(petId, PET_ID_CONSTRAINTS),
+          "The message's pet does not exist!"
+        )
+      : "";
   }
 
   /** @param petId - the new petId to set */
   set petId(petId: string | undefined) {
-    this._petId = petId ? IdReference.create(petId, PET_ID_CONSTRAINTS) : undefined;
+    this._petId = petId
+      ? IdReference.create(petId, PET_ID_CONSTRAINTS)
+      : undefined;
   }
 
   // *** senderEmail **********************************************************
@@ -159,15 +199,19 @@ export class Message extends Entity<MessageSlots> {
    * @public
    */
   static checkSenderEmail(senderEmail: string | undefined) {
-    return senderEmail ? catchValidation(() =>
-      EmailAddress.validate(senderEmail, SENDER_EMAIL_CONSTRAINTS),
-      "The message's email address is not legit!"
-    ) : '';
+    return senderEmail
+      ? catchValidation(
+          () => EmailAddress.validate(senderEmail, SENDER_EMAIL_CONSTRAINTS),
+          "The message's email address is not legit!"
+        )
+      : "";
   }
 
   /** @param senderEmail - the new senderEmail to set */
   set senderEmail(senderEmail: string | undefined) {
-    this._senderEmail = senderEmail ? EmailAddress.create(senderEmail, SENDER_EMAIL_CONSTRAINTS) : undefined;
+    this._senderEmail = senderEmail
+      ? EmailAddress.create(senderEmail, SENDER_EMAIL_CONSTRAINTS)
+      : undefined;
   }
 
   // *** senderPhoneNo **********************************************************
@@ -184,15 +228,20 @@ export class Message extends Entity<MessageSlots> {
    * @public
    */
   static checkSenderPhoneNo(senderPhoneNo: string | undefined) {
-    return senderPhoneNo ? catchValidation(() =>
-      PhoneNumber.validate(senderPhoneNo, SENDER_PHONE_NO_CONSTRAINTS),
-      "The message's phone number is not given or nor in given Format!"
-    ) : '';
+    return senderPhoneNo
+      ? catchValidation(
+          () =>
+            PhoneNumber.validate(senderPhoneNo, SENDER_PHONE_NO_CONSTRAINTS),
+          "The message's phone number is not given or nor in given Format!"
+        )
+      : "";
   }
 
   /** @param senderPhoneNo - the new senderPhoneNo to set */
   set senderPhoneNo(senderPhoneNo: string | undefined) {
-    this._senderPhoneNo = senderPhoneNo ? PhoneNumber.create(senderPhoneNo, SENDER_PHONE_NO_CONSTRAINTS) : undefined;
+    this._senderPhoneNo = senderPhoneNo
+      ? PhoneNumber.create(senderPhoneNo, SENDER_PHONE_NO_CONSTRAINTS)
+      : undefined;
   }
 
   toJSON(): MessageSlots {

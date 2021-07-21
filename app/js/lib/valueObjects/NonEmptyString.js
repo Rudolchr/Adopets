@@ -1,4 +1,4 @@
-import { ValueObject } from './ValueObject.js';
+import { ValueObject } from "./ValueObject.js";
 /** a String that is definitely a String that is not empty */
 export class NonEmptyString extends ValueObject {
     constructor(value) {
@@ -14,7 +14,7 @@ export class NonEmptyString extends ValueObject {
      */
     static validate(value, options) {
         // type
-        if (!value || typeof value !== 'string' || value === '') {
+        if (!value || typeof value !== "string" || value === "") {
             throw new TypeError(this.pm(options?.name) +
                 `NonEmptyString => the given value (${value}: ${typeof value}) has to be a string with length > 0!`);
         }
@@ -22,7 +22,8 @@ export class NonEmptyString extends ValueObject {
             // enum
             NonEmptyString.validateRange(value, options);
             // interval
-            if ((options.min && value.length < options.min) || (options.max && value.length > options.max)) {
+            if ((options.min && value.length < options.min) ||
+                (options.max && value.length > options.max)) {
                 throw new RangeError(this.pm(options.name) +
                     `NonEmptyString => the given string's length (${value}) must be in the interval [${options.min ?? 1}, ${options.max ?? Number.MAX_VALUE}]!`);
             }
@@ -36,8 +37,9 @@ export class NonEmptyString extends ValueObject {
     }
     static validateRange(value, options) {
         if (options.range) {
-            if (Array.isArray(options.range) && !options.range.includes(value)
-                || typeof options.range === 'object' && !Object.values(options.range).includes(value)) {
+            if ((Array.isArray(options.range) && !options.range.includes(value)) ||
+                (typeof options.range === "object" &&
+                    !Object.values(options.range).includes(value))) {
                 throw new RangeError(this.pm(options.name) +
                     `NonEmptyString => the given value (${value}: ${typeof value}) is not in the range ${JSON.stringify(options?.range)}`);
             }

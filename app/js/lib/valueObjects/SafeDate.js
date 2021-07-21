@@ -1,4 +1,4 @@
-import { ValueObject } from './ValueObject.js';
+import { ValueObject } from "./ValueObject.js";
 /** a Date that is definitely a Date that can be created from either a Date or a string that
  * represents a Date or a number that represents the Time in ms */
 export class SafeDate extends ValueObject {
@@ -14,9 +14,10 @@ export class SafeDate extends ValueObject {
     static validate(value, options) {
         // safe date
         let safeDate;
-        if (typeof value === 'string' || typeof value === 'number') {
-            if (typeof value === 'string' ? isNaN(Date.parse(value)) : isNaN(value)) {
-                throw new TypeError(this.pm(options?.name) + `SafeDate => the given (${value}: ${typeof value}) is not parsable!`);
+        if (typeof value === "string" || typeof value === "number") {
+            if (typeof value === "string" ? isNaN(Date.parse(value)) : isNaN(value)) {
+                throw new TypeError(this.pm(options?.name) +
+                    `SafeDate => the given (${value}: ${typeof value}) is not parsable!`);
             }
             else {
                 safeDate = new Date(value);
@@ -31,12 +32,16 @@ export class SafeDate extends ValueObject {
         }
         if (options) {
             // interval
-            const safeMin = options.min !== undefined ? this.validate(options.min, { name: options.name + '.min' }) : undefined;
-            const safeMax = options.max !== undefined ? this.validate(options.max, { name: options.name + '.max' }) : undefined;
+            const safeMin = options.min !== undefined
+                ? this.validate(options.min, { name: options.name + ".min" })
+                : undefined;
+            const safeMax = options.max !== undefined
+                ? this.validate(options.max, { name: options.name + ".max" })
+                : undefined;
             if ((safeMin && safeDate.getTime() < safeMin.getTime()) ||
                 (safeMax && safeDate.getTime() > safeMax.getTime())) {
                 throw new RangeError(this.pm(options.name) +
-                    `SafeDate => the given Date (${safeDate}) must be in the interval [${safeMin ?? '*'}, ${safeMax ?? '*'}]!`);
+                    `SafeDate => the given Date (${safeDate}) must be in the interval [${safeMin ?? "*"}, ${safeMax ?? "*"}]!`);
             }
         }
         return safeDate;
@@ -69,7 +74,7 @@ export class SafeDate extends ValueObject {
             return obj.value === this._value;
         }
         else {
-            const comparable = SafeDate.create(obj, { name: 'SafeDate.equals' });
+            const comparable = SafeDate.create(obj, { name: "SafeDate.equals" });
             return comparable.value.toJSON() === this._value.toJSON();
         }
     }
