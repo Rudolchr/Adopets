@@ -362,7 +362,11 @@ table td ul {
 thead.filterHead > tr > th {
   vertical-align: top;
 }
-thead.filterHead > tr > th > fieldset > input[type="checkbox"] {
+thead.filterHead > tr > th > fieldset > div {
+  text-align: left;
+  margin-left: 10px;
+}
+thead.filterHead > tr > th > fieldset > div > label {
   margin-left: 10px;
 }
 
@@ -455,15 +459,19 @@ form > div > textarea {
   width: 100%;
   height: 120pt;
 }
-form > fieldset {
-  margin-bottom: 1em;
+form > fieldset  {
+  margin-bottom: 12pt;
+  margin-top: 12pt;
 }
-form > fieldset > label {
+form > fieldset > legend {
+  position: absolute;
+}
+form > fieldset > div > label {
   margin-right: 2em;
 }
-thead.filterHead > tr > th > fieldset > input[type="checkbox"],
-form > fieldset > input[type="radio"],
-form > fieldset > input[type="checkbox"] {
+form > fieldset > div > input[type="radio"],
+form > fieldset > div > input[type="checkbox"] {
+  margin-left: 11em;
   margin-right: 0.5em;
 }
 

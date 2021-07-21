@@ -105,8 +105,10 @@ export function createChoiceWidget(containerEl, fld, selected, choiceWidgetType,
         if (selected.includes(entry)) {
             choiceEl.checked = true;
         }
-        containerEl.appendChild(choiceEl);
-        containerEl.appendChild(labelEl);
+        const listEl = document.createElement('div');
+        containerEl.appendChild(listEl);
+        listEl.appendChild(choiceEl);
+        listEl.appendChild(labelEl);
         choiceEl.addEventListener("click", (e) => {
             const btnEl = e.target;
             if (choiceWidgetType === "radio") {
