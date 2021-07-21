@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title>Adopets: Update</title>
-    
+
     <script src="/js/lib/load_essentials.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
@@ -11,7 +11,7 @@
     <script src="/js/pets/controller/editPets.js" type="module"></script>
     <script src="/js/authentication.js" type="module"></script>
     <script type="module">
-      import {setupUiByUserStatus} from "/js/authentication.js";
+      import { setupUiByUserStatus } from "/js/authentication.js";
       window.addEventListener("load", setupUiByUserStatus);
     </script>
   </head>
@@ -34,10 +34,19 @@
         </nav>
       </div>
       <div id="login-management">
-        <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
-        <small hidden="hidden"><button type="button" class="submitButton">Sign out</button></small>
-        <small hidden="hidden"><button type="button" class="current">My Pets</button></small>
-        <small hidden="hidden"><button type="button" class="submitButton">My Shelters</button></small>
+        <small hidden="hidden">
+          <a href="/authentication.html">Sign in or Sign up</a> for using the
+          disabled operations
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="submitButton">Sign out</button>
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="current">My Pets</button>
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="submitButton">My Shelters</button>
+        </small>
       </div>
     </header>
     <main>
@@ -125,7 +134,12 @@
             ></label>
           </div>
           <div>
-            <label>Is adopted:<input type="checkbox" id="isAdopted" name="isAdopted"></label>
+            <label
+              >Is adopted:<input
+                type="checkbox"
+                id="isAdopted"
+                name="isAdopted"
+            /></label>
           </div>
           <div>
             <label
@@ -134,8 +148,17 @@
             ></label>
           </div>
           <div>
-            <button type="submit" name="submitButton" class="submitButton">Create pet</button>
-            <button type="submit" name="deleteButton" class="deleteButton" hidden="true">Delete pet</button>
+            <button type="submit" name="submitButton" class="submitButton">
+              Create pet
+            </button>
+            <button
+              type="submit"
+              name="deleteButton"
+              class="deleteButton"
+              hidden
+            >
+              Delete pet
+            </button>
           </div>
         </form>
       </div>

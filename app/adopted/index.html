@@ -28,10 +28,10 @@
       import { PetStorage } from "/js/pets/model/PetStorage.js";
 
       window.addEventListener("load", setupUiByUserStatus);
-      
+
       await ShelterStorage.retrieveAll();
       await PetStorage.retrieveAll();
-      insertToTable((pet) => pet.isAdopted, ['shelterId', 'vaccinationStatus']);
+      insertToTable((pet) => pet.isAdopted, ["shelterId", "vaccinationStatus"]);
     </script>
   </head>
 
@@ -52,10 +52,19 @@
         </nav>
       </div>
       <div id="login-management">
-        <small hidden="hidden"><a href="/authentication.html">Sign in or Sign up</a> for using the disabled operations</small>
-        <small hidden="hidden"><button type="button" class="submitButton">Sign out</button></small>
-        <small hidden="hidden"><button type="button" class="submitButton">My Pets</button></small>
-        <small hidden="hidden"><button type="button" class="submitButton">My Shelters</button></small>
+        <small hidden="hidden">
+          <a href="/authentication.html">Sign in or Sign up</a> for using the
+          disabled operations
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="submitButton">Sign out</button>
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="submitButton">My Pets</button>
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="submitButton">My Shelters</button>
+        </small>
       </div>
     </header>
     <main>
@@ -63,24 +72,22 @@
         <figure>
           <figcaption>Pets that found a home</figcaption>
           <div>
-          <table id="pets">
-            <thead>
-              <tr>
-                <th id="petName">Name</th>
-                <th id="species">Species</th>
-                <th id="sex">Sex</th>
-                <th id="size">Size</th>
-                <th id="birthDate">Birth date</th>
-                <!-- <th id="vaccinationStatus">Vaccination status</th> -->
-                <th id="compatibleWith">Compatible with</th>
-                <th id="suitableWith">SuitableWith</th>
-                <th id="housing">Housing</th>
-                <!-- <th id="shelter">Shelter</th> -->
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
+            <table id="pets">
+              <thead>
+                <tr>
+                  <th id="petName">Name</th>
+                  <th id="species">Species</th>
+                  <th id="sex">Sex</th>
+                  <th id="size">Size</th>
+                  <th id="birthDate">Birth date</th>
+                  <th id="compatibleWith">Compatible with</th>
+                  <th id="suitableWith">SuitableWith</th>
+                  <th id="housing">Housing</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
         </figure>
       </div>
     </main>

@@ -11,7 +11,7 @@
     <script src="/js/authentication.js" type="module"></script>
     <script src="/js/pets/controller/filterPets.js" type="module"></script>
     <script type="module">
-      import { setupUiByUserStatus } from "/js/authentication.js";      
+      import { setupUiByUserStatus } from "/js/authentication.js";
       window.addEventListener("load", setupUiByUserStatus);
     </script>
   </head>
@@ -35,21 +35,19 @@
         </nav>
       </div>
       <div id="login-management">
-        <small hidden="hidden"
-          ><a href="/authentication.html">Sign in or Sign up</a> for using the
-          disabled operations</small
-        >
-        <small hidden="hidden"
-          ><button type="button" class="submitButton">Sign out</button></small
-        >
-        <small hidden="hidden"
-          ><button type="button" class="submitButton">My Pets</button></small
-        >
-        <small hidden="hidden"
-          ><button type="button" class="submitButton">
-            My Shelters
-          </button></small
-        >
+        <small hidden="hidden">
+          <a href="/authentication.html">Sign in or Sign up</a> for using the
+          disabled operations
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="submitButton">Sign out</button>
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="submitButton">My Pets</button>
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="submitButton">My Shelters</button>
+        </small>
       </div>
     </header>
     <main>
@@ -58,7 +56,7 @@
           <figcaption>All pets in this database:</figcaption>
           <div>
             <table id="pets">
-              <thead class='filterHead'>
+              <thead class="filterHead">
                 <tr>
                   <th id="petName">Name</th>
                   <th id="species">
@@ -66,7 +64,9 @@
                   </th>
                   <th id="sex">Sex<br /><select id="sexFilter"></select></th>
                   <th id="size">Size<br /><select id="sizeFilter"></select></th>
-                  <th id="birthDate">Birth date<br /><select id="ageFilter"></select></th>
+                  <th id="birthDate">
+                    Birth date<br /><select id="ageFilter"></select>
+                  </th>
                   <th id="vaccinationStatus">Vaccination status</th>
                   <th id="compatibleWith">
                     <fieldset data-bind="compatibleWithFilter">
@@ -76,9 +76,14 @@
                   <th id="suitableWith">
                     <fieldset data-bind="suitableWithFilter">
                       <legend>Suitable with</legend>
-                    </fieldset></th>
-                  <th id="housing">Housing<br /><select id="housingFilter"></select></th>
-                  <th id="shelter">Shelter<br /><select  id="shelterFilter"></select></th>
+                    </fieldset>
+                  </th>
+                  <th id="housing">
+                    Housing<br /><select id="housingFilter"></select>
+                  </th>
+                  <th id="shelter">
+                    Shelter<br /><select id="shelterFilter"></select>
+                  </th>
                 </tr>
               </thead>
               <tbody></tbody>

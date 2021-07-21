@@ -10,10 +10,11 @@
     <script src="/js/initialize.js"></script>
     <script src="/js/authentication.js" type="module"></script>
     <script type="module">
-      import {setupSignInAndSignUp} from "/js/authentication.js";
+      import { setupSignInAndSignUp } from "/js/authentication.js";
       //evaluate user authentication status
-      auth.onAuthStateChanged( function (user) {
-        if (!user) { // if user status is unknown
+      auth.onAuthStateChanged(function (user) {
+        if (!user) {
+          // if user status is unknown
           // sign in user as 'anonymous'
           auth.signInAnonymously();
         }
@@ -39,14 +40,27 @@
         <h2>Authentification</h2>
         <form id="User">
           <div>
-            <label>Email: <input name="email" type="email" placeholder="max@mustermann.com"/></label>
+            <label
+              >Email:
+              <input name="email" type="email" placeholder="max@mustermann.com"
+            /></label>
           </div>
           <div>
-            <label>Password: <input name="password" type="password" placeholder="A-Za-z0-9*?#/.:"/></label>
+            <label
+              >Password:
+              <input
+                name="password"
+                type="password"
+                placeholder="A-Za-z0-9*?#/.:"
+            /></label>
           </div>
           <div>
-            <button type="button" class="submitButton" name="signin">Sign in</button>
-            <button type="button" class="submitButton" name="signup">Sign up</button>
+            <button type="button" class="submitButton" name="signin">
+              Sign in
+            </button>
+            <button type="button" class="submitButton" name="signup">
+              Sign up
+            </button>
           </div>
         </form>
       </div>

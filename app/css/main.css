@@ -36,9 +36,8 @@ video {
 
 img.main {
   vertical-align: middle;
-  float:left;
+  float: left;
   margin-right: 10pt;
-
 }
 
 fieldset {
@@ -363,7 +362,7 @@ table td ul {
 thead.filterHead > tr > th {
   vertical-align: top;
 }
-thead.filterHead > tr > th > fieldset > input[type="checkbox"]  {
+thead.filterHead > tr > th > fieldset > input[type="checkbox"] {
   margin-left: 10px;
 }
 

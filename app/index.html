@@ -11,15 +11,6 @@
     <script src="/js/authentication.js" type="module"></script>
     <script type="module">
       import { setupUiByUserStatus } from "/js/authentication.js";
-      import { createTestData, clear } from "/js/app.js";
-
-      const clearButton = document.getElementById("clearData");
-      const createTestDataButton = document.getElementById("createTestData");
-
-      // set event handlers for the buttons
-      clearButton.addEventListener("click", clear);
-      createTestDataButton.addEventListener("click", createTestData);
-
       window.addEventListener("load", setupUiByUserStatus);
     </script>
   </head>
@@ -44,28 +35,31 @@
         </nav>
       </div>
       <div id="login-management">
-        <small hidden="hidden"
-          ><a href="/authentication.html">Sign in or Sign up</a> for using the
-          disabled operations</small
-        >
-        <small hidden="hidden"
-          ><button type="button" class="submitButton">Sign out</button></small
-        >
-        <small hidden="hidden"
-          ><button type="button" class="submitButton">My Pets</button></small
-        >
-        <small hidden="hidden"
-          ><button type="button" class="submitButton">
-            My Shelters
-          </button></small
-        >
+        <small hidden="hidden">
+          <a href="/authentication.html">Sign in or Sign up</a> for using the
+          disabled operations
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="submitButton">Sign out</button>
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="submitButton">My Pets</button>
+        </small>
+        <small hidden="hidden">
+          <button type="button" class="submitButton">My Shelters</button>
+        </small>
       </div>
     </header>
     <main>
       <div class="wrapper clearfix">
         <h2>Who we are</h2>
         <p>
-          <img width="200px" class="main" src="/assets/Logo.JPG" alt="GiveHomeFoundationLogo"/>
+          <img
+            width="200"
+            class="main"
+            src="/assets/Logo.JPG"
+            alt="GiveHomeFoundationLogo"
+          />
           Our foundation is called "Give me home" and was formed in 2016 by a
           group of animal lovers. It all started with a spontaneous decision to
           “do a good deed” and donate some pet food to the shelter. However as
